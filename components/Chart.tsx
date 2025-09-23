@@ -7,7 +7,9 @@ import {
 import { useSdk } from "../hooks/useSdk";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import { useBollingerBandsChart } from "../hooks/useBollingerBandsChart";
+import { useDonchianChart } from "../hooks/useDonchianChart";
 import { type BollingerBandsConfig } from "../utils/bollingerBands";
+import { type DonchianConfig } from "../utils/donchian";
 
 interface ChartProps {
   activeId: number;
@@ -16,6 +18,8 @@ interface ChartProps {
   chartMinutesBack?: number;
   showBollingerBands?: boolean;
   bollingerBandsConfig?: BollingerBandsConfig;
+  showDonchian?: boolean;
+  donchianConfig?: DonchianConfig;
 }
 
 export function Chart({
@@ -25,6 +29,8 @@ export function Chart({
   chartMinutesBack = 60,
   showBollingerBands = true,
   bollingerBandsConfig = { period: 20, stdDev: 2 },
+  showDonchian = true,
+  donchianConfig = { period: 20 },
 }: ChartProps) {
   const sdk = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,6 +47,13 @@ export function Chart({
     bollingerBandsConfig,
   });
 
+  // Donchian Channels hook
+  const { createDonchianSeries, updateDonchianData, destroyDonchianSeries } =
+    useDonchianChart({
+      showDonchian,
+      donchianConfig,
+    });
+
   useEffect(() => {
     if (!sdk || !containerRef.current) return;
 
@@ -49,7 +62,7 @@ export function Chart({
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {
-      layout: { textColor: "black" },
+      layout: { textColor: "black", attributionLogo: false },
       height: chartHeight,
       timeScale: {
         timeVisible: true,
@@ -82,6 +95,9 @@ export function Chart({
     // Create Bollinger Bands series
     const bollingerBandsSeries = createBollingerBandsSeries(chart);
 
+    // Create Donchian Channels series
+    const donchianSeries = createDonchianSeries(chart);
+
     const initChart = async () => {
       if (isDisposed) return;
 
@@ -108,6 +124,9 @@ export function Chart({
       // Update Bollinger Bands data
       updateBollingerBandsData(bollingerBandsSeries, candles);
 
+      // Update Donchian Channels data
+      updateDonchianData(donchianSeries, candles);
+
       if (candles.length > 0) {
         earliestLoadedRef.current = candles[0].from as number;
       }
@@ -129,6 +148,9 @@ export function Chart({
             // Update Bollinger Bands with the latest data
             const allCandles = chartLayer.getAllCandles();
             updateBollingerBandsData(bollingerBandsSeries, allCandles, true);
+
+            // Update Donchian Channels with the latest data
+            updateDonchianData(donchianSeries, allCandles, true);
           } catch (error) {
             console.warn("Error updating candle data:", error);
           }
@@ -147,6 +169,9 @@ export function Chart({
 
             // Recalculate Bollinger Bands after consistency recovery
             updateBollingerBandsData(bollingerBandsSeries, all);
+
+            // Recalculate Donchian Channels after consistency recovery
+            updateDonchianData(donchianSeries, all);
           } catch (error) {
             console.warn("Error handling consistency recovery:", error);
           }
@@ -182,6 +207,9 @@ export function Chart({
 
                 // Update Bollinger Bands with new historical data
                 updateBollingerBandsData(bollingerBandsSeries, moreData);
+
+                // Update Donchian Channels with new historical data
+                updateDonchianData(donchianSeries, moreData);
               } catch (error) {
                 console.warn("Error fetching historical data:", error);
               }
@@ -219,6 +247,13 @@ export function Chart({
         console.warn("Error destroying Bollinger Bands series:", error);
       }
 
+      // Clean up Donchian Channels series
+      try {
+        destroyDonchianSeries(chart, donchianSeries);
+      } catch (error) {
+        console.warn("Error destroying Donchian Channels series:", error);
+      }
+
       // Remove the chart
       try {
         chart.remove();
@@ -238,6 +273,11 @@ export function Chart({
     createBollingerBandsSeries,
     updateBollingerBandsData,
     destroyBollingerBandsSeries,
+    showDonchian,
+    donchianConfig,
+    createDonchianSeries,
+    updateDonchianData,
+    destroyDonchianSeries,
   ]);
 
   return (

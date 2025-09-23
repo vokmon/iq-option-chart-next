@@ -1,9 +1,11 @@
 import { Chart } from "../components/Chart";
 import { BollingerBandsComponent } from "../components/indicators/bollinger/BollingerBandsComponent";
+import { DonchianComponent } from "../components/indicators/donchian/DonchianComponent";
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "../hooks/useSdk";
 import { useBollingerBands } from "../hooks/useBollingerBands";
+import { useDonchian } from "../hooks/useDonchian";
 import { type Active } from "../types/Active";
 
 const candleSizes = [60, 300];
@@ -24,6 +26,14 @@ export default function HomePage() {
     updatePeriod,
     updateStdDev,
   } = useBollingerBands();
+
+  // Donchian Channels configuration using custom hook
+  const {
+    showDonchian,
+    setShowDonchian,
+    donchianConfig,
+    updateDonchianPeriod,
+  } = useDonchian();
 
   useEffect(() => {
     if (!sdk) return;
@@ -68,6 +78,8 @@ export default function HomePage() {
               chartMinutesBack={60}
               showBollingerBands={showBollingerBands}
               bollingerBandsConfig={bollingerConfig}
+              showDonchian={showDonchian}
+              donchianConfig={donchianConfig}
             />
           )}
         </Flex>
@@ -105,6 +117,13 @@ export default function HomePage() {
               bollingerConfig={bollingerConfig}
               onUpdatePeriod={updatePeriod}
               onUpdateStdDev={updateStdDev}
+              size="sm"
+            />
+            <DonchianComponent
+              showDonchian={showDonchian}
+              onToggleDonchian={setShowDonchian}
+              donchianConfig={donchianConfig}
+              onUpdatePeriod={updateDonchianPeriod}
               size="sm"
             />
           </Flex>

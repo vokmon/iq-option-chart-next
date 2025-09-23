@@ -51,8 +51,8 @@ export function useBollingerBandsChart({
       }
 
       const upperBandSeries = chart.addSeries(LineSeries, {
-        color: "#2196F3",
-        lineWidth: 1,
+        color: "#90CAF9", // Light pastel blue
+        lineWidth: 2,
         lineStyle: LineStyle.Solid,
         title: "BB Upper",
         priceFormat: {
@@ -63,8 +63,8 @@ export function useBollingerBandsChart({
       });
 
       const middleBandSeries = chart.addSeries(LineSeries, {
-        color: "#FF9800",
-        lineWidth: 1,
+        color: "#42A5F5", // Medium pastel blue
+        lineWidth: 2,
         lineStyle: LineStyle.Solid,
         title: "BB Middle (SMA)",
         priceFormat: {
@@ -75,8 +75,8 @@ export function useBollingerBandsChart({
       });
 
       const lowerBandSeries = chart.addSeries(LineSeries, {
-        color: "#2196F3",
-        lineWidth: 1,
+        color: "#90CAF9", // Light pastel blue (same as upper)
+        lineWidth: 2,
         lineStyle: LineStyle.Solid,
         title: "BB Lower",
         priceFormat: {
