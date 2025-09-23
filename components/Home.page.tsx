@@ -68,7 +68,7 @@ export default function HomePage() {
           </Text>
         )}
       </Flex>
-      <Flex>
+      <Flex gap="xl">
         <Flex direction="column" w="80%">
           {selectedActiveId && (
             <Chart
@@ -84,7 +84,7 @@ export default function HomePage() {
           )}
         </Flex>
 
-        <Flex w="20%" direction="column" gap="sm">
+        <Flex w="20%" direction="column" gap="md">
           <Select
             label="Active"
             placeholder="Choose an active"

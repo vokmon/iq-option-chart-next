@@ -24,6 +24,7 @@ export function DonchianComponent({
         checked={showDonchian}
         onChange={(event) => onToggleDonchian(event.currentTarget.checked)}
         size={size}
+        color="violet"
       />
 
       {showDonchian && (
