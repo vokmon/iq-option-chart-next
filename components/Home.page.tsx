@@ -1,7 +1,9 @@
 import { Chart } from "../components/Chart";
-import { Flex, Select, Text } from "@mantine/core";
+import { BollingerBandsComponent } from "../components/indicators/bollinger/BollingerBandsComponent";
+import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "../hooks/useSdk";
+import { useBollingerBands } from "../hooks/useBollingerBands";
 import { type Active } from "../types/Active";
 
 const candleSizes = [60, 300];
@@ -13,6 +15,15 @@ export default function HomePage() {
   const [selectedCandleSize, setSelectedCandleSize] = useState<string | null>(
     String(candleSizes[0])
   ); // default 1 min
+
+  // Bollinger Bands configuration using custom hook
+  const {
+    showBollingerBands,
+    setShowBollingerBands,
+    bollingerConfig,
+    updatePeriod,
+    updateStdDev,
+  } = useBollingerBands();
 
   useEffect(() => {
     if (!sdk) return;
@@ -53,8 +64,10 @@ export default function HomePage() {
             <Chart
               activeId={parseInt(selectedActiveId)}
               candleSize={parseInt(selectedCandleSize!)}
-              chartHeight={400}
-              chartMinutesBack={720}
+              chartHeight={window.innerHeight - 100}
+              chartMinutesBack={60}
+              showBollingerBands={showBollingerBands}
+              bollingerBandsConfig={bollingerConfig}
             />
           )}
         </Flex>
@@ -81,6 +94,20 @@ export default function HomePage() {
               label: `${s / 60} min`,
             }))}
           />
+          <Divider my="xl" />
+          <Text fw={500} fz="lg">
+            Indicators
+          </Text>
+          <Flex direction="column" gap="md">
+            <BollingerBandsComponent
+              showBollingerBands={showBollingerBands}
+              onToggleBollingerBands={setShowBollingerBands}
+              bollingerConfig={bollingerConfig}
+              onUpdatePeriod={updatePeriod}
+              onUpdateStdDev={updateStdDev}
+              size="sm"
+            />
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

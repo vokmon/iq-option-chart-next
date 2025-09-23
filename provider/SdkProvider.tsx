@@ -9,7 +9,6 @@ import { SdkContext } from "../context/SdkContext";
 import LoadingPage from "../components/LoadingPage";
 
 const NEXT_PUBLIC_WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
-const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 const NEXT_PUBLIC_IQ_OPTION_USER = process.env.NEXT_PUBLIC_IQ_OPTION_USER;
 const NEXT_PUBLIC_IQ_OPTION_PASSWORD =
   process.env.NEXT_PUBLIC_IQ_OPTION_PASSWORD;
