@@ -1,6 +1,6 @@
 # IQ Option Chart
 
-A Next.js application for IQ Option chart integration with real-time WebSocket connections.
+An application for IQ Option chart integration with real-time WebSocket connections.
 
 ## Getting Started
 
