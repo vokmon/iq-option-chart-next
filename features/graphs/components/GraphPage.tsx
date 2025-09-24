@@ -57,10 +57,12 @@ export default function GraphPage() {
     <Flex direction="column" gap="sm" p={10}>
       <Flex>
         {selectedActiveId && selectedActiveId !== "none" && (
-          <Text>
+          <Flex gap="sm" align="center">
             Selected Active:{" "}
-            {actives.find((a) => a.id === parseInt(selectedActiveId))?.title}
-          </Text>
+            <Text size="lg" fw={600}>
+              {actives.find((a) => a.id === parseInt(selectedActiveId))?.title}
+            </Text>
+          </Flex>
         )}
       </Flex>
       <Flex gap="xl">
@@ -105,11 +107,11 @@ export default function GraphPage() {
               label: `${s / 60} min`,
             }))}
           />
-          <Divider my="xl" />
+          <Divider mt="xl" mb="sm" />
           <Text fw={500} fz="lg">
             Indicators
           </Text>
-          <Flex direction="column" gap="md">
+          <Flex direction="column" gap="xl">
             <BollingerBandsComponent size="sm" />
             <DonchianComponent size="sm" />
             <StochasticComponent size="sm" />
