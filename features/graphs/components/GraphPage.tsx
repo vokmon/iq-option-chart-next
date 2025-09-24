@@ -5,16 +5,23 @@ import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "@/hooks/useSdk";
 import { type Active } from "@/types/Active";
+import { useUrlState } from "@/hooks/useUrlState";
 
 const candleSizes = [60, 300];
 
 export default function GraphPage() {
   const sdk = useSdk();
   const [actives, setActives] = useState<Active[]>([]);
-  const [selectedActiveId, setSelectedActiveId] = useState<string | null>(null);
-  const [selectedCandleSize, setSelectedCandleSize] = useState<string | null>(
+
+  // Use custom hook for URL-based state management
+  const [selectedActiveId, setSelectedActiveId] = useUrlState(
+    "activeId",
+    "none"
+  );
+  const [selectedCandleSize, setSelectedCandleSize] = useUrlState(
+    "candleSize",
     String(candleSizes[0])
-  ); // default 1 min
+  );
 
   useEffect(() => {
     if (!sdk) return;
@@ -31,18 +38,23 @@ export default function GraphPage() {
         }));
 
       setActives(binaryOptionsActives);
-      if (binaryOptionsActives.length > 0) {
+
+      // Set default active in URL if none is selected and we have actives
+      if (
+        binaryOptionsActives.length > 0 &&
+        (selectedActiveId === "none" || !selectedActiveId)
+      ) {
         setSelectedActiveId(String(binaryOptionsActives[0].id));
       }
     };
 
     init().then();
-  }, [sdk]);
+  }, [sdk, selectedActiveId, setSelectedActiveId]);
 
   return (
     <Flex direction="column" gap="sm" p={10}>
       <Flex>
-        {selectedActiveId && (
+        {selectedActiveId && selectedActiveId !== "none" && (
           <Text>
             Selected Active:{" "}
             {actives.find((a) => a.id === parseInt(selectedActiveId))?.title}
@@ -51,7 +63,7 @@ export default function GraphPage() {
       </Flex>
       <Flex gap="xl">
         <Flex direction="column" w="80%">
-          {selectedActiveId && (
+          {selectedActiveId && selectedActiveId !== "none" && (
             <Chart
               activeId={parseInt(selectedActiveId)}
               candleSize={parseInt(selectedCandleSize!)}
