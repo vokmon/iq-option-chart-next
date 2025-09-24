@@ -6,7 +6,7 @@ import {
 } from "@quadcode-tech/client-sdk-js";
 // import { ClientSdk, LoginPasswordAuthMethod, SsidAuthMethod } from "./sdk";
 import { SdkContext } from "../context/SdkContext";
-import LoadingPage from "../components/LoadingPage";
+import LoadingPage from "../features/graphs/components/LoadingPage";
 
 const NEXT_PUBLIC_WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
 const NEXT_PUBLIC_IQ_OPTION_USER = process.env.NEXT_PUBLIC_IQ_OPTION_USER;

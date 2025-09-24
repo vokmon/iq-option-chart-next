@@ -91,8 +91,8 @@ export function useDonchianChart({
       });
 
       const areaSeries = chart.addSeries(AreaSeries, {
-        topColor: "rgba(206, 147, 216, 0.4)",
-        bottomColor: "rgba(206, 147, 216, 0.02)",
+        topColor: "rgba(206, 147, 216, 0.3)",
+        bottomColor: "rgba(206, 147, 216, 0)",
         lineColor: "transparent", // Hide the boundary lines
         priceLineVisible: false,
         lastValueVisible: false,

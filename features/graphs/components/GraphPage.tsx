@@ -1,39 +1,20 @@
-import { Chart } from "../components/Chart";
-import { BollingerBandsComponent } from "../components/indicators/bollinger/BollingerBandsComponent";
-import { DonchianComponent } from "../components/indicators/donchian/DonchianComponent";
+import { Chart } from "./Chart";
+import { BollingerBandsComponent } from "./indicators/bollinger/BollingerBandsComponent";
+import { DonchianComponent } from "./indicators/donchian/DonchianComponent";
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useSdk } from "../hooks/useSdk";
-import { useBollingerBands } from "@/hooks/indicators/useBollingerBands";
-import { useDonchian } from "@/hooks/indicators/useDonchian";
-import { type Active } from "../types/Active";
+import { useSdk } from "@/hooks/useSdk";
+import { type Active } from "@/types/Active";
 
 const candleSizes = [60, 300];
 
-export default function HomePage() {
+export default function GraphPage() {
   const sdk = useSdk();
   const [actives, setActives] = useState<Active[]>([]);
   const [selectedActiveId, setSelectedActiveId] = useState<string | null>(null);
   const [selectedCandleSize, setSelectedCandleSize] = useState<string | null>(
     String(candleSizes[0])
   ); // default 1 min
-
-  // Bollinger Bands configuration using custom hook
-  const {
-    showBollingerBands,
-    setShowBollingerBands,
-    bollingerConfig,
-    updatePeriod,
-    updateStdDev,
-  } = useBollingerBands();
-
-  // Donchian Channels configuration using custom hook
-  const {
-    showDonchian,
-    setShowDonchian,
-    donchianConfig,
-    updateDonchianPeriod,
-  } = useDonchian();
 
   useEffect(() => {
     if (!sdk) return;
@@ -76,10 +57,6 @@ export default function HomePage() {
               candleSize={parseInt(selectedCandleSize!)}
               chartHeight={window.innerHeight - 100}
               chartMinutesBack={60}
-              showBollingerBands={showBollingerBands}
-              bollingerBandsConfig={bollingerConfig}
-              showDonchian={showDonchian}
-              donchianConfig={donchianConfig}
             />
           )}
         </Flex>
@@ -111,21 +88,8 @@ export default function HomePage() {
             Indicators
           </Text>
           <Flex direction="column" gap="md">
-            <BollingerBandsComponent
-              showBollingerBands={showBollingerBands}
-              onToggleBollingerBands={setShowBollingerBands}
-              bollingerConfig={bollingerConfig}
-              onUpdatePeriod={updatePeriod}
-              onUpdateStdDev={updateStdDev}
-              size="sm"
-            />
-            <DonchianComponent
-              showDonchian={showDonchian}
-              onToggleDonchian={setShowDonchian}
-              donchianConfig={donchianConfig}
-              onUpdatePeriod={updateDonchianPeriod}
-              size="sm"
-            />
+            <BollingerBandsComponent size="sm" />
+            <DonchianComponent size="sm" />
           </Flex>
         </Flex>
       </Flex>

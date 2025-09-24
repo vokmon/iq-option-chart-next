@@ -4,22 +4,18 @@ import {
   createChart,
   type UTCTimestamp,
 } from "lightweight-charts";
-import { useSdk } from "../hooks/useSdk";
+import { useSdk } from "@/hooks/useSdk";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import { useBollingerBandsChart } from "@/hooks/indicators/useBollingerBandsChart";
 import { useDonchianChart } from "@/hooks/indicators/useDonchianChart";
-import { type BollingerBandsConfig } from "../utils/bollingerBands";
-import { type DonchianConfig } from "../utils/donchian";
+import { useBollingerBandsQuery } from "@/hooks/indicators/useBollingerBandsQuery";
+import { useDonchianQuery } from "@/hooks/indicators/useDonchianQuery";
 
 interface ChartProps {
   activeId: number;
   candleSize: number;
   chartHeight?: number;
   chartMinutesBack?: number;
-  showBollingerBands?: boolean;
-  bollingerBandsConfig?: BollingerBandsConfig;
-  showDonchian?: boolean;
-  donchianConfig?: DonchianConfig;
 }
 
 export function Chart({
@@ -27,15 +23,15 @@ export function Chart({
   candleSize,
   chartHeight = 400,
   chartMinutesBack = 60,
-  showBollingerBands = true,
-  bollingerBandsConfig = { period: 20, stdDev: 2 },
-  showDonchian = true,
-  donchianConfig = { period: 20 },
 }: ChartProps) {
   const sdk = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
+
+  // Query parameter hooks for indicators
+  const { showBollingerBands, bollingerConfig } = useBollingerBandsQuery();
+  const { showDonchian, donchianConfig } = useDonchianQuery();
 
   // Bollinger Bands hook
   const {
@@ -44,7 +40,7 @@ export function Chart({
     destroyBollingerBandsSeries,
   } = useBollingerBandsChart({
     showBollingerBands,
-    bollingerBandsConfig,
+    bollingerBandsConfig: bollingerConfig,
   });
 
   // Donchian Channels hook
@@ -90,6 +86,8 @@ export function Chart({
         precision: 6,
         minMove: 0.001,
       },
+      lastValueVisible: true,
+      priceLineWidth: 4,
     });
 
     // Create Bollinger Bands series
@@ -269,7 +267,7 @@ export function Chart({
     chartHeight,
     chartMinutesBack,
     showBollingerBands,
-    bollingerBandsConfig,
+    bollingerConfig,
     createBollingerBandsSeries,
     updateBollingerBandsData,
     destroyBollingerBandsSeries,

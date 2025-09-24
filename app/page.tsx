@@ -1,6 +1,6 @@
 "use client";
-import HomePage from "../components/Home.page";
+import GraphPage from "../features/graphs/components/GraphPage";
 
 export default function Home() {
-  return <HomePage />;
+  return <GraphPage />;
 }
