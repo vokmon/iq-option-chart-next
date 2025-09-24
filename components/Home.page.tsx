@@ -4,8 +4,8 @@ import { DonchianComponent } from "../components/indicators/donchian/DonchianCom
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "../hooks/useSdk";
-import { useBollingerBands } from "../hooks/useBollingerBands";
-import { useDonchian } from "../hooks/useDonchian";
+import { useBollingerBands } from "@/hooks/indicators/useBollingerBands";
+import { useDonchian } from "@/hooks/indicators/useDonchian";
 import { type Active } from "../types/Active";
 
 const candleSizes = [60, 300];

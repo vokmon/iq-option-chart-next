@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type BollingerBandsConfig } from "../utils/bollingerBands";
+import { type BollingerBandsConfig } from "@/utils/bollingerBands";
 
 export interface UseBollingerBandsReturn {
   showBollingerBands: boolean;

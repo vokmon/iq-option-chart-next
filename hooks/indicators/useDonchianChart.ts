@@ -12,7 +12,7 @@ import {
   calculateDonchianForCandles,
   type DonchianConfig,
   type DonchianData,
-} from "../utils/donchian";
+} from "@/utils/donchian";
 
 export interface DonchianSeries {
   upper: ISeriesApi<"Line"> | null;

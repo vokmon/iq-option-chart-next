@@ -6,8 +6,8 @@ import {
 } from "lightweight-charts";
 import { useSdk } from "../hooks/useSdk";
 import { Candle } from "@quadcode-tech/client-sdk-js";
-import { useBollingerBandsChart } from "../hooks/useBollingerBandsChart";
-import { useDonchianChart } from "../hooks/useDonchianChart";
+import { useBollingerBandsChart } from "@/hooks/indicators/useBollingerBandsChart";
+import { useDonchianChart } from "@/hooks/indicators/useDonchianChart";
 import { type BollingerBandsConfig } from "../utils/bollingerBands";
 import { type DonchianConfig } from "../utils/donchian";
 

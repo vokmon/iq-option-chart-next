@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type DonchianConfig } from "../utils/donchian";
+import { type DonchianConfig } from "@/utils/donchian";
 
 export interface UseDonchianReturn {
   showDonchian: boolean;
