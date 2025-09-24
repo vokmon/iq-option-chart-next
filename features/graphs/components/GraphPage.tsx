@@ -1,6 +1,8 @@
 import { Chart } from "./Chart";
+import { StochasticChart } from "./StochasticChart";
 import { BollingerBandsComponent } from "./indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "./indicators/donchian/DonchianComponent";
+import { StochasticComponent } from "./indicators/stochastic/StochasticComponent";
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "@/hooks/useSdk";
@@ -64,12 +66,20 @@ export default function GraphPage() {
       <Flex gap="xl">
         <Flex direction="column" w="80%">
           {selectedActiveId && selectedActiveId !== "none" && (
-            <Chart
-              activeId={parseInt(selectedActiveId)}
-              candleSize={parseInt(selectedCandleSize!)}
-              chartHeight={window.innerHeight - 100}
-              chartMinutesBack={60}
-            />
+            <>
+              <Chart
+                activeId={parseInt(selectedActiveId)}
+                candleSize={parseInt(selectedCandleSize!)}
+                chartHeight={window.innerHeight - 300}
+                chartMinutesBack={60}
+              />
+              <StochasticChart
+                activeId={parseInt(selectedActiveId)}
+                candleSize={parseInt(selectedCandleSize!)}
+                chartHeight={200}
+                chartMinutesBack={60}
+              />
+            </>
           )}
         </Flex>
 
@@ -102,6 +112,7 @@ export default function GraphPage() {
           <Flex direction="column" gap="md">
             <BollingerBandsComponent size="sm" />
             <DonchianComponent size="sm" />
+            <StochasticComponent size="sm" />
           </Flex>
         </Flex>
       </Flex>

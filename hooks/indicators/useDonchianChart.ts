@@ -55,10 +55,11 @@ export function useDonchianChart({
       }
 
       const upperChannelSeries = chart.addSeries(LineSeries, {
-        color: "#CE93D8", // Light pastel purple
+        color: "#AB47BC", // Light pastel purple
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
-        title: "Donchian Upper",
+        // title: "Donchian Upper",
+        lastValueVisible: false,
         priceFormat: {
           type: "price",
           precision: 3,
@@ -67,10 +68,11 @@ export function useDonchianChart({
       });
 
       const middleChannelSeries = chart.addSeries(LineSeries, {
-        color: "#AB47BC", // Medium pastel purple
+        color: "#CE93D8", // Medium pastel purple
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
-        title: "Donchian Middle",
+        // title: "Donchian Middle",
+        lastValueVisible: false,
         priceFormat: {
           type: "price",
           precision: 3,
@@ -79,10 +81,11 @@ export function useDonchianChart({
       });
 
       const lowerChannelSeries = chart.addSeries(LineSeries, {
-        color: "#CE93D8", // Light pastel purple (same as upper)
+        color: "#AB47BC", // Light pastel purple (same as upper)
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
-        title: "Donchian Lower",
+        // title: "Donchian Lower",
+        lastValueVisible: false,
         priceFormat: {
           type: "price",
           precision: 3,
