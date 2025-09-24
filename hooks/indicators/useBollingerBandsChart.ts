@@ -11,7 +11,7 @@ import {
   calculateBollingerBandsForCandles,
   type BollingerBandsConfig,
   type BollingerBandsData,
-} from "@/utils/bollingerBands";
+} from "@/utils/indicators/bollingerBands";
 
 export interface BollingerBandsSeries {
   upper: ISeriesApi<"Line"> | null;

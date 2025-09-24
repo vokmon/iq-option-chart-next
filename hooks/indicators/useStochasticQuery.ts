@@ -1,5 +1,5 @@
 import { useQueryState, parseAsBoolean, parseAsInteger } from "nuqs";
-import { type StochasticConfig } from "@/utils/stochastic";
+import { type StochasticConfig } from "@/utils/indicators/stochastic";
 
 export interface UseStochasticQueryReturn {
   showStochastic: boolean;

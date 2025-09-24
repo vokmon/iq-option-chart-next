@@ -1,5 +1,5 @@
 import { useQueryState, parseAsBoolean, parseAsInteger } from "nuqs";
-import { type DonchianConfig } from "@/utils/donchian";
+import { type DonchianConfig } from "@/utils/indicators/donchian";
 
 export interface UseDonchianQueryReturn {
   showDonchian: boolean;

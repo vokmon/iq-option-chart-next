@@ -1,12 +1,10 @@
 "use client";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import {
-  ClientSdk,
-  LoginPasswordAuthMethod,
-} from "@quadcode-tech/client-sdk-js";
+import { ClientSdk, SsidAuthMethod } from "@quadcode-tech/client-sdk-js";
 // import { ClientSdk, LoginPasswordAuthMethod, SsidAuthMethod } from "./sdk";
 import { SdkContext } from "../context/SdkContext";
 import LoadingPage from "../features/graphs/components/LoadingPage";
+import { getCookie } from "@/utils/cookies";
 
 const NEXT_PUBLIC_WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
 const NEXT_PUBLIC_IQ_OPTION_USER = process.env.NEXT_PUBLIC_IQ_OPTION_USER;
@@ -29,16 +27,26 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => reject(new Error("SDK init timeout")), 10000)
       );
 
+      const ssid = getCookie("ssid");
+
+      if (!ssid) {
+        console.warn("No SSID cookie found. User may not be logged in.");
+        // You might want to redirect to login page here
+        // router.push("/login");
+        return;
+      }
+
       try {
         const sdk = await Promise.race([
           ClientSdk.create(
             NEXT_PUBLIC_WEB_SOCKET_URL!,
             82,
-            new LoginPasswordAuthMethod(
-              `${window.location.origin}/api`,
-              NEXT_PUBLIC_IQ_OPTION_USER!,
-              NEXT_PUBLIC_IQ_OPTION_PASSWORD!
-            ),
+            // new LoginPasswordAuthMethod(
+            //   `${window.location.origin}/api`,
+            //   NEXT_PUBLIC_IQ_OPTION_USER!,
+            //   NEXT_PUBLIC_IQ_OPTION_PASSWORD!
+            // )
+            new SsidAuthMethod(ssid),
             {
               host: window.location.origin,
             }

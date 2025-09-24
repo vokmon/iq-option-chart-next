@@ -1,5 +1,5 @@
 import { useQueryState, parseAsBoolean, parseAsInteger } from "nuqs";
-import { type BollingerBandsConfig } from "@/utils/bollingerBands";
+import { type BollingerBandsConfig } from "@/utils/indicators/bollingerBands";
 
 export interface UseBollingerBandsQueryReturn {
   showBollingerBands: boolean;

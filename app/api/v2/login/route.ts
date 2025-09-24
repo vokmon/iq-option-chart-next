@@ -32,7 +32,21 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+
+    // Create response with JSON data
+    const jsonResponse = NextResponse.json(data);
+
+    // Set secure cookie with ssid if available
+    if (data.ssid) {
+      jsonResponse.cookies.set("ssid", data.ssid, {
+        httpOnly: false, // Allow JavaScript access for client-side SDK
+        // secure: true,
+        sameSite: "strict",
+        path: "/", // Set path to root for all pages
+      });
+    }
+
+    return jsonResponse;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

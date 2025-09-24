@@ -11,7 +11,7 @@ import {
   calculateStochasticForCandles,
   type StochasticConfig,
   type StochasticData,
-} from "@/utils/stochastic";
+} from "@/utils/indicators/stochastic";
 
 export interface StochasticSeries {
   k: ISeriesApi<"Line"> | null;
