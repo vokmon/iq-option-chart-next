@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { LineSeries, createChart, type UTCTimestamp } from "lightweight-charts";
+import { createChart } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/hooks/indicators/useStochasticChart";
@@ -60,6 +60,7 @@ export function StochasticChart({
           });
         },
       },
+
       rightPriceScale: {
         visible: true,
         borderVisible: false,
@@ -67,7 +68,8 @@ export function StochasticChart({
           top: 0.1,
           bottom: 0.1,
         },
-        mode: 1, // Percentage mode for stochastic (0-100)
+        mode: 0, // Price mode for better control
+        autoScale: true,
       },
     });
 
@@ -87,13 +89,20 @@ export function StochasticChart({
       // Update Stochastic Oscillator data
       updateStochasticData(stochasticSeries, candles);
 
+      // Auto-fit the chart to show the data better
+      setTimeout(() => {
+        if (!isDisposed) {
+          chart.timeScale().fitContent();
+        }
+      }, 100);
+
       if (candles.length > 0) {
         earliestLoadedRef.current = candles[0].from as number;
       }
 
       // Subscribe to candle changes
       const unsubscribeCandleChanged = chartLayer.subscribeOnLastCandleChanged(
-        (candle: Candle) => {
+        () => {
           if (isDisposed) return;
 
           try {
