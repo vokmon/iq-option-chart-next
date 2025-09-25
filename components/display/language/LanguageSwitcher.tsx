@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button, Group, Text, Badge } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 
 export default function LanguageSwitcher() {
   const t = useTranslations();
