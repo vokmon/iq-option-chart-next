@@ -78,9 +78,14 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
     };
 
     init().catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!sdk) return <LoadingPage />;
 
-  return <SdkContext.Provider value={sdk}>{children}</SdkContext.Provider>;
+  return (
+    <SdkContext.Provider value={{ sdk, setSdk }}>
+      {children}
+    </SdkContext.Provider>
+  );
 };

@@ -18,7 +18,7 @@ export function StochasticChart({
   chartHeight = 200,
   chartMinutesBack = 60,
 }: StochasticChartProps) {
-  const sdk = useSdk();
+  const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
@@ -187,7 +187,9 @@ export function StochasticChart({
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {
         try {
-          unsubscribe();
+          if (unsubscribe) {
+            unsubscribe();
+          }
         } catch (error) {
           console.warn("Error unsubscribing from stochastic chart:", error);
         }

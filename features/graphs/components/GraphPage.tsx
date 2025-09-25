@@ -12,7 +12,7 @@ import { useUrlState } from "@/hooks/useUrlState";
 const candleSizes = [60, 300];
 
 export default function GraphPage() {
-  const sdk = useSdk();
+  const { sdk } = useSdk();
   const [actives, setActives] = useState<Active[]>([]);
 
   // Use custom hook for URL-based state management

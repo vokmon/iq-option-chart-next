@@ -24,7 +24,7 @@ export function Chart({
   chartHeight = 400,
   chartMinutesBack = 60,
 }: ChartProps) {
-  const sdk = useSdk();
+  const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
@@ -232,7 +232,9 @@ export function Chart({
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {
         try {
-          unsubscribe();
+          if (unsubscribe) {
+            unsubscribe();
+          }
         } catch (error) {
           console.warn("Error unsubscribing:", error);
         }
