@@ -74,10 +74,14 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
         // Clear the timeout on error as well
         if (timeoutId) clearTimeout(timeoutId);
         console.error("Failed to initialize SDK:", err);
+        router.push("/login");
       }
     };
 
-    init().catch(console.error);
+    init().catch((err) => {
+      console.error(err);
+      router.push("/login");
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -6,14 +6,16 @@ import { StochasticComponent } from "./indicators/stochastic/StochasticComponent
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "@/hooks/useSdk";
-import { type Active } from "@/types/Active";
+// import { type Active } from "@/types/Active";
 import { useUrlState } from "@/hooks/useUrlState";
+import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 
 const candleSizes = [60, 300];
 
 export default function GraphPage() {
   const { sdk } = useSdk();
-  const [actives, setActives] = useState<Active[]>([]);
+  // const [actives, setActives] = useState<Active[]>([]);
+  const [actives, setActives] = useState<DigitalOptionsUnderlying[]>([]);
 
   // Use custom hook for URL-based state management
   const [selectedActiveId, setSelectedActiveId] = useUrlState(
@@ -30,23 +32,28 @@ export default function GraphPage() {
 
     const init = async () => {
       const now = sdk.currentTime();
-      const binaryOptions = await sdk.binaryOptions();
-      const binaryOptionsActives = binaryOptions
-        .getActives()
-        .filter((a) => a.canBeBoughtAt(now))
-        .map((a) => ({
-          id: a.id,
-          title: a.ticker ?? `Active ${a.id}`,
-        }));
+      const digitalOptions = await sdk.digitalOptions();
+      const digitalOptionsActives =
+        digitalOptions.getUnderlyingsAvailableForTradingAt(now);
+      setActives(digitalOptionsActives);
+      // const binaryOptions = await sdk.binaryOptions();
+      // const binaryOptionsActives = binaryOptions
+      //   .getActives()
+      //   .filter((a) => a.canBeBoughtAt(now))
+      //   .map((a) => ({
+      //     id: a.id,
+      //     title: a.ticker ?? `Active ${a.id}`,
+      //   }));
 
-      setActives(binaryOptionsActives);
+      // setActives(binaryOptionsActives);
 
       // Set default active in URL if none is selected and we have actives
       if (
-        binaryOptionsActives.length > 0 &&
+        digitalOptionsActives.length > 0 &&
         (selectedActiveId === "none" || !selectedActiveId)
       ) {
-        setSelectedActiveId(String(binaryOptionsActives[0].id));
+        // setSelectedActiveId(String(binaryOptionsActives[0].id));
+        setSelectedActiveId(String(digitalOptionsActives[0].activeId));
       }
     };
 
@@ -54,17 +61,20 @@ export default function GraphPage() {
   }, [sdk, selectedActiveId, setSelectedActiveId]);
 
   return (
-    <Flex direction="column" gap="sm" p={10}>
-      <Flex>
+    <Flex direction="column" gap="sm" p={10} w="100%" h="100%">
+      {/* <Flex>
         {selectedActiveId && selectedActiveId !== "none" && (
           <Flex gap="sm" align="center">
             Selected Active:{" "}
             <Text size="lg" fw={600}>
-              {actives.find((a) => a.id === parseInt(selectedActiveId))?.title}
+              {
+                actives.find((a) => a.activeId === parseInt(selectedActiveId))
+                  ?.name
+              }
             </Text>
           </Flex>
         )}
-      </Flex>
+      </Flex> */}
       <Flex gap="xl">
         <Flex direction="column" w="80%">
           {selectedActiveId && selectedActiveId !== "none" && (
@@ -72,7 +82,7 @@ export default function GraphPage() {
               <Chart
                 activeId={parseInt(selectedActiveId)}
                 candleSize={parseInt(selectedCandleSize!)}
-                chartHeight={window.innerHeight - 250}
+                chartHeight={window.innerHeight - 270}
                 chartMinutesBack={60}
               />
               <div className="my-4" />
@@ -93,8 +103,8 @@ export default function GraphPage() {
             value={selectedActiveId}
             onChange={setSelectedActiveId}
             data={actives.map((a) => ({
-              value: String(a.id),
-              label: a.title ?? `Active ${a.id}`,
+              value: String(a.activeId),
+              label: a.name ?? `Active ${a.activeId}`,
             }))}
           />
 

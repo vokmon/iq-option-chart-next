@@ -40,8 +40,9 @@ export async function POST(request: NextRequest) {
     if (data.ssid) {
       jsonResponse.cookies.set("ssid", data.ssid, {
         httpOnly: false, // Allow JavaScript access for client-side SDK
-        // secure: true,
+        secure: true,
         sameSite: "strict",
+        // maxAge: 60 * 60 * 24 * 30, // 30 days to store access and refresh tokens
         path: "/", // Set path to root for all pages
       });
     }
