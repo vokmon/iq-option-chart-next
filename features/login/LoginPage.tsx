@@ -96,7 +96,7 @@ export default function LoginPage() {
         </form>
       </Paper>
       {/* Language Switcher */}
-      <Box mb="md">
+      <Box mb="md" mx="auto" w="fit-content">
         <LanguageSwitcher />
       </Box>
     </Container>
