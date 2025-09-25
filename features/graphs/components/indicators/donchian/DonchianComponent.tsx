@@ -1,5 +1,6 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
 import { useDonchianQuery } from "@/hooks/indicators/useDonchianQuery";
+import { useTranslations } from "next-intl";
 
 interface DonchianComponentProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -12,10 +13,11 @@ export function DonchianComponent({ size = "sm" }: DonchianComponentProps) {
     donchianConfig,
     updateDonchianPeriod,
   } = useDonchianQuery();
+  const t = useTranslations();
   return (
     <Stack gap="sm">
       <Switch
-        label="Show Donchian Channels"
+        label={t("Show Donchian Channels")}
         checked={showDonchian}
         onChange={(event) => setShowDonchian(event.currentTarget.checked)}
         size={size}
@@ -25,7 +27,7 @@ export function DonchianComponent({ size = "sm" }: DonchianComponentProps) {
       {showDonchian && (
         <Group grow>
           <NumberInput
-            label="Donchian Period"
+            label={t("Donchian Period")}
             value={donchianConfig.period}
             onChange={(value) => updateDonchianPeriod(Number(value || 20))}
             min={5}

@@ -1,5 +1,6 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
 import { useBollingerBandsQuery } from "@/hooks/indicators/useBollingerBandsQuery";
+import { useTranslations } from "next-intl";
 
 interface BollingerBandsComponentProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -15,10 +16,11 @@ export function BollingerBandsComponent({
     updatePeriod,
     updateStdDev,
   } = useBollingerBandsQuery();
+  const t = useTranslations();
   return (
     <Stack gap="sm">
       <Switch
-        label="Show Bollinger Bands"
+        label={t("Show Bollinger Bands")}
         checked={showBollingerBands}
         onChange={(event) => setShowBollingerBands(event.currentTarget.checked)}
         size={size}
@@ -27,7 +29,7 @@ export function BollingerBandsComponent({
       {showBollingerBands && (
         <Group grow>
           <NumberInput
-            label="BB Period"
+            label={t("BB Period")}
             value={bollingerConfig.period}
             onChange={(value) => updatePeriod(Number(value || 20))}
             min={5}
@@ -37,7 +39,7 @@ export function BollingerBandsComponent({
             placeholder="14"
           />
           <NumberInput
-            label="BB Std Dev"
+            label={t("BB Std Dev")}
             value={bollingerConfig.stdDev}
             onChange={(value) => updateStdDev(Number(value || 2))}
             min={1}

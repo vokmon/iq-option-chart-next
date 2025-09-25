@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, Text } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 interface UserInfoDisplayProps {
   firstName?: string;
@@ -13,12 +14,14 @@ export default function UserInfoDisplay({
   lastName,
   userId,
 }: UserInfoDisplayProps) {
+  const t = useTranslations();
+
   const getInitials = (first: string, last: string) => {
     return `${first?.charAt(0) || ""}${last?.charAt(0) || ""}`.toUpperCase();
   };
 
   const fullName =
-    `${firstName || ""} ${lastName || ""}`.trim() || `User ${userId}`;
+    `${firstName || ""} ${lastName || ""}`.trim() || `${t("User")} ${userId}`;
 
   return (
     <div style={{ padding: "8px 0" }}>

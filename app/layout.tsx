@@ -4,6 +4,8 @@ import "./globals.css";
 import { MantineProvider } from "@mantine/core";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { QueryProvider } from "../lib/query-provider";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,21 +22,25 @@ export const metadata: Metadata = {
   description: "IQ Option Chart",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProvider>
-          <MantineProvider>
-            <NuqsAdapter>{children}</NuqsAdapter>
-          </MantineProvider>
-        </QueryProvider>
+        <NextIntlClientProvider messages={messages}>
+          <QueryProvider>
+            <MantineProvider>
+              <NuqsAdapter>{children}</NuqsAdapter>
+            </MantineProvider>
+          </QueryProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

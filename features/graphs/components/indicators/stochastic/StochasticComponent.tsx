@@ -1,5 +1,6 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
 import { useStochasticQuery } from "@/hooks/indicators/useStochasticQuery";
+import { useTranslations } from "next-intl";
 
 interface StochasticComponentProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -14,11 +15,12 @@ export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
     updateDPeriod,
     updateSmoothing,
   } = useStochasticQuery();
+  const t = useTranslations();
 
   return (
     <Stack gap="sm">
       <Switch
-        label="Show Stochastic Oscillator"
+        label={t("Show Stochastic Oscillator")}
         checked={showStochastic}
         onChange={(event) => setShowStochastic(event.currentTarget.checked)}
         size={size}
@@ -28,7 +30,7 @@ export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
       {showStochastic && (
         <Group grow>
           <NumberInput
-            label="%K Period"
+            label={t("%K Period")}
             value={stochasticConfig.kPeriod}
             onChange={(value) => updateKPeriod(Number(value || 13))}
             min={5}
@@ -38,7 +40,7 @@ export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
             placeholder="13"
           />
           <NumberInput
-            label="%D Period"
+            label={t("%D Period")}
             value={stochasticConfig.dPeriod}
             onChange={(value) => updateDPeriod(Number(value || 3))}
             min={1}
@@ -48,7 +50,7 @@ export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
             placeholder="3"
           />
           <NumberInput
-            label="Smoothing"
+            label={t("Smoothing")}
             value={stochasticConfig.smoothing}
             onChange={(value) => updateSmoothing(Number(value || 3))}
             min={1}

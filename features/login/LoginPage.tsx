@@ -9,15 +9,20 @@ import {
   TextInput,
   Title,
   Alert,
+  Group,
+  Box,
 } from "@mantine/core";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLoginMutation, LoginCredentials } from "../../lib/auth";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const loginMutation = useLoginMutation();
+  const t = useTranslations();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -49,7 +54,7 @@ export default function LoginPage() {
 
   return (
     <Container size={420} my={40}>
-      <Title ta="center">Welcome to IQ Option</Title>
+      <Title ta="center">{t("Welcome")} to IQ Option</Title>
 
       <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
         {error && (
@@ -60,7 +65,7 @@ export default function LoginPage() {
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
-            label="Email"
+            label={t("Email")}
             placeholder="username@domain.com"
             required
             radius="md"
@@ -69,7 +74,7 @@ export default function LoginPage() {
             disabled={loginMutation.isPending}
           />
           <PasswordInput
-            label="Password"
+            label={t("Password")}
             placeholder="password"
             key={form.key("password")}
             {...form.getInputProps("password")}
@@ -86,10 +91,14 @@ export default function LoginPage() {
             type="submit"
             disabled={loginMutation.isPending}
           >
-            {loginMutation.isPending ? "Signing in..." : "Sign in"}
+            {loginMutation.isPending ? t("Signing in") : t("Sign in")}
           </Button>
         </form>
       </Paper>
+      {/* Language Switcher */}
+      <Box mb="md">
+        <LanguageSwitcher />
+      </Box>
     </Container>
   );
 }

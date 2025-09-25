@@ -5,10 +5,13 @@ import { Group, Text, Menu, Box } from "@mantine/core";
 import LogoutButton from "@/components/buttons/LogoutButton";
 import UserMenuButton from "@/components/display/user-info/UserMenuButton";
 import UserInfoDisplay from "@/components/display/user-info/UserInfoDisplay";
+import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
   const { firstName, lastName, userId } = sdk?.userProfile;
+  const t = useTranslations();
 
   return (
     <Box
@@ -35,7 +38,7 @@ export default function AppToolbar() {
             letterSpacing: "0.5px",
           }}
         >
-          IQ Option Charts
+          {t("IQ Option Chart")}
         </Text>
       </Group>
 
@@ -51,7 +54,7 @@ export default function AppToolbar() {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Label>Account</Menu.Label>
+            <Menu.Label>{t("Account")}</Menu.Label>
 
             {/* User Info Display */}
             <Menu.Item disabled>
@@ -61,6 +64,12 @@ export default function AppToolbar() {
                 userId={userId}
               />
             </Menu.Item>
+
+            <Menu.Divider />
+
+            {/* Language Switcher */}
+            <Menu.Label>{t("Language")}</Menu.Label>
+            <LanguageSwitcher />
 
             <Menu.Divider />
 
