@@ -72,13 +72,14 @@ export default function GraphPage() {
               <Chart
                 activeId={parseInt(selectedActiveId)}
                 candleSize={parseInt(selectedCandleSize!)}
-                chartHeight={window.innerHeight - 300}
+                chartHeight={window.innerHeight - 250}
                 chartMinutesBack={60}
               />
+              <div className="my-4" />
               <StochasticChart
                 activeId={parseInt(selectedActiveId)}
                 candleSize={parseInt(selectedCandleSize!)}
-                chartHeight={200}
+                chartHeight={120}
                 chartMinutesBack={60}
               />
             </>
