@@ -25,7 +25,7 @@ export function StochasticComponent() {
           checked={showStochastic}
           onChange={(event) => setShowStochastic(event.currentTarget.checked)}
           size="sm"
-          color="red"
+          color="stochastic.4"
           style={{ flex: 1 }}
         />
         {showStochastic && (
@@ -34,7 +34,7 @@ export function StochasticComponent() {
             size="sm"
             leftSection={<IconSettings size={16} />}
             onClick={() => setOpened(true)}
-            color="red"
+            color="stochastic.4"
             style={{ flexShrink: 0 }}
           >
             {t("Settings")}

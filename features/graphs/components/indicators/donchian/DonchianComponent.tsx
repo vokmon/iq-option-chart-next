@@ -23,7 +23,7 @@ export function DonchianComponent() {
           checked={showDonchian}
           onChange={(event) => setShowDonchian(event.currentTarget.checked)}
           size="sm"
-          color="violet"
+          color="donchian.4"
           style={{ flex: 1 }}
         />
         {showDonchian && (
@@ -32,7 +32,7 @@ export function DonchianComponent() {
             size="sm"
             leftSection={<IconSettings size={16} />}
             onClick={() => setOpened(true)}
-            color="violet"
+            color="donchian.4"
             style={{ flexShrink: 0 }}
           >
             {t("Settings")}

@@ -4,6 +4,124 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Primary colors */
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #ea580c;
+  --color-primary-700: #dc2626;
+  --color-primary-800: #b91c1c;
+  --color-primary-900: #991b1b;
+
+  /* Dark colors */
+  --color-dark-50: #f8fafc;
+  --color-dark-100: #f1f5f9;
+  --color-dark-200: #e2e8f0;
+  --color-dark-300: #cbd5e1;
+  --color-dark-400: #94a3b8;
+  --color-dark-500: #64748b;
+  --color-dark-600: #475569;
+  --color-dark-700: #334155;
+  --color-dark-800: #1e293b;
+  --color-dark-900: #0f172a;
+
+  /* Accent colors */
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0d9488;
+  --color-accent-700: #0f766e;
+  --color-accent-800: #115e59;
+  --color-accent-900: #134e4a;
+
+  /* Bollinger Bands colors */
+  --color-bollinger-50: #e3f2fd;
+  --color-bollinger-100: #bbdefb;
+  --color-bollinger-200: #90caf9;
+  --color-bollinger-300: #64b5f6;
+  --color-bollinger-400: #42a5f5;
+  --color-bollinger-500: #2196f3;
+  --color-bollinger-600: #1e88e5;
+  --color-bollinger-700: #1976d2;
+  --color-bollinger-800: #1565c0;
+  --color-bollinger-900: #0d47a1;
+
+  /* Donchian Channels colors */
+  --color-donchian-50: #f3e5f5;
+  --color-donchian-100: #e1bee7;
+  --color-donchian-200: #ce93d8;
+  --color-donchian-300: #ba68c8;
+  --color-donchian-400: #ab47bc;
+  --color-donchian-500: #9c27b0;
+  --color-donchian-600: #8e24aa;
+  --color-donchian-700: #7b1fa2;
+  --color-donchian-800: #6a1b9a;
+  --color-donchian-900: #4a148c;
+
+  /* Stochastic colors */
+  --color-stochastic-50: #ffebee;
+  --color-stochastic-100: #ffcdd2;
+  --color-stochastic-200: #ef9a9a;
+  --color-stochastic-300: #e57373;
+  --color-stochastic-400: #ff6b6b;
+  --color-stochastic-500: #f44336;
+  --color-stochastic-600: #e53935;
+  --color-stochastic-700: #d32f2f;
+  --color-stochastic-800: #c62828;
+  --color-stochastic-900: #b71c1c;
+
+  /* Stochastic secondary colors */
+  --color-stochastic-secondary-50: #e0f2f1;
+  --color-stochastic-secondary-100: #b2dfdb;
+  --color-stochastic-secondary-200: #80cbc4;
+  --color-stochastic-secondary-300: #4db6ac;
+  --color-stochastic-secondary-400: #4ecdc4;
+  --color-stochastic-secondary-500: #26a69a;
+  --color-stochastic-secondary-600: #00897b;
+  --color-stochastic-secondary-700: #00796b;
+  --color-stochastic-secondary-800: #00695c;
+  --color-stochastic-secondary-900: #004d40;
+
+  /* Semantic colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Background gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--color-dark-900) 0%,
+    var(--color-dark-800) 50%,
+    var(--color-dark-900) 100%
+  );
+  --gradient-primary-button: linear-gradient(
+    90deg,
+    var(--color-primary-500) 0%,
+    var(--color-primary-600) 100%
+  );
+  --gradient-primary-button-hover: linear-gradient(
+    90deg,
+    var(--color-primary-600) 0%,
+    var(--color-primary-700) 100%
+  );
+  --gradient-primary-button-disabled: linear-gradient(
+    90deg,
+    var(--color-primary-200) 0%,
+    var(--color-primary-300) 100%
+  );
+
+  /* Glass morphism */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {
@@ -11,6 +129,96 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Primary colors for Tailwind */
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+
+  /* Dark colors for Tailwind */
+  --color-dark-50: var(--color-dark-50);
+  --color-dark-100: var(--color-dark-100);
+  --color-dark-200: var(--color-dark-200);
+  --color-dark-300: var(--color-dark-300);
+  --color-dark-400: var(--color-dark-400);
+  --color-dark-500: var(--color-dark-500);
+  --color-dark-600: var(--color-dark-600);
+  --color-dark-700: var(--color-dark-700);
+  --color-dark-800: var(--color-dark-800);
+  --color-dark-900: var(--color-dark-900);
+
+  /* Accent colors for Tailwind */
+  --color-accent-50: var(--color-accent-50);
+  --color-accent-100: var(--color-accent-100);
+  --color-accent-200: var(--color-accent-200);
+  --color-accent-300: var(--color-accent-300);
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+  --color-accent-700: var(--color-accent-700);
+  --color-accent-800: var(--color-accent-800);
+  --color-accent-900: var(--color-accent-900);
+
+  /* Bollinger Bands colors for Tailwind */
+  --color-bollinger-50: var(--color-bollinger-50);
+  --color-bollinger-100: var(--color-bollinger-100);
+  --color-bollinger-200: var(--color-bollinger-200);
+  --color-bollinger-300: var(--color-bollinger-300);
+  --color-bollinger-400: var(--color-bollinger-400);
+  --color-bollinger-500: var(--color-bollinger-500);
+  --color-bollinger-600: var(--color-bollinger-600);
+  --color-bollinger-700: var(--color-bollinger-700);
+  --color-bollinger-800: var(--color-bollinger-800);
+  --color-bollinger-900: var(--color-bollinger-900);
+
+  /* Donchian Channels colors for Tailwind */
+  --color-donchian-50: var(--color-donchian-50);
+  --color-donchian-100: var(--color-donchian-100);
+  --color-donchian-200: var(--color-donchian-200);
+  --color-donchian-300: var(--color-donchian-300);
+  --color-donchian-400: var(--color-donchian-400);
+  --color-donchian-500: var(--color-donchian-500);
+  --color-donchian-600: var(--color-donchian-600);
+  --color-donchian-700: var(--color-donchian-700);
+  --color-donchian-800: var(--color-donchian-800);
+  --color-donchian-900: var(--color-donchian-900);
+
+  /* Stochastic colors for Tailwind */
+  --color-stochastic-50: var(--color-stochastic-50);
+  --color-stochastic-100: var(--color-stochastic-100);
+  --color-stochastic-200: var(--color-stochastic-200);
+  --color-stochastic-300: var(--color-stochastic-300);
+  --color-stochastic-400: var(--color-stochastic-400);
+  --color-stochastic-500: var(--color-stochastic-500);
+  --color-stochastic-600: var(--color-stochastic-600);
+  --color-stochastic-700: var(--color-stochastic-700);
+  --color-stochastic-800: var(--color-stochastic-800);
+  --color-stochastic-900: var(--color-stochastic-900);
+
+  /* Stochastic secondary colors for Tailwind */
+  --color-stochastic-secondary-50: var(--color-stochastic-secondary-50);
+  --color-stochastic-secondary-100: var(--color-stochastic-secondary-100);
+  --color-stochastic-secondary-200: var(--color-stochastic-secondary-200);
+  --color-stochastic-secondary-300: var(--color-stochastic-secondary-300);
+  --color-stochastic-secondary-400: var(--color-stochastic-secondary-400);
+  --color-stochastic-secondary-500: var(--color-stochastic-secondary-500);
+  --color-stochastic-secondary-600: var(--color-stochastic-secondary-600);
+  --color-stochastic-secondary-700: var(--color-stochastic-secondary-700);
+  --color-stochastic-secondary-800: var(--color-stochastic-secondary-800);
+  --color-stochastic-secondary-900: var(--color-stochastic-secondary-900);
+
+  /* Semantic colors for Tailwind */
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-info: var(--color-info);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,5 +231,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }

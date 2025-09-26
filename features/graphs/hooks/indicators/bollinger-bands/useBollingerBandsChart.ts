@@ -44,14 +44,37 @@ export function useBollingerBandsChart({
 }: UseBollingerBandsChartProps): UseBollingerBandsChartReturn {
   const seriesRef = useRef<BollingerBandsSeries | null>(null);
 
+  // Get CSS custom property values for chart colors
+  const getBollingerColors = () => {
+    if (typeof window === "undefined") {
+      // Fallback colors for SSR
+      return {
+        primary: "#42a5f5",
+        secondary: "#90caf9",
+      };
+    }
+
+    const computedStyle = getComputedStyle(document.documentElement);
+    return {
+      primary:
+        computedStyle.getPropertyValue("--color-bollinger-400").trim() ||
+        "#42a5f5",
+      secondary:
+        computedStyle.getPropertyValue("--color-bollinger-200").trim() ||
+        "#90caf9",
+    };
+  };
+
   const createBollingerBandsSeries = useCallback(
     (chart: IChartApi): BollingerBandsSeries => {
       if (!showBollingerBands) {
         return { upper: null, middle: null, lower: null };
       }
 
+      const colors = getBollingerColors();
+
       const upperBandSeries = chart.addSeries(LineSeries, {
-        color: "#42A5F5", // Light pastel blue
+        color: colors.primary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "BB Upper",
@@ -64,7 +87,7 @@ export function useBollingerBandsChart({
       });
 
       const middleBandSeries = chart.addSeries(LineSeries, {
-        color: "#90CAF9", // Medium pastel blue
+        color: colors.secondary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "BB Middle (SMA)",
@@ -77,7 +100,7 @@ export function useBollingerBandsChart({
       });
 
       const lowerBandSeries = chart.addSeries(LineSeries, {
-        color: "#42A5F5", // Light pastel blue (same as upper)
+        color: colors.primary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "BB Lower",

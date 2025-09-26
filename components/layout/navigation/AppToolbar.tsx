@@ -16,9 +16,8 @@ export default function AppToolbar() {
   return (
     <Box
       style={{
-        background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        background: "var(--gradient-primary)",
+        borderBottom: "1px solid var(--glass-border)",
         padding: "0 24px",
         height: "64px",
         display: "flex",

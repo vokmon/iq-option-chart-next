@@ -26,12 +26,14 @@ export function BollingerBandsComponent() {
             setShowBollingerBands(event.currentTarget.checked)
           }
           size="sm"
+          color="bollinger.4"
           style={{ flex: 1 }}
         />
         {showBollingerBands && (
           <Button
             variant="subtle"
             size="sm"
+            color="bollinger.4"
             leftSection={<IconSettings size={16} />}
             onClick={() => setOpened(true)}
             style={{ flexShrink: 0 }}

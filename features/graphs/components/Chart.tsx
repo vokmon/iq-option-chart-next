@@ -58,7 +58,11 @@ export function Chart({
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {
-      layout: { textColor: "black", attributionLogo: false },
+      layout: {
+        textColor: "black",
+        attributionLogo: false,
+        background: { color: "transparent" },
+      },
       height: chartHeight,
       timeScale: {
         timeVisible: true,

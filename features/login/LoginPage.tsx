@@ -59,8 +59,7 @@ export default function LoginPage() {
     <Box
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
+        background: "var(--gradient-primary)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -84,10 +83,10 @@ export default function LoginPage() {
             radius="xl"
             p="lg"
             style={{
-              background: "rgba(255, 255, 255, 0.1)",
+              background: "var(--glass-bg)",
               backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid var(--glass-border)",
+              boxShadow: "var(--glass-shadow)",
               width: "100%",
             }}
           >
@@ -111,12 +110,12 @@ export default function LoginPage() {
                     styles={{
                       label: { color: "white", fontWeight: 500 },
                       input: {
-                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        backgroundColor: "var(--glass-bg)",
+                        border: "1px solid var(--glass-border)",
                         color: "white",
                         "&::placeholder": { color: "rgba(255, 255, 255, 0.6)" },
                         "&:focus": {
-                          borderColor: "#f97316",
+                          borderColor: "var(--color-primary-500)",
                           boxShadow: "0 0 0 2px rgba(249, 115, 22, 0.2)",
                         },
                       },
@@ -133,12 +132,12 @@ export default function LoginPage() {
                     styles={{
                       label: { color: "white", fontWeight: 500 },
                       input: {
-                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        backgroundColor: "var(--glass-bg)",
+                        border: "1px solid var(--glass-border)",
                         color: "white",
                         "&::placeholder": { color: "rgba(255, 255, 255, 0.6)" },
                         "&:focus": {
-                          borderColor: "#f97316",
+                          borderColor: "var(--color-primary-500)",
                           boxShadow: "0 0 0 2px rgba(249, 115, 22, 0.2)",
                         },
                       },
@@ -156,8 +155,7 @@ export default function LoginPage() {
                     type="submit"
                     disabled={loginMutation.isPending}
                     style={{
-                      background:
-                        "linear-gradient(90deg, #f97316 0%, #ea580c 100%)",
+                      background: "var(--gradient-primary-button)",
                       border: "none",
                       fontSize: "1rem",
                       fontWeight: 600,
@@ -167,13 +165,11 @@ export default function LoginPage() {
                     styles={{
                       root: {
                         "&:hover": {
-                          background:
-                            "linear-gradient(90deg, #ea580c 0%, #dc2626 100%)",
+                          background: "var(--gradient-primary-button-hover)",
                           transform: "scale(1.02)",
                         },
                         "&:disabled": {
-                          background:
-                            "linear-gradient(90deg, #fed7aa 0%, #fdba74 100%)",
+                          background: "var(--gradient-primary-button-disabled)",
                           transform: "scale(1)",
                         },
                       },

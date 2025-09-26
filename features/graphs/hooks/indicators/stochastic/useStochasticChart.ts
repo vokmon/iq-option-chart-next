@@ -42,14 +42,42 @@ export function useStochasticChart({
 }: UseStochasticChartProps): UseStochasticChartReturn {
   const seriesRef = useRef<StochasticSeries | null>(null);
 
+  // Get CSS custom property values for chart colors
+  const getStochasticColors = () => {
+    if (typeof window === "undefined") {
+      // Fallback colors for SSR
+      return {
+        k: "#ff6b6b",
+        d: "#4ecdc4",
+        upper: "#00c851",
+        lower: "#ff4444",
+      };
+    }
+
+    const computedStyle = getComputedStyle(document.documentElement);
+    return {
+      k:
+        computedStyle.getPropertyValue("--color-stochastic-400").trim() ||
+        "#ff6b6b",
+      d:
+        computedStyle
+          .getPropertyValue("--color-stochastic-secondary-400")
+          .trim() || "#4ecdc4",
+      upper: "#00c851", // Green for overbought (80)
+      lower: "#ff4444", // Red for oversold (20)
+    };
+  };
+
   const createStochasticSeries = useCallback(
     (chart: IChartApi): StochasticSeries => {
       if (!showStochastic) {
         return { k: null, d: null, upper: null, lower: null };
       }
 
+      const colors = getStochasticColors();
+
       const kSeries = chart.addSeries(LineSeries, {
-        color: "#FF6B6B", // Red for %K line
+        color: colors.k,
         lineWidth: 3,
         lineStyle: LineStyle.Solid,
         // title: "Stochastic %K",
@@ -61,7 +89,7 @@ export function useStochasticChart({
       });
 
       const dSeries = chart.addSeries(LineSeries, {
-        color: "#4ECDC4", // Teal for %D line
+        color: colors.d,
         lineWidth: 3,
         lineStyle: LineStyle.Solid,
         // title: "Stochastic %D",
@@ -73,7 +101,7 @@ export function useStochasticChart({
       });
 
       const upperSeries = chart.addSeries(LineSeries, {
-        color: "#00C851", // Green for upper threshold (80)
+        color: colors.upper,
         lineWidth: 2,
         lineStyle: LineStyle.Dashed,
         // title: "Overbought (80)",
@@ -86,7 +114,7 @@ export function useStochasticChart({
       });
 
       const lowerSeries = chart.addSeries(LineSeries, {
-        color: "#FF4444", // Red for lower threshold (20)
+        color: colors.lower,
         lineWidth: 2,
         lineStyle: LineStyle.Dashed,
         // title: "Oversold (20)",

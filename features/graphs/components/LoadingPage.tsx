@@ -22,8 +22,7 @@ const LoadingPage: React.FC = () => {
     <Box
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
+        background: "var(--gradient-primary)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -35,10 +34,10 @@ const LoadingPage: React.FC = () => {
           radius="xl"
           p="xl"
           style={{
-            background: "rgba(255, 255, 255, 0.1)",
+            background: "var(--glass-bg)",
             backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            border: "1px solid var(--glass-border)",
+            boxShadow: "var(--glass-shadow)",
             width: "100%",
           }}
         >
@@ -54,7 +53,7 @@ const LoadingPage: React.FC = () => {
               >
                 <Loader
                   size="xl"
-                  color="orange"
+                  color="primary.5"
                   style={{
                     position: "absolute",
                     top: 0,
@@ -65,7 +64,7 @@ const LoadingPage: React.FC = () => {
                 />
                 <Loader
                   size="lg"
-                  color="blue"
+                  color="primary.6"
                   style={{
                     position: "absolute",
                     top: "15%",
@@ -77,7 +76,7 @@ const LoadingPage: React.FC = () => {
                 />
                 <Loader
                   size="md"
-                  color="teal"
+                  color="accent.5"
                   style={{
                     position: "absolute",
                     top: "30%",
@@ -114,7 +113,7 @@ const LoadingPage: React.FC = () => {
                   value={75}
                   size="sm"
                   radius="md"
-                  color="orange"
+                  color="primary.5"
                   style={{
                     background: "rgba(255, 255, 255, 0.2)",
                   }}

@@ -43,6 +43,27 @@ export function useDonchianChart({
 }: UseDonchianChartProps): UseDonchianChartReturn {
   const seriesRef = useRef<DonchianSeries | null>(null);
 
+  // Get CSS custom property values for chart colors
+  const getDonchianColors = () => {
+    if (typeof window === "undefined") {
+      // Fallback colors for SSR
+      return {
+        primary: "#ab47bc",
+        secondary: "#ce93d8",
+      };
+    }
+
+    const computedStyle = getComputedStyle(document.documentElement);
+    return {
+      primary:
+        computedStyle.getPropertyValue("--color-donchian-400").trim() ||
+        "#ab47bc",
+      secondary:
+        computedStyle.getPropertyValue("--color-donchian-200").trim() ||
+        "#ce93d8",
+    };
+  };
+
   const createDonchianSeries = useCallback(
     (chart: IChartApi): DonchianSeries => {
       if (!showDonchian) {
@@ -54,8 +75,10 @@ export function useDonchianChart({
         };
       }
 
+      const colors = getDonchianColors();
+
       const upperChannelSeries = chart.addSeries(LineSeries, {
-        color: "#AB47BC", // Light pastel purple
+        color: colors.primary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Upper",
@@ -68,7 +91,7 @@ export function useDonchianChart({
       });
 
       const middleChannelSeries = chart.addSeries(LineSeries, {
-        color: "#CE93D8", // Medium pastel purple
+        color: colors.secondary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Middle",
@@ -81,7 +104,7 @@ export function useDonchianChart({
       });
 
       const lowerChannelSeries = chart.addSeries(LineSeries, {
-        color: "#AB47BC", // Light pastel purple (same as upper)
+        color: colors.primary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Lower",
