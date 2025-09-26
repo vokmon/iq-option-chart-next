@@ -3,25 +3,25 @@ import { StochasticChart } from "./StochasticChart";
 import { BollingerBandsComponent } from "./indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "./indicators/donchian/DonchianComponent";
 import { StochasticComponent } from "./indicators/stochastic/StochasticComponent";
+import { AssetSelector } from "./input/AssetSelector";
 import { Divider, Flex, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSdk } from "@/hooks/useSdk";
 // import { type Active } from "@/types/Active";
 import { useUrlState } from "@/hooks/useUrlState";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
+import { useTranslations } from "next-intl";
 
 const candleSizes = [60, 300];
 
 export default function GraphPage() {
   const { sdk } = useSdk();
+  const t = useTranslations();
   // const [actives, setActives] = useState<Active[]>([]);
   const [actives, setActives] = useState<DigitalOptionsUnderlying[]>([]);
 
   // Use custom hook for URL-based state management
-  const [selectedActiveId, setSelectedActiveId] = useUrlState(
-    "activeId",
-    "none"
-  );
+  const [selectedActiveId] = useUrlState("activeId", "none");
   const [selectedCandleSize, setSelectedCandleSize] = useUrlState(
     "candleSize",
     String(candleSizes[0])
@@ -46,19 +46,10 @@ export default function GraphPage() {
       //   }));
 
       // setActives(binaryOptionsActives);
-
-      // Set default active in URL if none is selected and we have actives
-      if (
-        digitalOptionsActives.length > 0 &&
-        (selectedActiveId === "none" || !selectedActiveId)
-      ) {
-        // setSelectedActiveId(String(binaryOptionsActives[0].id));
-        setSelectedActiveId(String(digitalOptionsActives[0].activeId));
-      }
     };
 
     init().then();
-  }, [sdk, selectedActiveId, setSelectedActiveId]);
+  }, [sdk]);
 
   return (
     <Flex direction="column" gap="sm" p={10} w="100%" h="100%">
@@ -75,7 +66,7 @@ export default function GraphPage() {
           </Flex>
         )}
       </Flex> */}
-      <Flex gap="xl">
+      <Flex gap="sm">
         <Flex direction="column" w="80%">
           {selectedActiveId && selectedActiveId !== "none" && (
             <>
@@ -96,36 +87,29 @@ export default function GraphPage() {
           )}
         </Flex>
 
-        <Flex w="20%" direction="column" gap="md">
-          <Select
-            label="Active"
-            placeholder="Choose an active"
-            value={selectedActiveId}
-            onChange={setSelectedActiveId}
-            data={actives.map((a) => ({
-              value: String(a.activeId),
-              label: a.name ?? `Active ${a.activeId}`,
-            }))}
-          />
+        <Flex w="20%" direction="column" gap="sm">
+          <Flex direction="row" gap="md">
+            <AssetSelector actives={actives} className="w-full" />
 
-          <Select
-            label="Candle Size (sec)"
-            placeholder="Choose candle size"
-            value={selectedCandleSize}
-            onChange={setSelectedCandleSize}
-            data={candleSizes.map((s) => ({
-              value: String(s),
-              label: `${s / 60} min`,
-            }))}
-          />
-          <Divider mt="xl" mb="sm" />
+            <Select
+              label={t("Candle Size")}
+              placeholder={t("Choose candle size")}
+              value={selectedCandleSize}
+              onChange={setSelectedCandleSize}
+              data={candleSizes.map((s) => ({
+                value: String(s),
+                label: `${s / 60} min`,
+              }))}
+            />
+          </Flex>
+          <Divider />
           <Text fw={500} fz="lg">
-            Indicators
+            {t("Indicators")}
           </Text>
-          <Flex direction="column" gap="xl">
-            <BollingerBandsComponent size="sm" />
-            <DonchianComponent size="sm" />
-            <StochasticComponent size="sm" />
+          <Flex direction="column" gap="xs">
+            <BollingerBandsComponent />
+            <DonchianComponent />
+            <StochasticComponent />
           </Flex>
         </Flex>
       </Flex>

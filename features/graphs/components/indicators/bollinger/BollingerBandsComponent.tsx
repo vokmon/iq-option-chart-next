@@ -1,14 +1,11 @@
-import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useBollingerBandsQuery } from "@/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
+import { Switch, Group, Button } from "@mantine/core";
+import { useBollingerBandsQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { IconSettings } from "@tabler/icons-react";
+import { BollingerBandsSettingsModal } from "./BollingerBandsSettingsModal";
 
-interface BollingerBandsComponentProps {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-export function BollingerBandsComponent({
-  size = "sm",
-}: BollingerBandsComponentProps) {
+export function BollingerBandsComponent() {
   const {
     showBollingerBands,
     setShowBollingerBands,
@@ -17,40 +14,41 @@ export function BollingerBandsComponent({
     updateStdDev,
   } = useBollingerBandsQuery();
   const t = useTranslations();
-  return (
-    <Stack gap="sm">
-      <Switch
-        label={t("Show Bollinger Bands")}
-        checked={showBollingerBands}
-        onChange={(event) => setShowBollingerBands(event.currentTarget.checked)}
-        size={size}
-      />
+  const [opened, setOpened] = useState(false);
 
-      {showBollingerBands && (
-        <Group grow>
-          <NumberInput
-            label={t("BB Period")}
-            value={bollingerConfig.period}
-            onChange={(value) => updatePeriod(Number(value || 20))}
-            min={5}
-            max={100}
-            step={1}
-            size={size}
-            placeholder="14"
-          />
-          <NumberInput
-            label={t("BB Std Dev")}
-            value={bollingerConfig.stdDev}
-            onChange={(value) => updateStdDev(Number(value || 2))}
-            min={1}
-            max={5}
-            step={0.1}
-            decimalScale={1}
-            size={size}
-            placeholder="2.0"
-          />
-        </Group>
-      )}
-    </Stack>
+  return (
+    <>
+      <Group justify="space-between" align="center">
+        <Switch
+          label={t("Bollinger Bands")}
+          checked={showBollingerBands}
+          onChange={(event) =>
+            setShowBollingerBands(event.currentTarget.checked)
+          }
+          size="sm"
+          style={{ flex: 1 }}
+        />
+        {showBollingerBands && (
+          <Button
+            variant="subtle"
+            size="sm"
+            leftSection={<IconSettings size={16} />}
+            onClick={() => setOpened(true)}
+            style={{ flexShrink: 0 }}
+          >
+            {t("Settings")}
+          </Button>
+        )}
+      </Group>
+
+      <BollingerBandsSettingsModal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        bollingerConfig={bollingerConfig}
+        updatePeriod={updatePeriod}
+        updateStdDev={updateStdDev}
+        size="sm"
+      />
+    </>
   );
 }

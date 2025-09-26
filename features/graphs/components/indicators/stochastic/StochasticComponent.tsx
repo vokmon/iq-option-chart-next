@@ -1,12 +1,11 @@
-import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useStochasticQuery } from "@/hooks/indicators/stochastic/useStochasticQuery";
+import { Switch, Group, Button } from "@mantine/core";
+import { useStochasticQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticQuery";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { IconSettings } from "@tabler/icons-react";
+import { StochasticSettingsModal } from "./StochasticSettingsModal";
 
-interface StochasticComponentProps {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
+export function StochasticComponent() {
   const {
     showStochastic,
     setShowStochastic,
@@ -16,51 +15,42 @@ export function StochasticComponent({ size = "sm" }: StochasticComponentProps) {
     updateSmoothing,
   } = useStochasticQuery();
   const t = useTranslations();
+  const [opened, setOpened] = useState(false);
 
   return (
-    <Stack gap="sm">
-      <Switch
-        label={t("Show Stochastic Oscillator")}
-        checked={showStochastic}
-        onChange={(event) => setShowStochastic(event.currentTarget.checked)}
-        size={size}
-        color="red"
-      />
+    <>
+      <Group justify="space-between" align="center">
+        <Switch
+          label={t("Stochastic Oscillator")}
+          checked={showStochastic}
+          onChange={(event) => setShowStochastic(event.currentTarget.checked)}
+          size="sm"
+          color="red"
+          style={{ flex: 1 }}
+        />
+        {showStochastic && (
+          <Button
+            variant="subtle"
+            size="sm"
+            leftSection={<IconSettings size={16} />}
+            onClick={() => setOpened(true)}
+            color="red"
+            style={{ flexShrink: 0 }}
+          >
+            {t("Settings")}
+          </Button>
+        )}
+      </Group>
 
-      {showStochastic && (
-        <Group grow>
-          <NumberInput
-            label={t("%K Period")}
-            value={stochasticConfig.kPeriod}
-            onChange={(value) => updateKPeriod(Number(value || 13))}
-            min={5}
-            max={50}
-            step={1}
-            size={size}
-            placeholder="13"
-          />
-          <NumberInput
-            label={t("%D Period")}
-            value={stochasticConfig.dPeriod}
-            onChange={(value) => updateDPeriod(Number(value || 3))}
-            min={1}
-            max={20}
-            step={1}
-            size={size}
-            placeholder="3"
-          />
-          <NumberInput
-            label={t("Smoothing")}
-            value={stochasticConfig.smoothing}
-            onChange={(value) => updateSmoothing(Number(value || 3))}
-            min={1}
-            max={10}
-            step={1}
-            size={size}
-            placeholder="3"
-          />
-        </Group>
-      )}
-    </Stack>
+      <StochasticSettingsModal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        stochasticConfig={stochasticConfig}
+        updateKPeriod={updateKPeriod}
+        updateDPeriod={updateDPeriod}
+        updateSmoothing={updateSmoothing}
+        size="sm"
+      />
+    </>
   );
 }

@@ -1,12 +1,11 @@
-import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useDonchianQuery } from "@/hooks/indicators/donchian-channels/useDonchianQuery";
+import { Switch, Group, Button } from "@mantine/core";
+import { useDonchianQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianQuery";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { IconSettings } from "@tabler/icons-react";
+import { DonchianSettingsModal } from "./DonchianSettingsModal";
 
-interface DonchianComponentProps {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-export function DonchianComponent({ size = "sm" }: DonchianComponentProps) {
+export function DonchianComponent() {
   const {
     showDonchian,
     setShowDonchian,
@@ -14,30 +13,40 @@ export function DonchianComponent({ size = "sm" }: DonchianComponentProps) {
     updateDonchianPeriod,
   } = useDonchianQuery();
   const t = useTranslations();
-  return (
-    <Stack gap="sm">
-      <Switch
-        label={t("Show Donchian Channels")}
-        checked={showDonchian}
-        onChange={(event) => setShowDonchian(event.currentTarget.checked)}
-        size={size}
-        color="violet"
-      />
+  const [opened, setOpened] = useState(false);
 
-      {showDonchian && (
-        <Group grow>
-          <NumberInput
-            label={t("Donchian Period")}
-            value={donchianConfig.period}
-            onChange={(value) => updateDonchianPeriod(Number(value || 20))}
-            min={5}
-            max={100}
-            step={1}
-            size={size}
-            placeholder="20"
-          />
-        </Group>
-      )}
-    </Stack>
+  return (
+    <>
+      <Group justify="space-between" align="center">
+        <Switch
+          label={t("Donchian Channels")}
+          checked={showDonchian}
+          onChange={(event) => setShowDonchian(event.currentTarget.checked)}
+          size="sm"
+          color="violet"
+          style={{ flex: 1 }}
+        />
+        {showDonchian && (
+          <Button
+            variant="subtle"
+            size="sm"
+            leftSection={<IconSettings size={16} />}
+            onClick={() => setOpened(true)}
+            color="violet"
+            style={{ flexShrink: 0 }}
+          >
+            {t("Settings")}
+          </Button>
+        )}
+      </Group>
+
+      <DonchianSettingsModal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        donchianConfig={donchianConfig}
+        updateDonchianPeriod={updateDonchianPeriod}
+        size="sm"
+      />
+    </>
   );
 }

@@ -49,8 +49,6 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      console.log(NEXT_PUBLIC_IQ_OPTION_USER);
-
       try {
         const sdk = await Promise.race([
           ClientSdk.create(

@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
-import { useStochasticChart } from "@/hooks/indicators/stochastic/useStochasticChart";
-import { useStochasticQuery } from "@/hooks/indicators/stochastic/useStochasticQuery";
+import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
+import { useStochasticQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticQuery";
 
 interface StochasticChartProps {
   activeId: number;

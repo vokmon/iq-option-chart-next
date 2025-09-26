@@ -6,10 +6,10 @@ import {
 } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
-import { useBollingerBandsChart } from "@/hooks/indicators/bollinger-bands/useBollingerBandsChart";
-import { useDonchianChart } from "@/hooks/indicators/donchian-channels/useDonchianChart";
-import { useBollingerBandsQuery } from "@/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
-import { useDonchianQuery } from "@/hooks/indicators/donchian-channels/useDonchianQuery";
+import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsChart";
+import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
+import { useBollingerBandsQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
+import { useDonchianQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianQuery";
 
 interface ChartProps {
   activeId: number;
