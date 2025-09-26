@@ -1,0 +1,183 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
+import { OAuthMethod } from "@quadcode-tech/client-sdk-js";
+import {
+  Container,
+  Paper,
+  Title,
+  Text,
+  Button,
+  Box,
+  Alert,
+  Stack,
+  Center,
+  Loader,
+} from "@mantine/core";
+import { useMantineTheme } from "@mantine/core";
+
+const CLIENT_ID = process.env.NEXT_PUBLIC_IQ_OPTION_CLIENT_ID;
+
+export default function LoginIqOptionOAuth() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const t = useTranslations();
+  const theme = useMantineTheme();
+
+  const handleIQOptionLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const oauth = new OAuthMethod(
+        "https://auth.iqoption.com/api/v1.0/login",
+        Number(CLIENT_ID!), // your client ID (you can request CLIENT_ID and CLIENT_SECRET by creating an issue on GitHub)
+        "/auth/iqoption/callback", // redirect URI
+        "full" // scope (e.g. 'full' or 'full offline_access')
+      );
+
+      const { url, codeVerifier } = await oauth.createAuthorizationUrl();
+      sessionStorage.setItem("pkce_verifier", codeVerifier);
+      window.location.href = url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Box
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: theme.spacing.md,
+      }}
+    >
+      <Container size="sm" w="100%">
+        <Stack gap="xl" align="center">
+          {/* Header */}
+          <Stack gap="md" align="center">
+            <Title order={1} size="3rem" fw={700} c="white" ta="center">
+              IQ Option
+            </Title>
+            <Text size="lg" c="dimmed" ta="center">
+              {t("Advanced trading charts with technical indicators")}
+            </Text>
+          </Stack>
+
+          {/* Login Card */}
+          <Paper
+            radius="xl"
+            p="xl"
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              width: "100%",
+            }}
+          >
+            <Stack gap="xl">
+              {error && (
+                <Alert color="red" variant="light" radius="md">
+                  {error}
+                </Alert>
+              )}
+
+              {/* Welcome Message */}
+              <Stack gap="md" align="center">
+                <Title order={2} size="1.5rem" fw={600} c="white" ta="center">
+                  {t("Welcome")}
+                </Title>
+                <Text c="dimmed" ta="center">
+                  {t("Please login to continue")}
+                </Text>
+              </Stack>
+
+              {/* IQ Option OAuth Button */}
+              <Button
+                onClick={handleIQOptionLogin}
+                loading={isLoading}
+                disabled={isLoading}
+                size="lg"
+                radius="xl"
+                fullWidth
+                style={{
+                  background:
+                    "linear-gradient(90deg, #f97316 0%, #ea580c 100%)",
+                  border: "none",
+                  fontSize: "1.125rem",
+                  fontWeight: 600,
+                  height: "3.5rem",
+                  transition: "all 0.3s ease",
+                  transform: isLoading ? "scale(1)" : "scale(1)",
+                }}
+                styles={{
+                  root: {
+                    "&:hover": {
+                      background:
+                        "linear-gradient(90deg, #ea580c 0%, #dc2626 100%)",
+                      transform: "scale(1.05)",
+                    },
+                    "&:disabled": {
+                      background:
+                        "linear-gradient(90deg, #fed7aa 0%, #fdba74 100%)",
+                      transform: "scale(1)",
+                    },
+                  },
+                }}
+              >
+                {isLoading ? (
+                  <Center>
+                    <Loader size="sm" color="white" mr="sm" />
+                    {t("Signing in")}
+                  </Center>
+                ) : (
+                  "Sign in"
+                )}
+              </Button>
+
+              {/* Terms and Privacy */}
+              <Text size="xs" c="dimmed" ta="center">
+                By continuing, you agree to our{" "}
+                <Text
+                  component="a"
+                  href="#"
+                  c="orange"
+                  td="underline"
+                  style={{ cursor: "pointer" }}
+                >
+                  Terms of Service
+                </Text>{" "}
+                and{" "}
+                <Text
+                  component="a"
+                  href="#"
+                  c="orange"
+                  td="underline"
+                  style={{ cursor: "pointer" }}
+                >
+                  Privacy Policy
+                </Text>
+              </Text>
+            </Stack>
+          </Paper>
+
+          {/* Language Switcher */}
+          <Center>
+            <LanguageSwitcher />
+          </Center>
+        </Stack>
+      </Container>
+    </Box>
+  );
+}

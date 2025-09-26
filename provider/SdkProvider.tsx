@@ -14,6 +14,8 @@ const NEXT_PUBLIC_WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
 const NEXT_PUBLIC_IQ_OPTION_USER = process.env.NEXT_PUBLIC_IQ_OPTION_USER;
 const NEXT_PUBLIC_IQ_OPTION_PASSWORD =
   process.env.NEXT_PUBLIC_IQ_OPTION_PASSWORD;
+const NEXT_PUBLIC_IQ_OPTION_PLATFORM_ID =
+  process.env.NEXT_PUBLIC_IQ_OPTION_PLATFORM_ID;
 
 export const SdkProvider = ({ children }: { children: ReactNode }) => {
   const [sdk, setSdk] = useState<ClientSdk | null>(null);
@@ -33,7 +35,7 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
       const timeoutPromise = new Promise<never>((_, reject) => {
         timeoutId = setTimeout(
           () => reject(new Error("SDK init timeout")),
-          10000
+          15000
         );
       });
 
@@ -47,11 +49,13 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
+      console.log(NEXT_PUBLIC_IQ_OPTION_USER);
+
       try {
         const sdk = await Promise.race([
           ClientSdk.create(
             NEXT_PUBLIC_WEB_SOCKET_URL!,
-            82,
+            Number(NEXT_PUBLIC_IQ_OPTION_PLATFORM_ID!),
             NEXT_PUBLIC_IQ_OPTION_USER
               ? new LoginPasswordAuthMethod(
                   `${window.location.origin}/api`,

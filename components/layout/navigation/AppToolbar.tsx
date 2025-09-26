@@ -16,14 +16,15 @@ export default function AppToolbar() {
   return (
     <Box
       style={{
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background:
+          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
         borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
         padding: "0 24px",
         height: "64px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
         backdropFilter: "blur(10px)",
       }}
     >
