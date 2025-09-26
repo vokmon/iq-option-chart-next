@@ -1,5 +1,5 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useStochasticQuery } from "@/hooks/indicators/useStochasticQuery";
+import { useStochasticQuery } from "@/hooks/indicators/stochastic/useStochasticQuery";
 import { useTranslations } from "next-intl";
 
 interface StochasticComponentProps {

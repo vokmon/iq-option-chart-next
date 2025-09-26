@@ -1,5 +1,5 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useBollingerBandsQuery } from "@/hooks/indicators/useBollingerBandsQuery";
+import { useBollingerBandsQuery } from "@/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
 import { useTranslations } from "next-intl";
 
 interface BollingerBandsComponentProps {

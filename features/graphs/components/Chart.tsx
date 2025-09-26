@@ -5,11 +5,11 @@ import {
   type UTCTimestamp,
 } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
-import { Candle } from "@quadcode-tech/client-sdk-js";
-import { useBollingerBandsChart } from "@/hooks/indicators/useBollingerBandsChart";
-import { useDonchianChart } from "@/hooks/indicators/useDonchianChart";
-import { useBollingerBandsQuery } from "@/hooks/indicators/useBollingerBandsQuery";
-import { useDonchianQuery } from "@/hooks/indicators/useDonchianQuery";
+import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
+import { useBollingerBandsChart } from "@/hooks/indicators/bollinger-bands/useBollingerBandsChart";
+import { useDonchianChart } from "@/hooks/indicators/donchian-channels/useDonchianChart";
+import { useBollingerBandsQuery } from "@/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
+import { useDonchianQuery } from "@/hooks/indicators/donchian-channels/useDonchianQuery";
 
 interface ChartProps {
   activeId: number;
@@ -54,7 +54,7 @@ export function Chart({
     if (!sdk || !containerRef.current) return;
 
     let isDisposed = false;
-    let chartLayer: any = null; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let chartLayer: RealTimeChartDataLayer; // eslint-disable-line @typescript-eslint/no-explicit-any
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {

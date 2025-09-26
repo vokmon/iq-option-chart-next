@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
-import { Candle } from "@quadcode-tech/client-sdk-js";
-import { useStochasticChart } from "@/hooks/indicators/useStochasticChart";
-import { useStochasticQuery } from "@/hooks/indicators/useStochasticQuery";
+import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
+import { useStochasticChart } from "@/hooks/indicators/stochastic/useStochasticChart";
+import { useStochasticQuery } from "@/hooks/indicators/stochastic/useStochasticQuery";
 
 interface StochasticChartProps {
   activeId: number;
@@ -40,7 +40,7 @@ export function StochasticChart({
     if (!sdk || !containerRef.current || !showStochastic) return;
 
     let isDisposed = false;
-    let chartLayer: any = null; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let chartLayer: RealTimeChartDataLayer; // eslint-disable-line @typescript-eslint/no-explicit-any
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {

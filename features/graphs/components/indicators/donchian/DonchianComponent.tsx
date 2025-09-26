@@ -1,5 +1,5 @@
 import { Switch, NumberInput, Group, Stack } from "@mantine/core";
-import { useDonchianQuery } from "@/hooks/indicators/useDonchianQuery";
+import { useDonchianQuery } from "@/hooks/indicators/donchian-channels/useDonchianQuery";
 import { useTranslations } from "next-intl";
 
 interface DonchianComponentProps {
