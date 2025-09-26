@@ -101,38 +101,39 @@ export function StochasticChart({
       }
 
       // Subscribe to candle changes
-      const unsubscribeCandleChanged = chartLayer.subscribeOnLastCandleChanged(
-        () => {
-          if (isDisposed) return;
+      chartLayer.subscribeOnLastCandleChanged(() => {
+        if (isDisposed) return;
 
-          try {
-            // Update Stochastic Oscillator with the latest data
-            const allCandles = chartLayer.getAllCandles();
-            updateStochasticData(stochasticSeries, allCandles, true);
-          } catch (error) {
-            console.warn("Error updating stochastic data:", error);
-          }
+        try {
+          // Update Stochastic Oscillator with the latest data
+          const allCandles = chartLayer.getAllCandles();
+          updateStochasticData(stochasticSeries, allCandles, true);
+        } catch (error) {
+          console.warn("Error updating stochastic data:", error);
         }
-      );
-      unsubscribeFunctions.push(unsubscribeCandleChanged);
+      });
+      unsubscribeFunctions.push(() => {
+        chartLayer.unsubscribeOnLastCandleChanged(() => {});
+      });
 
       // Subscribe to consistency recovery
-      const unsubscribeConsistencyRecovered =
-        chartLayer.subscribeOnConsistencyRecovered(() => {
-          if (isDisposed) return;
+      chartLayer.subscribeOnConsistencyRecovered(() => {
+        if (isDisposed) return;
 
-          try {
-            const all = chartLayer.getAllCandles();
-            // Recalculate Stochastic Oscillator after consistency recovery
-            updateStochasticData(stochasticSeries, all);
-          } catch (error) {
-            console.warn(
-              "Error handling stochastic consistency recovery:",
-              error
-            );
-          }
-        });
-      unsubscribeFunctions.push(unsubscribeConsistencyRecovered);
+        try {
+          const all = chartLayer.getAllCandles();
+          // Recalculate Stochastic Oscillator after consistency recovery
+          updateStochasticData(stochasticSeries, all);
+        } catch (error) {
+          console.warn(
+            "Error handling stochastic consistency recovery:",
+            error
+          );
+        }
+      });
+      unsubscribeFunctions.push(() => {
+        chartLayer.unsubscribeOnConsistencyRecovered(() => {});
+      });
 
       // Subscribe to time range changes
       chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
@@ -177,6 +178,10 @@ export function StochasticChart({
       });
     };
 
+    unsubscribeFunctions.push(() => {
+      chart.timeScale().unsubscribeVisibleTimeRangeChange(() => {});
+    });
+
     initChart().catch((error) => {
       console.warn("Error initializing stochastic chart:", error);
     });
@@ -187,9 +192,7 @@ export function StochasticChart({
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {
         try {
-          if (unsubscribe) {
-            unsubscribe();
-          }
+          unsubscribe();
         } catch (error) {
           console.warn("Error unsubscribing from stochastic chart:", error);
         }

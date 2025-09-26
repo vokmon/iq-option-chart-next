@@ -130,51 +130,53 @@ export function Chart({
       }
 
       // Subscribe to candle changes
-      const unsubscribeCandleChanged = chartLayer.subscribeOnLastCandleChanged(
-        (candle: Candle) => {
-          if (isDisposed) return;
+      chartLayer.subscribeOnLastCandleChanged((candle: Candle) => {
+        if (isDisposed) return;
 
-          try {
-            series.update({
-              time: candle.from as UTCTimestamp,
-              open: candle.open,
-              high: candle.max,
-              low: candle.min,
-              close: candle.close,
-            });
+        try {
+          series.update({
+            time: candle.from as UTCTimestamp,
+            open: candle.open,
+            high: candle.max,
+            low: candle.min,
+            close: candle.close,
+          });
 
-            // Update Bollinger Bands with the latest data
-            const allCandles = chartLayer.getAllCandles();
-            updateBollingerBandsData(bollingerBandsSeries, allCandles, true);
+          // Update Bollinger Bands with the latest data
+          const allCandles = chartLayer.getAllCandles();
+          updateBollingerBandsData(bollingerBandsSeries, allCandles, true);
 
-            // Update Donchian Channels with the latest data
-            updateDonchianData(donchianSeries, allCandles, true);
-          } catch (error) {
-            console.warn("Error updating candle data:", error);
-          }
+          // Update Donchian Channels with the latest data
+          updateDonchianData(donchianSeries, allCandles, true);
+        } catch (error) {
+          console.warn("Error updating candle data:", error);
         }
-      );
-      unsubscribeFunctions.push(unsubscribeCandleChanged);
+      });
+      unsubscribeFunctions.push(() => {
+        chartLayer.unsubscribeOnLastCandleChanged(() => {});
+      });
 
       // Subscribe to consistency recovery
-      const unsubscribeConsistencyRecovered =
-        chartLayer.subscribeOnConsistencyRecovered(() => {
-          if (isDisposed) return;
 
-          try {
-            const all = chartLayer.getAllCandles();
-            series.setData(format(all));
+      chartLayer.subscribeOnConsistencyRecovered(() => {
+        if (isDisposed) return;
 
-            // Recalculate Bollinger Bands after consistency recovery
-            updateBollingerBandsData(bollingerBandsSeries, all);
+        try {
+          const all = chartLayer.getAllCandles();
+          series.setData(format(all));
 
-            // Recalculate Donchian Channels after consistency recovery
-            updateDonchianData(donchianSeries, all);
-          } catch (error) {
-            console.warn("Error handling consistency recovery:", error);
-          }
-        });
-      unsubscribeFunctions.push(unsubscribeConsistencyRecovered);
+          // Recalculate Bollinger Bands after consistency recovery
+          updateBollingerBandsData(bollingerBandsSeries, all);
+
+          // Recalculate Donchian Channels after consistency recovery
+          updateDonchianData(donchianSeries, all);
+        } catch (error) {
+          console.warn("Error handling consistency recovery:", error);
+        }
+      });
+      unsubscribeFunctions.push(() => {
+        chartLayer.unsubscribeOnConsistencyRecovered(() => {});
+      });
 
       // Subscribe to time range changes
       chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
@@ -220,6 +222,10 @@ export function Chart({
             });
         }
       });
+
+      unsubscribeFunctions.push(() => {
+        chart.timeScale().unsubscribeVisibleTimeRangeChange(() => {});
+      });
     };
 
     initChart().catch((error) => {
@@ -232,9 +238,7 @@ export function Chart({
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {
         try {
-          if (unsubscribe) {
-            unsubscribe();
-          }
+          unsubscribe();
         } catch (error) {
           console.warn("Error unsubscribing:", error);
         }
