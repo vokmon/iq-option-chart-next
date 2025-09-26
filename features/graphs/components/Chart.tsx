@@ -54,7 +54,7 @@ export function Chart({
     if (!sdk || !containerRef.current) return;
 
     let isDisposed = false;
-    let chartLayer: RealTimeChartDataLayer; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let chartLayer: RealTimeChartDataLayer;
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {

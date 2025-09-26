@@ -40,7 +40,7 @@ export function StochasticChart({
     if (!sdk || !containerRef.current || !showStochastic) return;
 
     let isDisposed = false;
-    let chartLayer: RealTimeChartDataLayer; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let chartLayer: RealTimeChartDataLayer;
     const unsubscribeFunctions: (() => void)[] = [];
 
     const chart = createChart(containerRef.current, {
