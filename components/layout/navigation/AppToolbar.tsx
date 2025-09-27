@@ -6,6 +6,7 @@ import LogoutButton from "@/components/buttons/LogoutButton";
 import UserMenuButton from "@/components/display/user-info/UserMenuButton";
 import UserInfoDisplay from "@/components/display/user-info/UserInfoDisplay";
 import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
+import { ThemeSwitcher } from "@/components/display/theme/ThemeSwitcher";
 import { useTranslations } from "next-intl";
 
 export default function AppToolbar() {
@@ -70,6 +71,14 @@ export default function AppToolbar() {
             {/* Language Switcher */}
             <Menu.Label>{t("Language")}</Menu.Label>
             <LanguageSwitcher />
+
+            <Menu.Divider />
+
+            {/* Theme Switcher */}
+            <Menu.Label>{t("Theme")}</Menu.Label>
+            <Box px="md" py="xs">
+              <ThemeSwitcher />
+            </Box>
 
             <Menu.Divider />
 

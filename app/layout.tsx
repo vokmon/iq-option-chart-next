@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { MantineProvider } from "@mantine/core";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { QueryProvider } from "../lib/query-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { theme } from "../theme";
+import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeCSSInjector } from "../components/theme/ThemeCSSInjector";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +37,10 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
-            <MantineProvider theme={theme}>
+            <ThemeProvider defaultTheme="original">
+              <ThemeCSSInjector />
               <NuqsAdapter>{children}</NuqsAdapter>
-            </MantineProvider>
+            </ThemeProvider>
           </QueryProvider>
         </NextIntlClientProvider>
       </body>

@@ -10,6 +10,7 @@ import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bolli
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
 import { useBollingerBandsQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
 import { useDonchianQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianQuery";
+import { useThemeChange } from "@/hooks/useThemeChange";
 
 interface ChartProps {
   activeId: number;
@@ -38,17 +39,25 @@ export function Chart({
     createBollingerBandsSeries,
     updateBollingerBandsData,
     destroyBollingerBandsSeries,
+    recreateBollingerBandsSeries,
   } = useBollingerBandsChart({
     showBollingerBands,
     bollingerBandsConfig: bollingerConfig,
   });
 
   // Donchian Channels hook
-  const { createDonchianSeries, updateDonchianData, destroyDonchianSeries } =
-    useDonchianChart({
-      showDonchian,
-      donchianConfig,
-    });
+  const {
+    createDonchianSeries,
+    updateDonchianData,
+    destroyDonchianSeries,
+    recreateDonchianSeries,
+  } = useDonchianChart({
+    showDonchian,
+    donchianConfig,
+  });
+
+  // Theme change detection
+  const { onThemeChange } = useThemeChange();
 
   useEffect(() => {
     if (!sdk || !containerRef.current) return;
@@ -95,10 +104,45 @@ export function Chart({
     });
 
     // Create Bollinger Bands series
-    const bollingerBandsSeries = createBollingerBandsSeries(chart);
+    let bollingerBandsSeries = createBollingerBandsSeries(chart);
 
     // Create Donchian Channels series
-    const donchianSeries = createDonchianSeries(chart);
+    let donchianSeries = createDonchianSeries(chart);
+
+    // Handle theme changes by recreating series
+    const cleanupThemeChange = onThemeChange(() => {
+      if (isDisposed) return;
+
+      console.log("Theme changed, recreating chart series...");
+
+      // Recreate series with a small delay to ensure CSS variables are updated
+      setTimeout(() => {
+        if (isDisposed) return;
+
+        // Recreate Bollinger Bands series
+        if (showBollingerBands) {
+          bollingerBandsSeries = recreateBollingerBandsSeries(
+            chart,
+            bollingerBandsSeries
+          );
+          // Re-update data with current candles
+          if (chartLayer) {
+            const allCandles = chartLayer.getAllCandles();
+            updateBollingerBandsData(bollingerBandsSeries, allCandles);
+          }
+        }
+
+        // Recreate Donchian Channels series
+        if (showDonchian) {
+          donchianSeries = recreateDonchianSeries(chart, donchianSeries);
+          // Re-update data with current candles
+          if (chartLayer) {
+            const allCandles = chartLayer.getAllCandles();
+            updateDonchianData(donchianSeries, allCandles);
+          }
+        }
+      }, 100); // 100ms delay to ensure CSS variables are updated
+    });
 
     const initChart = async () => {
       if (isDisposed) return;
@@ -238,6 +282,9 @@ export function Chart({
 
     return () => {
       isDisposed = true;
+
+      // Clean up theme change listener
+      cleanupThemeChange();
 
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {

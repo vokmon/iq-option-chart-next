@@ -36,6 +36,10 @@ export interface UseBollingerBandsChartReturn {
     chart: IChartApi,
     series: BollingerBandsSeries
   ) => void;
+  recreateBollingerBandsSeries: (
+    chart: IChartApi,
+    series: BollingerBandsSeries
+  ) => BollingerBandsSeries;
 }
 
 export function useBollingerBandsChart({
@@ -211,10 +215,21 @@ export function useBollingerBandsChart({
     []
   );
 
+  const recreateBollingerBandsSeries = useCallback(
+    (chart: IChartApi, series: BollingerBandsSeries): BollingerBandsSeries => {
+      // Destroy existing series
+      destroyBollingerBandsSeries(chart, series);
+      // Create new series with updated colors
+      return createBollingerBandsSeries(chart);
+    },
+    [createBollingerBandsSeries, destroyBollingerBandsSeries]
+  );
+
   return {
     createBollingerBandsSeries,
     updateBollingerBandsData,
     clearBollingerBandsData,
     destroyBollingerBandsSeries,
+    recreateBollingerBandsSeries,
   };
 }

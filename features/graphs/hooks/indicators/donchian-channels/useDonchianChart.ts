@@ -35,6 +35,10 @@ export interface UseDonchianChartReturn {
   ) => void;
   clearDonchianData: (series: DonchianSeries) => void;
   destroyDonchianSeries: (chart: IChartApi, series: DonchianSeries) => void;
+  recreateDonchianSeries: (
+    chart: IChartApi,
+    series: DonchianSeries
+  ) => DonchianSeries;
 }
 
 export function useDonchianChart({
@@ -242,10 +246,21 @@ export function useDonchianChart({
     []
   );
 
+  const recreateDonchianSeries = useCallback(
+    (chart: IChartApi, series: DonchianSeries): DonchianSeries => {
+      // Destroy existing series
+      destroyDonchianSeries(chart, series);
+      // Create new series with updated colors
+      return createDonchianSeries(chart);
+    },
+    [createDonchianSeries, destroyDonchianSeries]
+  );
+
   return {
     createDonchianSeries,
     updateDonchianData,
     clearDonchianData,
     destroyDonchianSeries,
+    recreateDonchianSeries,
   };
 }

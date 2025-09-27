@@ -4,6 +4,7 @@ import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
 import { useStochasticQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticQuery";
+import { useThemeChange } from "@/hooks/useThemeChange";
 
 interface StochasticChartProps {
   activeId: number;
@@ -31,10 +32,14 @@ export function StochasticChart({
     createStochasticSeries,
     updateStochasticData,
     destroyStochasticSeries,
+    recreateStochasticSeries,
   } = useStochasticChart({
     showStochastic,
     stochasticConfig,
   });
+
+  // Theme change detection
+  const { onThemeChange } = useThemeChange();
 
   useEffect(() => {
     if (!sdk || !containerRef.current || !showStochastic) return;
@@ -78,7 +83,27 @@ export function StochasticChart({
     });
 
     // Create Stochastic Oscillator series
-    const stochasticSeries = createStochasticSeries(chart);
+    let stochasticSeries = createStochasticSeries(chart);
+
+    // Handle theme changes by recreating series
+    const cleanupThemeChange = onThemeChange(() => {
+      if (isDisposed) return;
+
+      console.log("Theme changed, recreating stochastic series...");
+
+      // Recreate Stochastic series with a small delay to ensure CSS variables are updated
+      if (showStochastic) {
+        setTimeout(() => {
+          if (isDisposed) return;
+          stochasticSeries = recreateStochasticSeries(chart, stochasticSeries);
+          // Re-update data with current candles
+          if (chartLayer) {
+            const allCandles = chartLayer.getAllCandles();
+            updateStochasticData(stochasticSeries, allCandles);
+          }
+        }, 100); // 100ms delay to ensure CSS variables are updated
+      }
+    });
 
     const initChart = async () => {
       if (isDisposed) return;
@@ -192,6 +217,9 @@ export function StochasticChart({
 
     return () => {
       isDisposed = true;
+
+      // Clean up theme change listener
+      cleanupThemeChange();
 
       // Unsubscribe from all subscriptions
       unsubscribeFunctions.forEach((unsubscribe) => {

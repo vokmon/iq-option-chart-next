@@ -34,6 +34,10 @@ export interface UseStochasticChartReturn {
   ) => void;
   clearStochasticData: (series: StochasticSeries) => void;
   destroyStochasticSeries: (chart: IChartApi, series: StochasticSeries) => void;
+  recreateStochasticSeries: (
+    chart: IChartApi,
+    series: StochasticSeries
+  ) => StochasticSeries;
 }
 
 export function useStochasticChart({
@@ -55,14 +59,23 @@ export function useStochasticChart({
     }
 
     const computedStyle = getComputedStyle(document.documentElement);
+    const kColor = computedStyle
+      .getPropertyValue("--color-stochastic-400")
+      .trim();
+    const dColor = computedStyle
+      .getPropertyValue("--color-stochastic-secondary-400")
+      .trim();
+
+    console.log("Stochastic colors:", {
+      k: kColor || "#ff6b6b",
+      d: dColor || "#4ecdc4",
+      kRaw: computedStyle.getPropertyValue("--color-stochastic-400"),
+      dRaw: computedStyle.getPropertyValue("--color-stochastic-secondary-400"),
+    });
+
     return {
-      k:
-        computedStyle.getPropertyValue("--color-stochastic-400").trim() ||
-        "#ff6b6b",
-      d:
-        computedStyle
-          .getPropertyValue("--color-stochastic-secondary-400")
-          .trim() || "#4ecdc4",
+      k: kColor || "#ff6b6b",
+      d: dColor || "#4ecdc4",
       upper: "#00c851", // Green for overbought (80)
       lower: "#ff4444", // Red for oversold (20)
     };
@@ -244,10 +257,21 @@ export function useStochasticChart({
     []
   );
 
+  const recreateStochasticSeries = useCallback(
+    (chart: IChartApi, series: StochasticSeries): StochasticSeries => {
+      // Destroy existing series
+      destroyStochasticSeries(chart, series);
+      // Create new series with updated colors
+      return createStochasticSeries(chart);
+    },
+    [createStochasticSeries, destroyStochasticSeries]
+  );
+
   return {
     createStochasticSeries,
     updateStochasticData,
     clearStochasticData,
     destroyStochasticSeries,
+    recreateStochasticSeries,
   };
 }
