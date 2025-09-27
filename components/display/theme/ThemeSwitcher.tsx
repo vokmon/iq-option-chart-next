@@ -2,11 +2,12 @@
 
 import React from "react";
 import { Select } from "@mantine/core";
-import { useTheme } from "../../../context/ThemeContext";
+import { useThemeStore } from "../../../stores/themeStore";
 import { getThemeList, ThemeName } from "../../../theme/themes";
 
 export function ThemeSwitcher() {
-  const { currentTheme, setTheme } = useTheme();
+  const currentTheme = useThemeStore((state) => state.currentTheme);
+  const setTheme = useThemeStore((state) => state.setTheme);
   const themeList = getThemeList();
 
   return (

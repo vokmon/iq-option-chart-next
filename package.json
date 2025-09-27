@@ -21,7 +21,8 @@
     "nuqs": "^2.6.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "typescript": "^5.9.2",

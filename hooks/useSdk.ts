@@ -1,15 +1,16 @@
-import { useContext } from "react";
-import { SdkContext } from "../context/SdkContext";
+import { useSdkStore } from "../stores/sdkStore";
 import type { ClientSdk } from "@quadcode-tech/client-sdk-js";
 
 export const useSdk = (): {
   sdk: ClientSdk;
-  setSdk: (sdk: ClientSdk) => void;
+  setSdk: (sdk: ClientSdk | null) => void;
 } => {
-  const context = useContext(SdkContext);
-  const sdk = context?.sdk;
+  const sdk = useSdkStore((state) => state.sdk);
+  const setSdk = useSdkStore((state) => state.setSdk);
+
   if (!sdk) {
     throw new Error("useSdk must be used within SdkProvider");
   }
-  return { sdk, setSdk: context.setSdk };
+
+  return { sdk, setSdk };
 };

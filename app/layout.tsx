@@ -5,7 +5,8 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { QueryProvider } from "../lib/query-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeProvider } from "../provider/ThemeProvider";
+import { SdkProvider } from "../provider/SdkProvider";
 import { ThemeCSSInjector } from "../components/theme/ThemeCSSInjector";
 
 const geistSans = Geist({
@@ -37,7 +38,7 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
-            <ThemeProvider defaultTheme="original">
+            <ThemeProvider>
               <ThemeCSSInjector />
               <NuqsAdapter>{children}</NuqsAdapter>
             </ThemeProvider>

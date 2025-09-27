@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { useTheme } from "../../context/ThemeContext";
+import { useThemeStore } from "../../stores/themeStore";
 import { themes } from "../../theme/themes";
 
 export function ThemeCSSInjector() {
-  const { currentTheme } = useTheme();
+  const currentTheme = useThemeStore((state) => state.currentTheme);
 
   useEffect(() => {
     const theme = themes[currentTheme];

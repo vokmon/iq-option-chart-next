@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeStore } from "../stores/themeStore";
 
 export function useThemeChange() {
-  const { currentTheme } = useTheme();
+  const currentTheme = useThemeStore((state) => state.currentTheme);
   const previousThemeRef = useRef<string | null>(null);
   const themeChangeCallbacksRef = useRef<Set<() => void>>(new Set());
 
