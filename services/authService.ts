@@ -1,5 +1,4 @@
 import { useSdkStore } from "../stores/sdkStore";
-import { useAuthStore } from "../stores/authStore";
 
 export const authService = {
   async logout(): Promise<void> {
@@ -20,7 +19,6 @@ export const authService = {
   async performLogout(): Promise<void> {
     // Get current state from stores
     const sdk = useSdkStore.getState().sdk;
-    const logout = useAuthStore.getState().logout;
 
     try {
       // 1. Disconnect the SDK if it has a disconnect method
@@ -34,9 +32,9 @@ export const authService = {
       console.error("Logout API error:", error);
       // Continue with logout even if API call fails
     } finally {
-      // 3. Always clear user data
-      logout();
-      
+      // 3. Clear user data from localStorage
+      localStorage.removeItem("user");
+
       // 4. Redirect to login page
       window.location.href = "/login";
     }

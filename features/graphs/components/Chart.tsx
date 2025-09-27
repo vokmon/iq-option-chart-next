@@ -337,6 +337,9 @@ export function Chart({
     createDonchianSeries,
     updateDonchianData,
     destroyDonchianSeries,
+    onThemeChange,
+    recreateBollingerBandsSeries,
+    recreateDonchianSeries,
   ]);
 
   return (

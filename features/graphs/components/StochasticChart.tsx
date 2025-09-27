@@ -260,6 +260,8 @@ export function StochasticChart({
     createStochasticSeries,
     updateStochasticData,
     destroyStochasticSeries,
+    onThemeChange,
+    recreateStochasticSeries,
   ]);
 
   if (!showStochastic) {

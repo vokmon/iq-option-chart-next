@@ -21,13 +21,11 @@ import { useRouter } from "next/navigation";
 import { useLoginMutation, LoginCredentials } from "../../lib/auth";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
-import { useAuthStore } from "../../stores/authStore";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const loginMutation = useLoginMutation();
-  const login = useAuthStore((state) => state.login);
   const t = useTranslations();
   const theme = useMantineTheme();
 
@@ -49,14 +47,17 @@ export default function LoginPage() {
 
     loginMutation.mutate(credentials, {
       onSuccess: (response) => {
-        // Update auth store with user data
-        login({
-          user_id: response.user_id,
-          company_id: response.company_id,
-          ssid: response.ssid,
-          code: response.code,
-          created_at: response.created_at,
-        });
+        // Store user data in localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            user_id: response.user_id,
+            company_id: response.company_id,
+            ssid: response.ssid,
+            code: response.code,
+            created_at: response.created_at,
+          })
+        );
         // Redirect to dashboard or main page after successful login
         router.push("/");
       },

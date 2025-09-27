@@ -96,11 +96,18 @@ export const useAssetChartStore = create<AssetChartStore>()(
     (set, get) => ({
       charts: [],
       activeChartId: null,
-      maxCharts: 5,
+      maxCharts: 15,
 
       addChart: (asset?: DigitalOptionsUnderlying) => {
         const state = get();
+        // Don't allow adding new charts if we're at max capacity
         if (state.charts.length >= state.maxCharts) {
+          return state.activeChartId || "";
+        }
+
+        // Don't allow adding new charts if there's already an empty tab
+        const hasEmptyTab = state.charts.some((chart) => chart.isEmpty);
+        if (hasEmptyTab) {
           return state.activeChartId || "";
         }
 
@@ -235,7 +242,13 @@ export const useAssetChartStore = create<AssetChartStore>()(
 
       canAddChart: () => {
         const state = get();
-        return state.charts.length < state.maxCharts;
+        // Don't allow adding new charts if we're at max capacity
+        if (state.charts.length >= state.maxCharts) {
+          return false;
+        }
+        // Don't allow adding new charts if there's already an empty tab
+        const hasEmptyTab = state.charts.some((chart) => chart.isEmpty);
+        return !hasEmptyTab;
       },
 
       canRemoveChart: (chartId: string) => {
