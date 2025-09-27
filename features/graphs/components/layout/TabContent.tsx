@@ -31,8 +31,23 @@ export function TabContent({ actives }: TabContentProps) {
   // Update available assets when charts change
   useEffect(() => {
     const { getAvailableAssets } = useAssetChartStore.getState();
-    setAvailableAssets(getAvailableAssets(actives));
-  }, [actives, charts]);
+    const availableAssets = getAvailableAssets(actives);
+
+    // Include the current chart's asset in available options if it exists
+    if (activeChart?.asset) {
+      const currentAsset = activeChart.asset;
+      const isAlreadyIncluded = availableAssets.some(
+        (asset) => asset.activeId === currentAsset.activeId
+      );
+      if (!isAlreadyIncluded) {
+        setAvailableAssets([currentAsset, ...availableAssets]);
+      } else {
+        setAvailableAssets(availableAssets);
+      }
+    } else {
+      setAvailableAssets(availableAssets);
+    }
+  }, [actives, charts, activeChart?.asset]);
 
   const handleAssetSelect = (activeId: string) => {
     if (!activeChartId) return;
