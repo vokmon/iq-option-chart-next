@@ -1,4 +1,4 @@
-import { Select, Text } from "@mantine/core";
+import { Select } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 import { useMemo, useEffect } from "react";
