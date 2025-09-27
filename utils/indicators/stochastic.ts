@@ -1,4 +1,7 @@
-import type { StochasticData, StochasticConfig } from "@/types/indicators";
+import type {
+  StochasticData,
+  StochasticConfig,
+} from "@/types/indicators/stochastic";
 
 /**
  * Calculate Stochastic Oscillator for a series of price data

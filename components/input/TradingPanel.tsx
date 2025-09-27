@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Paper, Stack, Text, NumberInput, Divider } from "@mantine/core";
+import { Paper, Stack, NumberInput } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import type { Balance } from "@quadcode-tech/client-sdk-js";
 import BalanceSelector from "./BalanceSelector";
@@ -52,8 +52,6 @@ export default function TradingPanel({
           selectedBalanceId={selectedBalanceId}
         />
 
-        {/* <Divider /> */}
-
         {/* Amount Input Field */}
         <NumberInput
           placeholder={t("Enter amount")}
@@ -80,11 +78,6 @@ export default function TradingPanel({
           size="sm"
           fullWidth
         />
-
-        {/* Amount Display */}
-        {/* <Text size="sm" c="dimmed" ta="center">
-          {t("Amount")}: {amount ? `$${amount.toLocaleString()}` : t("Not set")}
-        </Text> */}
       </Stack>
     </Paper>
   );

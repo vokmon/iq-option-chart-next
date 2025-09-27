@@ -1,4 +1,4 @@
-import type { DonchianData, DonchianConfig } from "@/types/indicators";
+import type { DonchianData, DonchianConfig } from "@/types/indicators/donchian";
 
 /**
  * Calculate Donchian Channels for a series of price data

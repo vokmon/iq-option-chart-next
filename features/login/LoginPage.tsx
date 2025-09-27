@@ -104,7 +104,23 @@ export default function LoginPage() {
           >
             <Stack gap="md">
               {error && (
-                <Alert color="red" variant="light" radius="md">
+                <Alert
+                  color="red"
+                  variant="light"
+                  radius="md"
+                  styles={{
+                    root: {
+                      backgroundColor: "rgba(255, 255, 255, 0.7)",
+                      backdropFilter: "blur(10px)",
+                      border: "1px solid var(--glass-border)",
+                      boxShadow: "var(--glass-shadow)",
+                    },
+                    message: {
+                      color: "var(--mantine-color-red-6)",
+                      fontWeight: 500,
+                    },
+                  }}
+                >
                   {error}
                 </Alert>
               )}

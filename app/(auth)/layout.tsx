@@ -1,6 +1,6 @@
 import AppToolbar from "@/components/layout/navigation/AppToolbar";
 import { SdkProvider } from "@/provider/SdkProvider";
-import { Flex, Text } from "@mantine/core";
+import { Flex } from "@mantine/core";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

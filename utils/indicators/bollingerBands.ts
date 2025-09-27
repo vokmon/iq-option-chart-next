@@ -1,7 +1,7 @@
 import type {
   BollingerBandsData,
   BollingerBandsConfig,
-} from "@/types/indicators";
+} from "@/types/indicators/bollingerBands";
 
 /**
  * Calculate Bollinger Bands for a series of price data
