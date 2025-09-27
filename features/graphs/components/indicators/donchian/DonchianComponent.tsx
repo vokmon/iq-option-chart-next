@@ -17,7 +17,7 @@ export function DonchianComponent() {
 
   return (
     <>
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" className="min-h-[36px]">
         <Switch
           label={t("Donchian Channels")}
           checked={showDonchian}

@@ -18,7 +18,7 @@ export function BollingerBandsComponent() {
 
   return (
     <>
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" className="min-h-[36px]">
         <Switch
           label={t("Bollinger Bands")}
           checked={showBollingerBands}

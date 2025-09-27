@@ -45,9 +45,9 @@ export default function BalanceSelector({
   const getBalanceTypeDisplay = (type: BalanceType | undefined) => {
     switch (type) {
       case "real":
-        return t("REAL ACCOUNT");
+        return t("Real");
       case "demo":
-        return t("PRACTICE ACCOUNT");
+        return t("Practice");
       default:
         return t("UNKNOWN");
     }

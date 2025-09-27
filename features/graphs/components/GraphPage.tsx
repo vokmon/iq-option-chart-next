@@ -39,7 +39,7 @@ export default function GraphPage() {
   }, [addAsset, assets.length]);
 
   return (
-    <Flex direction="row" w="100%" p={10} gap="xl">
+    <Flex direction="row" w="100%" h="100%" px={10} py={5} gap="lg">
       <Flex direction="column" gap="sm" w="80%" h="100%">
         <TabBar />
         <ChartTab />

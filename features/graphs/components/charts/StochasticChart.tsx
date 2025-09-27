@@ -27,9 +27,7 @@ export function StochasticChart({
   const fetchingRef = useRef<boolean>(false);
 
   // Query parameter hooks for stochastic oscillator
-  const { showStochastic, stochasticConfig } = useStochasticTabQuery(
-    tabId || null
-  );
+  const { showStochastic, stochasticConfig } = useStochasticTabQuery();
 
   // Stochastic Oscillator hook
   const {
@@ -92,8 +90,6 @@ export function StochasticChart({
     // Handle theme changes by recreating series
     const cleanupThemeChange = onThemeChange(() => {
       if (isDisposed) return;
-
-      console.log("Theme changed, recreating stochastic series...");
 
       // Recreate Stochastic series with a small delay to ensure CSS variables are updated
       if (showStochastic) {
@@ -271,7 +267,7 @@ export function StochasticChart({
   return (
     <div
       ref={containerRef}
-      style={{ marginTop: "10px", width: "100%", height: chartHeight }}
+      style={{ marginTop: "0px", width: "100%", height: chartHeight }}
     />
   );
 }

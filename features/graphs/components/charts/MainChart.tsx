@@ -113,8 +113,6 @@ export function MainChart({
     const cleanupThemeChange = onThemeChange(() => {
       if (isDisposed) return;
 
-      console.log("Theme changed, recreating chart series...");
-
       // Recreate series with a small delay to ensure CSS variables are updated
       setTimeout(() => {
         if (isDisposed) return;
@@ -341,7 +339,7 @@ export function MainChart({
   return (
     <div
       ref={containerRef}
-      style={{ marginTop: "20px", width: "100%", height: chartHeight }}
+      style={{ marginTop: "0px", width: "100%", height: chartHeight }}
     />
   );
 }

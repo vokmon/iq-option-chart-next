@@ -67,7 +67,13 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
   };
 
   return (
-    <Flex w="100%" direction="column" gap="sm" style={{ minHeight: 0 }}>
+    <Flex
+      w="100%"
+      h="100%"
+      direction="column"
+      gap="xs"
+      style={{ minHeight: 0 }}
+    >
       <Flex direction="row" gap="md">
         <AssetSelector
           key={activeAssetId} // Force re-render when active asset changes
@@ -92,15 +98,16 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
         />
       </Flex>
       <Divider />
-      <Text fw={500} fz="lg">
-        {t("Indicators")}
-      </Text>
+
       <Flex direction="column" gap="xs">
         <BollingerBandsComponent />
         <DonchianComponent />
         <StochasticComponent />
       </Flex>
       <TradingPanel />
+
+      <Flex className="flex-1 border border-gray-200" />
+      <Flex className="h-10 border border-gray-200" />
     </Flex>
   );
 }

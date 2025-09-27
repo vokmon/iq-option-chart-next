@@ -44,19 +44,18 @@ export default function TradingPanel({
   };
 
   return (
-    <Paper p="md" withBorder radius="md" style={{ minWidth: 320 }}>
-      <Stack gap="md">
+    <Paper p="sm" withBorder radius="md">
+      <Stack gap="sm">
         {/* Balance Selection */}
         <BalanceSelector
           onBalanceChange={onBalanceChange}
           selectedBalanceId={selectedBalanceId}
         />
 
-        <Divider />
+        {/* <Divider /> */}
 
         {/* Amount Input Field */}
         <NumberInput
-          label={t("Amount")}
           placeholder={t("Enter amount")}
           value={amount}
           onChange={(value) => setAmount(typeof value === "number" ? value : 0)}
@@ -64,7 +63,7 @@ export default function TradingPanel({
           max={maxAmount}
           step={1}
           disabled={disabled}
-          size="md"
+          size="sm"
           styles={{
             input: {
               fontWeight: 600,
@@ -78,12 +77,14 @@ export default function TradingPanel({
           onCall={handleCall}
           onPut={handlePut}
           disabled={disabled || !amount || amount < minAmount}
+          size="sm"
+          fullWidth
         />
 
         {/* Amount Display */}
-        <Text size="sm" c="dimmed" ta="center">
+        {/* <Text size="sm" c="dimmed" ta="center">
           {t("Amount")}: {amount ? `$${amount.toLocaleString()}` : t("Not set")}
-        </Text>
+        </Text> */}
       </Stack>
     </Paper>
   );

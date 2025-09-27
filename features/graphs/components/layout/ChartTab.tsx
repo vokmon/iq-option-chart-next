@@ -32,7 +32,7 @@ export function ChartTab() {
           <MainChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
-            chartHeight={window.innerHeight - 350}
+            chartHeight={window.innerHeight - 280}
             chartMinutesBack={60}
           />
           <div className="my-4" />
