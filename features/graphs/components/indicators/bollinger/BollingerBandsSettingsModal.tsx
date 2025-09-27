@@ -1,6 +1,6 @@
 import { Modal, Stack, Group, NumberInput, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { type BollingerBandsConfig } from "@/utils/indicators/bollingerBands";
+import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 
 interface BollingerBandsSettingsModalProps {
   opened: boolean;

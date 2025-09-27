@@ -92,6 +92,85 @@ const stochasticSecondaryColor: MantineColorsTuple = [
   "#14532d", // 9 - darkest
 ];
 
+// Candle size colors - modern professional theme
+const candleSize1MinColor: MantineColorsTuple = [
+  "#fef3c7", // 0 - lightest
+  "#fde68a", // 1
+  "#fcd34d", // 2
+  "#fbbf24", // 3
+  "#f59e0b", // 4 - primary (1min candles) - amber
+  "#d97706", // 5
+  "#b45309", // 6
+  "#92400e", // 7
+  "#78350f", // 8
+  "#451a03", // 9 - darkest
+];
+
+const candleSize5MinColor: MantineColorsTuple = [
+  "#ecfdf5", // 0 - lightest
+  "#d1fae5", // 1
+  "#a7f3d0", // 2
+  "#6ee7b7", // 3
+  "#34d399", // 4 - primary (5min candles) - emerald
+  "#10b981", // 5
+  "#059669", // 6
+  "#047857", // 7
+  "#065f46", // 8
+  "#064e3b", // 9 - darkest
+];
+
+const candleSize15MinColor: MantineColorsTuple = [
+  "#ecfdf5", // 0 - lightest
+  "#d1fae5", // 1
+  "#a7f3d0", // 2
+  "#6ee7b7", // 3
+  "#34d399", // 4 - primary (15min candles) - emerald
+  "#10b981", // 5
+  "#059669", // 6
+  "#047857", // 7
+  "#065f46", // 8
+  "#064e3b", // 9 - darkest
+];
+
+const candleSize1HourColor: MantineColorsTuple = [
+  "#fef3c7", // 0 - lightest
+  "#fde68a", // 1
+  "#fcd34d", // 2
+  "#fbbf24", // 3
+  "#f59e0b", // 4 - primary (1hour candles) - amber
+  "#d97706", // 5
+  "#b45309", // 6
+  "#92400e", // 7
+  "#78350f", // 8
+  "#451a03", // 9 - darkest
+];
+
+const candleSize4HourColor: MantineColorsTuple = [
+  "#f3e8ff", // 0 - lightest
+  "#e9d5ff", // 1
+  "#ddd6fe", // 2
+  "#c4b5fd", // 3
+  "#a78bfa", // 4 - primary (4hour candles) - violet
+  "#8b5cf6", // 5
+  "#7c3aed", // 6
+  "#6d28d9", // 7
+  "#5b21b6", // 8
+  "#4c1d95", // 9 - darkest
+];
+
+const candleSize1DayColor: MantineColorsTuple = [
+  "#fdf2f8", // 0 - lightest
+  "#fce7f3", // 1
+  "#fbcfe8", // 2
+  "#f9a8d4", // 3
+  "#f472b6", // 4 - primary (1day candles) - pink
+  "#ec4899", // 5
+  "#db2777", // 6
+  "#be185d", // 7
+  "#9d174d", // 8
+  "#831843", // 9 - darkest
+];
+
 // Create the alternative theme
 export const alternativeTheme = createTheme({
   colors: {
@@ -102,6 +181,12 @@ export const alternativeTheme = createTheme({
     donchian: donchianColor,
     stochastic: stochasticColor,
     stochasticSecondary: stochasticSecondaryColor,
+    candleSize1Min: candleSize1MinColor,
+    candleSize5Min: candleSize5MinColor,
+    candleSize15Min: candleSize15MinColor,
+    candleSize1Hour: candleSize1HourColor,
+    candleSize4Hour: candleSize4HourColor,
+    candleSize1Day: candleSize1DayColor,
   },
   primaryColor: "primary",
   primaryShade: 5,
@@ -138,22 +223,22 @@ export const alternativeTheme = createTheme({
     },
   },
 
-  // Spacing - slightly more generous
+  // Spacing
   spacing: {
-    xs: "0.375rem",
-    sm: "0.625rem",
+    xs: "0.5rem",
+    sm: "0.75rem",
     md: "1rem",
-    lg: "1.75rem",
-    xl: "2.25rem",
+    lg: "1.5rem",
+    xl: "2rem",
   },
 
-  // Radius - more rounded for modern look
+  // Radius
   radius: {
-    xs: "0.375rem",
-    sm: "0.5rem",
-    md: "0.75rem",
-    lg: "1rem",
-    xl: "1.25rem",
+    xs: "0.25rem",
+    sm: "0.375rem",
+    md: "0.5rem",
+    lg: "0.75rem",
+    xl: "1rem",
   },
 
   // Shadows - more dramatic for depth
@@ -264,6 +349,7 @@ export const alternativeThemeColors = {
     800: "#166534",
     900: "#14532d",
   },
+
   // Semantic colors
   success: "#22c55e",
   warning: "#f59e0b",

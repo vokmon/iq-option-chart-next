@@ -44,5 +44,9 @@
   "Configure Stochastic Oscillator parameters": "กำหนดค่าพารามิเตอร์ Stochastic Oscillator",
   "Theme": "ธีม",
   "Don't have an account yet?": "ยังไม่มีบัญชีหรอ?",
-  "Sign up": "สมัครสมาชิก"
+  "Sign up": "สมัครสมาชิก",
+  "Select an asset to view chart": "เลือกสินทรัพย์เพื่อดูกราฟ",
+  "Choose an asset from the panel on the right": "เลือกสินทรัพย์จากแผงด้านขวา",
+  "No active tab": "ไม่มีแท็บที่ใช้งาน",
+  "Select a tab or create a new one": "เลือกแท็บหรือสร้างแท็บใหม่"
 }

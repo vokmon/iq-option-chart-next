@@ -1,6 +1,6 @@
 import { Modal, Stack, Group, NumberInput, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { type DonchianConfig } from "@/utils/indicators/donchian";
+import { type DonchianConfig } from "@/types/indicators/donchian";
 
 interface DonchianSettingsModalProps {
   opened: boolean;

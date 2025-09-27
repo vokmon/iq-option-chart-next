@@ -8,8 +8,8 @@ import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsChart";
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
-import { useBollingerBandsQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
-import { useDonchianQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianQuery";
+import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
+import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
 
 interface ChartProps {
@@ -17,6 +17,7 @@ interface ChartProps {
   candleSize: number;
   chartHeight?: number;
   chartMinutesBack?: number;
+  tabId?: string | null;
 }
 
 export function Chart({
@@ -24,6 +25,7 @@ export function Chart({
   candleSize,
   chartHeight = 400,
   chartMinutesBack = 60,
+  tabId,
 }: ChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,8 +33,10 @@ export function Chart({
   const fetchingRef = useRef<boolean>(false);
 
   // Query parameter hooks for indicators
-  const { showBollingerBands, bollingerConfig } = useBollingerBandsQuery();
-  const { showDonchian, donchianConfig } = useDonchianQuery();
+  const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery(
+    tabId || null
+  );
+  const { showDonchian, donchianConfig } = useDonchianTabQuery(tabId || null);
 
   // Bollinger Bands hook
   const {
@@ -76,8 +80,8 @@ export function Chart({
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        barSpacing: 80, // Extremely thin bars
-        minBarSpacing: 40, // Minimum bar spacing
+        barSpacing: 60, // Extremely thin bars
+        minBarSpacing: 30, // Minimum bar spacing
         tickMarkFormatter: (time: number) => {
           const date = new Date(time * 1000);
           return date.toLocaleTimeString("en-US", {

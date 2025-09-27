@@ -1,30 +1,22 @@
 import { Select } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
-import { useMemo, useEffect } from "react";
-import { useUrlState } from "@/hooks/useUrlState";
+import { useMemo } from "react";
 
 interface AssetSelectorProps {
   actives: DigitalOptionsUnderlying[];
   className?: string;
+  selectedActiveId?: string;
+  onAssetSelect?: (activeId: string) => void;
 }
 
-export function AssetSelector({ actives, className }: AssetSelectorProps) {
+export function AssetSelector({
+  actives,
+  className,
+  selectedActiveId = "none",
+  onAssetSelect,
+}: AssetSelectorProps) {
   const t = useTranslations();
-  const [selectedActiveId, setSelectedActiveId] = useUrlState(
-    "activeId",
-    "none"
-  );
-
-  // Auto-select first asset if none is selected and we have actives
-  useEffect(() => {
-    if (
-      actives.length > 0 &&
-      (selectedActiveId === "none" || !selectedActiveId)
-    ) {
-      setSelectedActiveId(String(actives[0].activeId));
-    }
-  }, [actives, selectedActiveId, setSelectedActiveId]);
 
   const groupedOptions = useMemo(() => {
     const options = actives.map((a) => ({
@@ -69,7 +61,7 @@ export function AssetSelector({ actives, className }: AssetSelectorProps) {
       label={t("Asset")}
       placeholder="Choose an asset"
       value={selectedActiveId}
-      onChange={setSelectedActiveId}
+      onChange={(value) => onAssetSelect?.(value || "none")}
       data={selectData}
       searchable
       className={className}

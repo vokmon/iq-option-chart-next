@@ -8,10 +8,11 @@ import {
 } from "lightweight-charts";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import {
-  calculateBollingerBandsForCandles,
   type BollingerBandsConfig,
   type BollingerBandsData,
-} from "@/utils/indicators/bollingerBands";
+} from "@/types/indicators/bollingerBands";
+import { calculateBollingerBandsForCandles } from "@/utils/indicators/bollingerBands";
+import { getBollingerColors } from "@/utils/indicatorColors";
 
 export interface BollingerBandsSeries {
   upper: ISeriesApi<"Line"> | null;
@@ -47,27 +48,6 @@ export function useBollingerBandsChart({
   bollingerBandsConfig,
 }: UseBollingerBandsChartProps): UseBollingerBandsChartReturn {
   const seriesRef = useRef<BollingerBandsSeries | null>(null);
-
-  // Get CSS custom property values for chart colors
-  const getBollingerColors = () => {
-    if (typeof window === "undefined") {
-      // Fallback colors for SSR
-      return {
-        primary: "#42a5f5",
-        secondary: "#90caf9",
-      };
-    }
-
-    const computedStyle = getComputedStyle(document.documentElement);
-    return {
-      primary:
-        computedStyle.getPropertyValue("--color-bollinger-400").trim() ||
-        "#42a5f5",
-      secondary:
-        computedStyle.getPropertyValue("--color-bollinger-200").trim() ||
-        "#90caf9",
-    };
-  };
 
   const createBollingerBandsSeries = useCallback(
     (chart: IChartApi): BollingerBandsSeries => {

@@ -1,11 +1,15 @@
 import { Switch, Group, Button } from "@mantine/core";
-import { useStochasticQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticQuery";
+import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { StochasticSettingsModal } from "./StochasticSettingsModal";
 
-export function StochasticComponent() {
+interface StochasticComponentProps {
+  tabId: string | null;
+}
+
+export function StochasticComponent({ tabId }: StochasticComponentProps) {
   const {
     showStochastic,
     setShowStochastic,
@@ -13,7 +17,7 @@ export function StochasticComponent() {
     updateKPeriod,
     updateDPeriod,
     updateSmoothing,
-  } = useStochasticQuery();
+  } = useStochasticTabQuery(tabId);
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 

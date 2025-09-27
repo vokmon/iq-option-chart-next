@@ -92,6 +92,85 @@ const stochasticSecondaryColor: MantineColorsTuple = [
   "#004d40", // 9 - darkest
 ];
 
+// Candle size colors - different colors for different timeframes
+const candleSize1MinColor: MantineColorsTuple = [
+  "#fef2f2", // 0 - lightest
+  "#fee2e2", // 1
+  "#fecaca", // 2
+  "#fca5a5", // 3
+  "#f87171", // 4 - primary (1min candles) - red
+  "#ef4444", // 5
+  "#dc2626", // 6
+  "#b91c1c", // 7
+  "#991b1b", // 8
+  "#7f1d1d", // 9 - darkest
+];
+
+const candleSize5MinColor: MantineColorsTuple = [
+  "#f0f9ff", // 0 - lightest
+  "#e0f2fe", // 1
+  "#bae6fd", // 2
+  "#7dd3fc", // 3
+  "#38bdf8", // 4 - primary (5min candles) - blue
+  "#0ea5e9", // 5
+  "#0284c7", // 6
+  "#0369a1", // 7
+  "#075985", // 8
+  "#0c4a6e", // 9 - darkest
+];
+
+const candleSize15MinColor: MantineColorsTuple = [
+  "#f0fdf4", // 0 - lightest
+  "#dcfce7", // 1
+  "#bbf7d0", // 2
+  "#86efac", // 3
+  "#4ade80", // 4 - primary (15min candles)
+  "#22c55e", // 5
+  "#16a34a", // 6
+  "#15803d", // 7
+  "#166534", // 8
+  "#14532d", // 9 - darkest
+];
+
+const candleSize1HourColor: MantineColorsTuple = [
+  "#fef3c7", // 0 - lightest
+  "#fde68a", // 1
+  "#fcd34d", // 2
+  "#fbbf24", // 3
+  "#f59e0b", // 4 - primary (1hour candles)
+  "#d97706", // 5
+  "#b45309", // 6
+  "#92400e", // 7
+  "#78350f", // 8
+  "#451a03", // 9 - darkest
+];
+
+const candleSize4HourColor: MantineColorsTuple = [
+  "#f3e8ff", // 0 - lightest
+  "#e9d5ff", // 1
+  "#ddd6fe", // 2
+  "#c4b5fd", // 3
+  "#a78bfa", // 4 - primary (4hour candles)
+  "#8b5cf6", // 5
+  "#7c3aed", // 6
+  "#6d28d9", // 7
+  "#5b21b6", // 8
+  "#4c1d95", // 9 - darkest
+];
+
+const candleSize1DayColor: MantineColorsTuple = [
+  "#fdf2f8", // 0 - lightest
+  "#fce7f3", // 1
+  "#fbcfe8", // 2
+  "#f9a8d4", // 3
+  "#f472b6", // 4 - primary (1day candles)
+  "#ec4899", // 5
+  "#db2777", // 6
+  "#be185d", // 7
+  "#9d174d", // 8
+  "#831843", // 9 - darkest
+];
+
 // Create the theme
 export const theme = createTheme({
   colors: {
@@ -102,6 +181,12 @@ export const theme = createTheme({
     donchian: donchianColor,
     stochastic: stochasticColor,
     stochasticSecondary: stochasticSecondaryColor,
+    candleSize1Min: candleSize1MinColor,
+    candleSize5Min: candleSize5MinColor,
+    candleSize15Min: candleSize15MinColor,
+    candleSize1Hour: candleSize1HourColor,
+    candleSize4Hour: candleSize4HourColor,
+    candleSize1Day: candleSize1DayColor,
   },
   primaryColor: "primary",
   primaryShade: 5,
@@ -247,6 +332,7 @@ export const themeColors = {
     800: "#00695c",
     900: "#004d40",
   },
+
   // Semantic colors
   success: "#10b981",
   warning: "#f59e0b",

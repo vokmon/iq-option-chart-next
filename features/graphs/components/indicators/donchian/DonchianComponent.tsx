@@ -1,17 +1,21 @@
 import { Switch, Group, Button } from "@mantine/core";
-import { useDonchianQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianQuery";
+import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { DonchianSettingsModal } from "./DonchianSettingsModal";
 
-export function DonchianComponent() {
+interface DonchianComponentProps {
+  tabId: string | null;
+}
+
+export function DonchianComponent({ tabId }: DonchianComponentProps) {
   const {
     showDonchian,
     setShowDonchian,
     donchianConfig,
     updateDonchianPeriod,
-  } = useDonchianQuery();
+  } = useDonchianTabQuery(tabId);
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 

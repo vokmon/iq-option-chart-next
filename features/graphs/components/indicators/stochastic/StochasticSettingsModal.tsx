@@ -1,6 +1,6 @@
 import { Modal, Stack, Group, NumberInput, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { type StochasticConfig } from "@/utils/indicators/stochastic";
+import { type StochasticConfig } from "@/types/indicators/stochastic";
 
 interface StochasticSettingsModalProps {
   opened: boolean;

@@ -49,7 +49,6 @@ export default function LoginPage() {
 
     loginMutation.mutate(credentials, {
       onSuccess: (response) => {
-        console.log("Login successful:", response);
         // Update auth store with user data
         login({
           user_id: response.user_id,

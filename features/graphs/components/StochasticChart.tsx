@@ -3,7 +3,7 @@ import { createChart } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
-import { useStochasticQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticQuery";
+import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
 
 interface StochasticChartProps {
@@ -11,6 +11,7 @@ interface StochasticChartProps {
   candleSize: number;
   chartHeight?: number;
   chartMinutesBack?: number;
+  tabId?: string | null;
 }
 
 export function StochasticChart({
@@ -18,6 +19,7 @@ export function StochasticChart({
   candleSize,
   chartHeight = 200,
   chartMinutesBack = 60,
+  tabId,
 }: StochasticChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,9 @@ export function StochasticChart({
   const fetchingRef = useRef<boolean>(false);
 
   // Query parameter hooks for stochastic oscillator
-  const { showStochastic, stochasticConfig } = useStochasticQuery();
+  const { showStochastic, stochasticConfig } = useStochasticTabQuery(
+    tabId || null
+  );
 
   // Stochastic Oscillator hook
   const {

@@ -9,10 +9,11 @@ import {
 } from "lightweight-charts";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import {
-  calculateDonchianForCandles,
   type DonchianConfig,
   type DonchianData,
-} from "@/utils/indicators/donchian";
+} from "@/types/indicators/donchian";
+import { calculateDonchianForCandles } from "@/utils/indicators/donchian";
+import { getDonchianColors } from "@/utils/indicatorColors";
 
 export interface DonchianSeries {
   upper: ISeriesApi<"Line"> | null;
@@ -46,27 +47,6 @@ export function useDonchianChart({
   donchianConfig,
 }: UseDonchianChartProps): UseDonchianChartReturn {
   const seriesRef = useRef<DonchianSeries | null>(null);
-
-  // Get CSS custom property values for chart colors
-  const getDonchianColors = () => {
-    if (typeof window === "undefined") {
-      // Fallback colors for SSR
-      return {
-        primary: "#ab47bc",
-        secondary: "#ce93d8",
-      };
-    }
-
-    const computedStyle = getComputedStyle(document.documentElement);
-    return {
-      primary:
-        computedStyle.getPropertyValue("--color-donchian-400").trim() ||
-        "#ab47bc",
-      secondary:
-        computedStyle.getPropertyValue("--color-donchian-200").trim() ||
-        "#ce93d8",
-    };
-  };
 
   const createDonchianSeries = useCallback(
     (chart: IChartApi): DonchianSeries => {

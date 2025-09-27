@@ -1,18 +1,24 @@
 import { Switch, Group, Button } from "@mantine/core";
-import { useBollingerBandsQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsQuery";
+import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { BollingerBandsSettingsModal } from "./BollingerBandsSettingsModal";
 
-export function BollingerBandsComponent() {
+interface BollingerBandsComponentProps {
+  tabId: string | null;
+}
+
+export function BollingerBandsComponent({
+  tabId,
+}: BollingerBandsComponentProps) {
   const {
     showBollingerBands,
     setShowBollingerBands,
     bollingerConfig,
     updatePeriod,
     updateStdDev,
-  } = useBollingerBandsQuery();
+  } = useBollingerBandsTabQuery(tabId);
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 

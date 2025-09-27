@@ -44,5 +44,9 @@
   "Configure Stochastic Oscillator parameters": "Configure Stochastic Oscillator parameters",
   "Theme": "Theme",
   "Don't have an account yet?": "Don't have an account yet?",
-  "Sign up": "Sign up"
+  "Sign up": "Sign up",
+  "Select an asset to view chart": "Select an asset to view chart",
+  "Choose an asset from the panel on the right": "Choose an asset from the panel on the right",
+  "No active tab": "No active tab",
+  "Select a tab or create a new one": "Select a tab or create a new one"
 }

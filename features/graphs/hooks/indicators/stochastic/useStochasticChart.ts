@@ -8,10 +8,11 @@ import {
 } from "lightweight-charts";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 import {
-  calculateStochasticForCandles,
   type StochasticConfig,
   type StochasticData,
-} from "@/utils/indicators/stochastic";
+} from "@/types/indicators/stochastic";
+import { calculateStochasticForCandles } from "@/utils/indicators/stochastic";
+import { getStochasticColors } from "@/utils/indicatorColors";
 
 export interface StochasticSeries {
   k: ISeriesApi<"Line"> | null;
@@ -45,41 +46,6 @@ export function useStochasticChart({
   stochasticConfig,
 }: UseStochasticChartProps): UseStochasticChartReturn {
   const seriesRef = useRef<StochasticSeries | null>(null);
-
-  // Get CSS custom property values for chart colors
-  const getStochasticColors = () => {
-    if (typeof window === "undefined") {
-      // Fallback colors for SSR
-      return {
-        k: "#ff6b6b",
-        d: "#4ecdc4",
-        upper: "#00c851",
-        lower: "#ff4444",
-      };
-    }
-
-    const computedStyle = getComputedStyle(document.documentElement);
-    const kColor = computedStyle
-      .getPropertyValue("--color-stochastic-400")
-      .trim();
-    const dColor = computedStyle
-      .getPropertyValue("--color-stochastic-secondary-400")
-      .trim();
-
-    console.log("Stochastic colors:", {
-      k: kColor || "#ff6b6b",
-      d: dColor || "#4ecdc4",
-      kRaw: computedStyle.getPropertyValue("--color-stochastic-400"),
-      dRaw: computedStyle.getPropertyValue("--color-stochastic-secondary-400"),
-    });
-
-    return {
-      k: kColor || "#ff6b6b",
-      d: dColor || "#4ecdc4",
-      upper: "#00c851", // Green for overbought (80)
-      lower: "#ff4444", // Red for oversold (20)
-    };
-  };
 
   const createStochasticSeries = useCallback(
     (chart: IChartApi): StochasticSeries => {
