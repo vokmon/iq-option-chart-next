@@ -1,4 +1,4 @@
-import { useAssetChartStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assetStore";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
 
 export interface UseStochasticTabQueryReturn {
@@ -10,13 +10,11 @@ export interface UseStochasticTabQueryReturn {
   updateSmoothing: (smoothing: number) => void;
 }
 
-export function useStochasticTabQuery(
-  chartId: string | null
-): UseStochasticTabQueryReturn {
-  const { charts, updateChartIndicators } = useAssetChartStore();
+export function useStochasticTabQuery(): UseStochasticTabQueryReturn {
+  const { getActiveAsset, updateIndicators } = useAssetStore();
 
-  const chart = charts.find((c) => c.id === chartId);
-  const stochasticSettings = chart?.indicators.stochastic || {
+  const asset = getActiveAsset();
+  const stochasticSettings = asset?.indicators.stochastic || {
     enabled: true,
     config: { kPeriod: 13, dPeriod: 3, smoothing: 3 },
   };
@@ -25,8 +23,8 @@ export function useStochasticTabQuery(
   const stochasticConfig = stochasticSettings.config;
 
   const setShowStochastic = (show: boolean) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       stochastic: {
         ...stochasticSettings,
         enabled: show,
@@ -35,8 +33,8 @@ export function useStochasticTabQuery(
   };
 
   const updateKPeriod = (kPeriod: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       stochastic: {
         ...stochasticSettings,
         config: {
@@ -48,8 +46,8 @@ export function useStochasticTabQuery(
   };
 
   const updateDPeriod = (dPeriod: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       stochastic: {
         ...stochasticSettings,
         config: {
@@ -61,8 +59,8 @@ export function useStochasticTabQuery(
   };
 
   const updateSmoothing = (smoothing: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       stochastic: {
         ...stochasticSettings,
         config: {

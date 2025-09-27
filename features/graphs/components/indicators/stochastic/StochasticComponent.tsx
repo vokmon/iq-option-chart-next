@@ -5,11 +5,7 @@ import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { StochasticSettingsModal } from "./StochasticSettingsModal";
 
-interface StochasticComponentProps {
-  tabId: string | null;
-}
-
-export function StochasticComponent({ tabId }: StochasticComponentProps) {
+export function StochasticComponent() {
   const {
     showStochastic,
     setShowStochastic,
@@ -17,7 +13,7 @@ export function StochasticComponent({ tabId }: StochasticComponentProps) {
     updateKPeriod,
     updateDPeriod,
     updateSmoothing,
-  } = useStochasticTabQuery(tabId);
+  } = useStochasticTabQuery();
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 

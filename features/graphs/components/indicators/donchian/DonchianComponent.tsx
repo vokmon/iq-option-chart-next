@@ -5,17 +5,13 @@ import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { DonchianSettingsModal } from "./DonchianSettingsModal";
 
-interface DonchianComponentProps {
-  tabId: string | null;
-}
-
-export function DonchianComponent({ tabId }: DonchianComponentProps) {
+export function DonchianComponent() {
   const {
     showDonchian,
     setShowDonchian,
     donchianConfig,
     updateDonchianPeriod,
-  } = useDonchianTabQuery(tabId);
+  } = useDonchianTabQuery();
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 

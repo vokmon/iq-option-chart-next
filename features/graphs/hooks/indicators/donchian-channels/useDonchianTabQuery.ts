@@ -1,4 +1,4 @@
-import { useAssetChartStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assetStore";
 import { type DonchianConfig } from "@/types/indicators/donchian";
 
 export interface UseDonchianTabQueryReturn {
@@ -8,13 +8,11 @@ export interface UseDonchianTabQueryReturn {
   updateDonchianPeriod: (period: number) => void;
 }
 
-export function useDonchianTabQuery(
-  chartId: string | null
-): UseDonchianTabQueryReturn {
-  const { charts, updateChartIndicators } = useAssetChartStore();
+export function useDonchianTabQuery(): UseDonchianTabQueryReturn {
+  const { getActiveAsset, updateIndicators } = useAssetStore();
 
-  const chart = charts.find((c) => c.id === chartId);
-  const donchianSettings = chart?.indicators.donchian || {
+  const asset = getActiveAsset();
+  const donchianSettings = asset?.indicators.donchian || {
     enabled: true,
     config: { period: 20 },
   };
@@ -23,8 +21,8 @@ export function useDonchianTabQuery(
   const donchianConfig = donchianSettings.config;
 
   const setShowDonchian = (show: boolean) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       donchian: {
         ...donchianSettings,
         enabled: show,
@@ -33,8 +31,8 @@ export function useDonchianTabQuery(
   };
 
   const updateDonchianPeriod = (period: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       donchian: {
         ...donchianSettings,
         config: {

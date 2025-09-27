@@ -12,31 +12,27 @@ import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bo
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
 
-interface ChartProps {
+interface MainChartProps {
   activeId: number;
   candleSize: number;
   chartHeight?: number;
   chartMinutesBack?: number;
-  tabId?: string | null;
 }
 
-export function Chart({
+export function MainChart({
   activeId,
   candleSize,
   chartHeight = 400,
   chartMinutesBack = 60,
-  tabId,
-}: ChartProps) {
+}: MainChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
 
   // Query parameter hooks for indicators
-  const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery(
-    tabId || null
-  );
-  const { showDonchian, donchianConfig } = useDonchianTabQuery(tabId || null);
+  const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery();
+  const { showDonchian, donchianConfig } = useDonchianTabQuery();
 
   // Bollinger Bands hook
   const {

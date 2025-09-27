@@ -30,8 +30,8 @@ export function AssetSelector({
         const originalName =
           actives.find((a) => String(a.activeId) === option.value)?.name ?? "";
         const group = originalName.toLowerCase().endsWith("-otc")
-          ? "OTC"
-          : "Asset";
+          ? t("OTC")
+          : t("Asset");
         if (!acc[group]) {
           acc[group] = [];
         }
@@ -47,8 +47,8 @@ export function AssetSelector({
   const selectData = Object.entries(groupedOptions)
     .sort(([a], [b]) => {
       // Sort so "Asset" comes first, then "OTC"
-      if (a === "Asset" && b === "OTC") return -1;
-      if (a === "OTC" && b === "Asset") return 1;
+      if (a === t("Asset") && b === t("OTC")) return -1;
+      if (a === t("OTC") && b === t("Asset")) return 1;
       return 0;
     })
     .map(([group, options]) => ({
@@ -59,7 +59,7 @@ export function AssetSelector({
   return (
     <Select
       label={t("Asset")}
-      placeholder="Choose an asset"
+      placeholder={t("Choose an asset")}
       value={selectedActiveId}
       onChange={(value) => onAssetSelect?.(value || "none")}
       data={selectData}

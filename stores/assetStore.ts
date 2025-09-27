@@ -22,7 +22,7 @@ export interface AssetIndicatorSettings {
   };
 }
 
-export interface AssetChartState {
+export interface AssetState {
   id: string;
   name: string;
   asset: DigitalOptionsUnderlying | null;
@@ -31,29 +31,30 @@ export interface AssetChartState {
   isEmpty: boolean;
 }
 
-interface AssetChartStore {
-  charts: AssetChartState[];
-  activeChartId: string | null;
-  maxCharts: number;
+interface AssetStore {
+  assets: AssetState[];
+  activeAssetId: string | null;
+  maxAssets: number;
 
   // Actions
-  addChart: (asset?: DigitalOptionsUnderlying) => string;
-  removeChart: (chartId: string) => void;
-  setActiveChart: (chartId: string) => void;
-  updateChartAsset: (
-    chartId: string,
+  addAsset: (asset?: DigitalOptionsUnderlying) => string;
+  removeAsset: (assetId: string) => void;
+  setActiveAsset: (assetId: string) => void;
+  updateAsset: (
+    assetId: string,
     asset: DigitalOptionsUnderlying | null
   ) => void;
-  updateChartCandleSize: (chartId: string, candleSize: number) => void;
-  updateChartIndicators: (
-    chartId: string,
+  updateCandleSize: (assetId: string, candleSize: number) => void;
+  updateIndicators: (
+    assetId: string,
     indicators: Partial<AssetIndicatorSettings>
   ) => void;
   getAvailableAssets: (
     allAssets: DigitalOptionsUnderlying[]
   ) => DigitalOptionsUnderlying[];
-  canAddChart: () => boolean;
-  canRemoveChart: (chartId: string) => boolean;
+  canAddAsset: () => boolean;
+  canRemoveAsset: (assetId: string) => boolean;
+  getActiveAsset: () => AssetState | undefined;
 }
 
 const defaultIndicators: AssetIndicatorSettings = {
@@ -71,19 +72,17 @@ const defaultIndicators: AssetIndicatorSettings = {
   },
 };
 
-const createEmptyChart = (): AssetChartState => ({
-  id: `chart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-  name: "New Chart",
+const createEmptyAsset = (): AssetState => ({
+  id: `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+  name: "New Asset",
   asset: null,
   candleSize: 60,
   indicators: JSON.parse(JSON.stringify(defaultIndicators)), // Deep clone
   isEmpty: true,
 });
 
-const createChartWithAsset = (
-  asset: DigitalOptionsUnderlying
-): AssetChartState => ({
-  id: `chart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+const createAssetWithData = (asset: DigitalOptionsUnderlying): AssetState => ({
+  id: `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
   name: (asset.name ?? `Asset ${asset.activeId}`).replace(/-op$/i, ""),
   asset,
   candleSize: 60,
@@ -91,140 +90,142 @@ const createChartWithAsset = (
   isEmpty: false,
 });
 
-export const useAssetChartStore = create<AssetChartStore>()(
+export const useAssetStore = create<AssetStore>()(
   persist(
     (set, get) => ({
-      charts: [],
-      activeChartId: null,
-      maxCharts: 15,
+      assets: [],
+      activeAssetId: null,
+      maxAssets: 15,
 
-      addChart: (asset?: DigitalOptionsUnderlying) => {
+      addAsset: (asset?: DigitalOptionsUnderlying) => {
         const state = get();
-        // Don't allow adding new charts if we're at max capacity
-        if (state.charts.length >= state.maxCharts) {
-          return state.activeChartId || "";
+        // Don't allow adding new assets if we're at max capacity
+        if (state.assets.length >= state.maxAssets) {
+          return state.activeAssetId || "";
         }
 
-        // Don't allow adding new charts if there's already an empty tab
-        const hasEmptyTab = state.charts.some((chart) => chart.isEmpty);
-        if (hasEmptyTab) {
-          return state.activeChartId || "";
+        // Don't allow adding new assets if there's already an empty asset
+        const hasEmptyAsset = state.assets.some((asset) => asset.isEmpty);
+        if (hasEmptyAsset) {
+          return state.activeAssetId || "";
         }
 
-        const newChart = asset
-          ? createChartWithAsset(asset)
-          : createEmptyChart();
+        const newAsset = asset
+          ? createAssetWithData(asset)
+          : createEmptyAsset();
 
         set((state) => ({
-          charts: [...state.charts, newChart],
-          activeChartId: newChart.id,
+          assets: [...state.assets, newAsset],
+          activeAssetId: newAsset.id,
         }));
 
-        return newChart.id;
+        return newAsset.id;
       },
 
-      removeChart: (chartId: string) => {
+      removeAsset: (assetId: string) => {
         const state = get();
-        if (state.charts.length <= 1) return; // Cannot remove last chart
+        if (state.assets.length <= 1) return; // Cannot remove last asset
 
-        const chartIndex = state.charts.findIndex(
-          (chart) => chart.id === chartId
+        const assetIndex = state.assets.findIndex(
+          (asset) => asset.id === assetId
         );
-        if (chartIndex === -1) return;
+        if (assetIndex === -1) return;
 
-        const newCharts = state.charts.filter((chart) => chart.id !== chartId);
-        let newActiveChartId = state.activeChartId;
+        const newAssets = state.assets.filter((asset) => asset.id !== assetId);
+        let newActiveAssetId = state.activeAssetId;
 
-        // If we're removing the active chart, switch to another chart
-        if (state.activeChartId === chartId) {
-          if (chartIndex > 0) {
-            newActiveChartId = newCharts[chartIndex - 1].id;
-          } else if (newCharts.length > 0) {
-            newActiveChartId = newCharts[0].id;
+        // If we're removing the active asset, switch to another asset
+        if (state.activeAssetId === assetId) {
+          if (assetIndex > 0) {
+            newActiveAssetId = newAssets[assetIndex - 1].id;
+          } else if (newAssets.length > 0) {
+            newActiveAssetId = newAssets[0].id;
           } else {
-            newActiveChartId = null;
+            newActiveAssetId = null;
           }
         }
 
         set({
-          charts: newCharts,
-          activeChartId: newActiveChartId,
+          assets: newAssets,
+          activeAssetId: newActiveAssetId,
         });
       },
 
-      setActiveChart: (chartId: string) => {
+      setActiveAsset: (assetId: string) => {
         const state = get();
-        const chartExists = state.charts.some((chart) => chart.id === chartId);
-        if (chartExists) {
-          set({ activeChartId: chartId });
+        const assetExists = state.assets.some((asset) => asset.id === assetId);
+        if (assetExists) {
+          set({ activeAssetId: assetId });
         }
       },
 
-      updateChartAsset: (
-        chartId: string,
+      updateAsset: (
+        assetId: string,
         asset: DigitalOptionsUnderlying | null
       ) => {
         set((state) => ({
-          charts: state.charts.map((chart) =>
-            chart.id === chartId
+          assets: state.assets.map((assetState) =>
+            assetState.id === assetId
               ? {
-                  ...chart,
+                  ...assetState,
                   asset,
                   name: asset
                     ? (asset.name ?? `Asset ${asset.activeId}`).replace(
                         /-op$/i,
                         ""
                       )
-                    : "New Chart",
+                    : "New Asset",
                   isEmpty: asset === null,
                 }
-              : chart
+              : assetState
           ),
         }));
       },
 
-      updateChartCandleSize: (chartId: string, candleSize: number) => {
+      updateCandleSize: (assetId: string, candleSize: number) => {
         set((state) => ({
-          charts: state.charts.map((chart) =>
-            chart.id === chartId ? { ...chart, candleSize } : chart
+          assets: state.assets.map((assetState) =>
+            assetState.id === assetId
+              ? { ...assetState, candleSize }
+              : assetState
           ),
         }));
       },
 
-      updateChartIndicators: (
-        chartId: string,
+      updateIndicators: (
+        assetId: string,
         indicators: Partial<AssetIndicatorSettings>
       ) => {
         set((state) => ({
-          charts: state.charts.map((chart) =>
-            chart.id === chartId
+          assets: state.assets.map((assetState) =>
+            assetState.id === assetId
               ? {
-                  ...chart,
+                  ...assetState,
                   indicators: {
-                    ...chart.indicators,
+                    ...assetState.indicators,
                     ...indicators,
                     // Deep merge indicator configs
                     ...(indicators.bollingerBands && {
                       bollingerBands: {
-                        ...chart.indicators.bollingerBands,
+                        ...assetState.indicators.bollingerBands,
                         ...indicators.bollingerBands,
                       },
                     }),
                     ...(indicators.donchian && {
                       donchian: {
-                        ...chart.indicators.donchian,
+                        ...assetState.indicators.donchian,
                         ...indicators.donchian,
                       },
                     }),
                     ...(indicators.stochastic && {
                       stochastic: {
-                        ...chart.indicators.stochastic,
+                        ...assetState.indicators.stochastic,
                         ...indicators.stochastic,
                       },
                     }),
                   },
                 }
-              : chart
+              : assetState
           ),
         }));
       },
@@ -232,38 +233,47 @@ export const useAssetChartStore = create<AssetChartStore>()(
       getAvailableAssets: (allAssets: DigitalOptionsUnderlying[]) => {
         const state = get();
         const usedAssetIds = new Set(
-          state.charts
-            .filter((chart) => chart.asset !== null)
-            .map((chart) => chart.asset!.activeId)
+          state.assets
+            .filter((assetState) => assetState.asset !== null)
+            .map((assetState) => assetState.asset!.activeId)
         );
 
         return allAssets.filter((asset) => !usedAssetIds.has(asset.activeId));
       },
 
-      canAddChart: () => {
+      canAddAsset: () => {
         const state = get();
-        // Don't allow adding new charts if we're at max capacity
-        if (state.charts.length >= state.maxCharts) {
+        // Don't allow adding new assets if we're at max capacity
+        if (state.assets.length >= state.maxAssets) {
           return false;
         }
-        // Don't allow adding new charts if there's already an empty tab
-        const hasEmptyTab = state.charts.some((chart) => chart.isEmpty);
-        return !hasEmptyTab;
+        // Don't allow adding new assets if there's already an empty asset
+        const hasEmptyAsset = state.assets.some(
+          (assetState) => assetState.isEmpty
+        );
+        return !hasEmptyAsset;
       },
 
-      canRemoveChart: (chartId: string) => {
+      canRemoveAsset: (assetId: string) => {
         const state = get();
         return (
-          state.charts.length > 1 &&
-          state.charts.some((chart) => chart.id === chartId)
+          state.assets.length > 1 &&
+          state.assets.some((assetState) => assetState.id === assetId)
+        );
+      },
+
+      getActiveAsset: () => {
+        const state = get();
+        return state.assets.find(
+          (assetState) => assetState.id === state.activeAssetId
         );
       },
     }),
     {
       name: "asset-storage",
       partialize: (state) => ({
-        charts: state.charts,
-        activeChartId: state.activeChartId,
+        assets: state.assets,
+        activeAssetId: state.activeAssetId,
       }),
     }
   )

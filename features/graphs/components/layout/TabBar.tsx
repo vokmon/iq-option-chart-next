@@ -15,87 +15,58 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
-import { useState, useRef, useEffect } from "react";
-import { useAssetChartStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assetStore";
 import { getCandleSizeLabel, getCandleColor } from "@/utils/candleColors";
+import { useTranslations } from "next-intl";
+import { useTabScroll } from "../../hooks/tab/useTabScroll";
+import { useTabAssetHandlers } from "../../hooks/tab/useTabAssetHandlers";
+import { useTabScrollEffects } from "../../hooks/tab/useTabScrollEffects";
 export function TabBar() {
+  const t = useTranslations();
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
+  const { assets } = useAssetStore();
+
+  // Use custom hooks for scroll functionality
   const {
-    charts,
-    activeChartId,
-    setActiveChart,
-    addChart,
-    removeChart,
-    canAddChart,
-    canRemoveChart,
-  } = useAssetChartStore();
+    scrollAreaRef,
+    canScrollLeft,
+    canScrollRight,
+    scrollLeft,
+    scrollRight,
+    updateScrollButtons,
+    scrollToActiveTab,
+    handleScroll,
+  } = useTabScroll();
 
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  // Use custom hooks for asset management
+  const {
+    activeAssetId,
+    handleAddAsset,
+    handleRemoveAsset,
+    handleAssetChange,
+    canAddAsset,
+    canRemoveAsset,
+  } = useTabAssetHandlers();
 
-  const handleAddChart = () => {
-    if (canAddChart()) {
-      addChart();
-    }
-  };
+  // Use custom hooks for scroll effects
+  useTabScrollEffects({
+    scrollAreaRef: scrollAreaRef as React.RefObject<HTMLDivElement | null>,
+    activeAssetId,
+    assets,
+    updateScrollButtons,
+    scrollToActiveTab,
+  });
 
-  const handleRemoveChart = (chartId: string, event: React.MouseEvent) => {
-    event.stopPropagation();
-    if (canRemoveChart(chartId)) {
-      removeChart(chartId);
-    }
-  };
-
-  const handleChartChange = (value: string | null) => {
-    if (value) {
-      setActiveChart(value);
-    }
-  };
-
-  const scrollLeft = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
-
-  const updateScrollButtons = () => {
-    if (scrollAreaRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollAreaRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
-    }
-  };
-
-  const handleScroll = () => {
-    updateScrollButtons();
-  };
-
-  // Initialize scroll button states when component mounts or charts change
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateScrollButtons();
-    }, 100); // Small delay to ensure DOM is updated
-
-    return () => clearTimeout(timer);
-  }, [charts.length]);
-
-  if (charts.length === 0) {
+  if (assets.length === 0) {
     return null;
   }
 
   return (
     <Box style={{ position: "relative", width: "100%" }}>
       <Tabs
-        value={activeChartId || undefined}
-        onChange={handleChartChange}
+        value={activeAssetId || undefined}
+        onChange={handleAssetChange}
         variant="outline"
         style={{ width: "100%" }}
       >
@@ -178,14 +149,15 @@ export function TabBar() {
                 boxSizing: "border-box",
               }}
             >
-              {charts.map((chart) => (
+              {assets.map((asset) => (
                 <Tabs.Tab
-                  key={chart.id}
-                  value={chart.id}
+                  key={asset.id}
+                  value={asset.id}
+                  data-tab-id={asset.id}
                   rightSection={
-                    canRemoveChart(chart.id) ? (
+                    canRemoveAsset(asset.id) ? (
                       <div
-                        onClick={(e) => handleRemoveChart(chart.id, e)}
+                        onClick={(e) => handleRemoveAsset(asset.id, e)}
                         style={{
                           marginLeft: 8,
                           padding: 2,
@@ -221,13 +193,13 @@ export function TabBar() {
                     position: "relative",
                     flexShrink: 0,
                     backgroundColor:
-                      activeChartId === chart.id
+                      activeAssetId === asset.id
                         ? colorScheme === "dark"
                           ? "var(--mantine-color-blue-9)"
                           : "var(--mantine-color-blue-1)"
                         : "transparent",
                     borderColor:
-                      activeChartId === chart.id
+                      activeAssetId === asset.id
                         ? "var(--mantine-color-blue-6)"
                         : "var(--mantine-color-gray-3)",
                     borderWidth: "1px",
@@ -241,42 +213,42 @@ export function TabBar() {
                       style={{
                         flex: 1,
                         color:
-                          activeChartId === chart.id
+                          activeAssetId === asset.id
                             ? colorScheme === "dark"
                               ? "var(--mantine-color-blue-1)"
                               : "var(--mantine-color-blue-9)"
-                            : chart.isEmpty
+                            : asset.isEmpty
                             ? "var(--mantine-color-dimmed)"
                             : undefined,
-                        fontWeight: activeChartId === chart.id ? 600 : 400,
+                        fontWeight: activeAssetId === asset.id ? 600 : 400,
                       }}
                     >
-                      {chart.name}
+                      {asset.name}
                     </Text>
                     <Group gap={4}>
-                      {!chart.isEmpty && (
+                      {!asset.isEmpty && (
                         <Badge
                           size="xs"
                           variant="light"
                           style={{
-                            backgroundColor: getCandleColor(chart.candleSize),
+                            backgroundColor: getCandleColor(asset.candleSize),
                             color:
                               colorScheme === "dark"
                                 ? theme.colors.dark[7]
                                 : theme.white,
-                            fontWeight: activeChartId === chart.id ? 600 : 500,
+                            fontWeight: activeAssetId === asset.id ? 600 : 500,
                           }}
                         >
-                          {getCandleSizeLabel(chart.candleSize)}
+                          {getCandleSizeLabel(asset.candleSize)}
                         </Badge>
                       )}
-                      {chart.isEmpty && (
+                      {asset.isEmpty && (
                         <Badge
                           size="xs"
                           variant="light"
                           color="gray"
                           style={{
-                            fontWeight: activeChartId === chart.id ? 600 : 500,
+                            fontWeight: activeAssetId === asset.id ? 600 : 500,
                           }}
                         >
                           Empty
@@ -289,29 +261,30 @@ export function TabBar() {
 
               <Tooltip
                 label={
-                  canAddChart()
-                    ? "Add new chart"
-                    : charts.some((chart) => chart.isEmpty)
-                    ? "Please fill the empty tab first"
-                    : "Maximum number of charts reached"
+                  canAddAsset()
+                    ? t("Add new asset")
+                    : assets.some((asset) => asset.isEmpty)
+                    ? t("Please fill the empty asset first")
+                    : t("Maximum number of assets reached")
                 }
                 position="top"
                 withArrow
               >
                 <ActionIcon
+                  id="add-asset-button"
                   variant="filled"
-                  color={canAddChart() ? "blue" : "gray"}
-                  onClick={canAddChart() ? handleAddChart : () => {}}
+                  color={canAddAsset() ? "blue" : "gray"}
+                  onClick={canAddAsset() ? handleAddAsset : () => {}}
                   style={{
                     borderRadius: "var(--mantine-radius-sm)",
                     flexShrink: 0,
-                    cursor: canAddChart() ? "pointer" : "not-allowed",
+                    cursor: canAddAsset() ? "pointer" : "not-allowed",
                     minWidth: 32,
                     minHeight: 32,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    opacity: canAddChart() ? 1 : 0.7,
+                    opacity: canAddAsset() ? 1 : 0.7,
                   }}
                 >
                   <IconPlus size={16} />

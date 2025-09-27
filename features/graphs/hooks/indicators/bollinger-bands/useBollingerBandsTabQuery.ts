@@ -1,4 +1,4 @@
-import { useAssetChartStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assetStore";
 import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 
 export interface UseBollingerBandsTabQueryReturn {
@@ -9,13 +9,11 @@ export interface UseBollingerBandsTabQueryReturn {
   updateStdDev: (stdDev: number) => void;
 }
 
-export function useBollingerBandsTabQuery(
-  chartId: string | null
-): UseBollingerBandsTabQueryReturn {
-  const { charts, updateChartIndicators } = useAssetChartStore();
+export function useBollingerBandsTabQuery(): UseBollingerBandsTabQueryReturn {
+  const { getActiveAsset, updateIndicators } = useAssetStore();
 
-  const chart = charts.find((c) => c.id === chartId);
-  const bollingerSettings = chart?.indicators.bollingerBands || {
+  const asset = getActiveAsset();
+  const bollingerSettings = asset?.indicators.bollingerBands || {
     enabled: true,
     config: { period: 14, stdDev: 2 },
   };
@@ -24,8 +22,8 @@ export function useBollingerBandsTabQuery(
   const bollingerConfig = bollingerSettings.config;
 
   const setShowBollingerBands = (show: boolean) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       bollingerBands: {
         ...bollingerSettings,
         enabled: show,
@@ -34,8 +32,8 @@ export function useBollingerBandsTabQuery(
   };
 
   const updatePeriod = (period: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       bollingerBands: {
         ...bollingerSettings,
         config: {
@@ -47,8 +45,8 @@ export function useBollingerBandsTabQuery(
   };
 
   const updateStdDev = (stdDev: number) => {
-    if (!chartId) return;
-    updateChartIndicators(chartId, {
+    if (!asset?.id) return;
+    updateIndicators(asset.id, {
       bollingerBands: {
         ...bollingerSettings,
         config: {

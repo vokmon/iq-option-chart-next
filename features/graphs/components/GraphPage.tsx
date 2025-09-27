@@ -1,15 +1,16 @@
 import { TabBar } from "./layout/TabBar";
-import { TabContent } from "./layout/TabContent";
+import { ChartTab } from "./layout/ChartTab";
 import { Flex } from "@mantine/core";
 import { useEffect, useState, useRef } from "react";
 import { useSdk } from "@/hooks/useSdk";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
-import { useAssetChartStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assetStore";
+import ChartSidebar from "./layout/ChartSidebar";
 
 export default function GraphPage() {
   const { sdk } = useSdk();
   const [actives, setActives] = useState<DigitalOptionsUnderlying[]>([]);
-  const { charts, addChart } = useAssetChartStore();
+  const { assets, addAsset } = useAssetStore();
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -26,21 +27,26 @@ export default function GraphPage() {
     init().then();
   }, [sdk]);
 
-  // Initialize with one empty chart if none exist
-  // We use a ref to prevent multiple chart creation during initial render cycle
-  // Without this, useEffect would run multiple times: once when charts.length === 0,
-  // then again after addChart() updates the store, causing duplicate empty charts
+  // Initialize with one empty asset if none exist
+  // We use a ref to prevent multiple asset creation during initial render cycle
+  // Without this, useEffect would run multiple times: once when assets.length === 0,
+  // then again after addAsset() updates the store, causing duplicate empty assets
   useEffect(() => {
-    if (!hasInitialized.current && charts.length === 0) {
+    if (!hasInitialized.current && assets.length === 0) {
       hasInitialized.current = true;
-      addChart();
+      addAsset();
     }
-  }, [addChart, charts.length]);
+  }, [addAsset, assets.length]);
 
   return (
-    <Flex direction="column" gap="sm" p={10} w="100%" h="100%">
-      <TabBar />
-      <TabContent actives={actives} />
+    <Flex direction="row" w="100%" p={10} gap="xl">
+      <Flex direction="column" gap="sm" w="80%" h="100%">
+        <TabBar />
+        <ChartTab />
+      </Flex>
+      <Flex direction="column" w="20%">
+        <ChartSidebar actives={actives} />
+      </Flex>
     </Flex>
   );
 }

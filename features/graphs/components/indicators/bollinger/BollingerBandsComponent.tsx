@@ -5,20 +5,14 @@ import { useState } from "react";
 import { IconSettings } from "@tabler/icons-react";
 import { BollingerBandsSettingsModal } from "./BollingerBandsSettingsModal";
 
-interface BollingerBandsComponentProps {
-  tabId: string | null;
-}
-
-export function BollingerBandsComponent({
-  tabId,
-}: BollingerBandsComponentProps) {
+export function BollingerBandsComponent() {
   const {
     showBollingerBands,
     setShowBollingerBands,
     bollingerConfig,
     updatePeriod,
     updateStdDev,
-  } = useBollingerBandsTabQuery(tabId);
+  } = useBollingerBandsTabQuery();
   const t = useTranslations();
   const [opened, setOpened] = useState(false);
 
