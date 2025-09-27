@@ -83,7 +83,7 @@ export function useTabScrollEffects({
         };
       }
     }
-  }, [activeAssetId, scrollToActiveTab, assets.length, scrollAreaRef]);
+  }, [activeAssetId, scrollToActiveTab, assets.length, scrollAreaRef, assets]);
 
   // Additional effect for page refresh - listen to window load event as final fallback
   useEffect(() => {
