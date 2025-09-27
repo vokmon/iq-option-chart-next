@@ -42,5 +42,7 @@
   "Configure Donchian Channels parameters": "กำหนดค่าพารามิเตอร์ช่อง Donchian",
   "Stochastic Oscillator Settings": "การตั้งค่า Stochastic Oscillator",
   "Configure Stochastic Oscillator parameters": "กำหนดค่าพารามิเตอร์ Stochastic Oscillator",
-  "Theme": "ธีม"
+  "Theme": "ธีม",
+  "Don't have an account yet?": "ยังไม่มีบัญชีหรอ?",
+  "Sign up": "สมัครสมาชิก"
 }

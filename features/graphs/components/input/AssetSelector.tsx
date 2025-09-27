@@ -34,10 +34,10 @@ export function AssetSelector({ actives, className }: AssetSelectorProps) {
 
     const groupedOptions = options.reduce(
       (acc: Record<string, typeof options>, option) => {
-        // Check if the original name ends with "-OP" (case insensitive)
+        // Check if the original name ends with "-OTC" (case insensitive)
         const originalName =
           actives.find((a) => String(a.activeId) === option.value)?.name ?? "";
-        const group = originalName.toLowerCase().endsWith("-op")
+        const group = originalName.toLowerCase().endsWith("-otc")
           ? "OTC"
           : "Asset";
         if (!acc[group]) {

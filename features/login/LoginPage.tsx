@@ -12,6 +12,8 @@ import {
   Box,
   Stack,
   Center,
+  Text,
+  Anchor,
 } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { useState } from "react";
@@ -179,6 +181,34 @@ export default function LoginPage() {
                   </Button>
                 </Stack>
               </form>
+            </Stack>
+          </Paper>
+
+          {/* Sign Up Section */}
+          <Paper
+            radius="lg"
+            p="md"
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(5px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              width: "100%",
+            }}
+          >
+            <Stack gap="sm" align="center">
+              <Text c="white" size="sm" ta="center">
+                {t("Don't have an account yet?")}
+              </Text>
+              <Anchor
+                href="https://iqbroker.com/lp/mobile-partner-pwa/en/?aff=261925&aff_model=revenue"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="no-underline"
+              >
+                <button className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-2 border-orange-400/50 text-white px-8 py-3 rounded-xl font-semibold text-base hover:from-orange-500/30 hover:to-red-500/30 hover:border-orange-400 hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:shadow-orange-500/25">
+                  {t("Sign up")}
+                </button>
+              </Anchor>
             </Stack>
           </Paper>
 
