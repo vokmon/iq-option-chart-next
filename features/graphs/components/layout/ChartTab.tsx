@@ -32,7 +32,7 @@ export function ChartTab() {
           <MainChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
-            chartHeight={window.innerHeight - 280}
+            chartHeight={window.innerHeight - 300}
             chartMinutesBack={60}
           />
           <div className="my-4" />
@@ -45,8 +45,8 @@ export function ChartTab() {
           />
         </>
       ) : (
-        <Center h="100%" style={{ minHeight: 400 }}>
-          <Stack align="center" gap="md">
+        <Center h="100%">
+          <Stack align="center" gap="md" h="100%">
             <Text size="lg" c="dimmed">
               {t("Select an asset to view chart")}
             </Text>

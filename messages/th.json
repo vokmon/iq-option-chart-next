@@ -56,8 +56,6 @@
   "Account Balance": "ยอดเงินในบัญชี",
   "Available": "เงินที่ใช้ได้",
   "Investment": "เงินลงทุน",
-  "What is this?": "นี่คืออะไร?",
-  "This shows your available balance for trading": "แสดงยอดเงินที่ใช้ได้สำหรับการเทรด",
   "Real": "จริง",
   "Practice": "ฝึกหัด",
   "Select balance": "เลือกยอดเงิน",
@@ -80,5 +78,8 @@
   "Session Required": "ต้องเข้าสู่ระบบ",
   "Authentication Required Message": "กรุณาเข้าสู่ระบบเพื่อใช้งาน",
   "Go to Login": "ไปที่หน้าเข้าสู่ระบบ",
-  "Logging out": "กำลังออกจากระบบ"
+  "Logging out": "กำลังออกจากระบบ",
+  "Trading is disabled": "การเทรดถูกปิดใช้งาน",
+  "Please enter an amount": "กรุณาใส่จำนวนเงิน",
+  "Insufficient balance": "ยอดเงินไม่เพียงพอ"
 }

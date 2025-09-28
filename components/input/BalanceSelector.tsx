@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Select,
   Group,
@@ -11,7 +11,7 @@ import {
   Badge,
   Tooltip,
 } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons-react";
+import { IconChevronDown, IconAlertTriangle } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useSdk } from "@/hooks/useSdk";
 import type { Balance, BalanceType } from "@quadcode-tech/client-sdk-js";
@@ -30,6 +30,12 @@ export default function BalanceSelector({
   const [balances, setBalances] = useState<Balance[]>([]);
   const [selectedBalance, setSelectedBalance] = useState<Balance | null>(null);
   const [loading, setLoading] = useState(true);
+  const onBalanceChangeRef = useRef(onBalanceChange);
+
+  // Update ref when callback changes
+  useEffect(() => {
+    onBalanceChangeRef.current = onBalanceChange;
+  }, [onBalanceChange]);
 
   // Format currency amount
   const formatAmount = (amount: number, currency: string) => {
@@ -83,14 +89,14 @@ export default function BalanceSelector({
           : balancesList[0];
 
         setSelectedBalance(initialBalance);
-        onBalanceChange?.(initialBalance);
+        onBalanceChangeRef.current?.(initialBalance);
       }
     } catch (error) {
       console.error("Failed to load balances:", error);
     } finally {
       setLoading(false);
     }
-  }, [sdk, selectedBalanceId, onBalanceChange]);
+  }, [sdk, selectedBalanceId]);
 
   // Subscribe to balance updates
   useEffect(() => {
@@ -113,7 +119,7 @@ export default function BalanceSelector({
         // Update selected balance if it's the one that changed
         if (selectedBalance?.id === updatedBalance.id) {
           setSelectedBalance(updatedBalance);
-          onBalanceChange?.(updatedBalance);
+          onBalanceChangeRef.current?.(updatedBalance);
         }
       };
 
@@ -131,12 +137,23 @@ export default function BalanceSelector({
         });
       });
     };
-  }, [sdk, balances, selectedBalance?.id, onBalanceChange]);
+  }, [sdk, balances, selectedBalance?.id]);
 
   // Load balances on mount
   useEffect(() => {
     loadBalances();
   }, [loadBalances]);
+
+  // Handle selectedBalanceId prop changes
+  useEffect(() => {
+    if (selectedBalanceId && balances.length > 0) {
+      const balance = balances.find((b) => b.id === selectedBalanceId);
+      if (balance && balance.id !== selectedBalance?.id) {
+        setSelectedBalance(balance);
+        onBalanceChangeRef.current?.(balance);
+      }
+    }
+  }, [selectedBalanceId, balances, selectedBalance?.id]);
 
   // Handle balance selection
   const handleBalanceChange = (value: string | null) => {
@@ -145,7 +162,7 @@ export default function BalanceSelector({
     const balance = balances.find((b) => b.id === parseInt(value));
     if (balance) {
       setSelectedBalance(balance);
-      onBalanceChange?.(balance);
+      onBalanceChangeRef.current?.(balance);
     }
   };
 
@@ -189,14 +206,6 @@ export default function BalanceSelector({
         </Text>
       </Group>
       <Divider size="xs" />
-      <Group gap="xs" align="center">
-        <Text size="xs" c="dimmed">
-          {t("What is this?")}
-        </Text>
-        <Text size="xs" c="dimmed">
-          {t("This shows your available balance for trading")}
-        </Text>
-      </Group>
     </Stack>
   ) : null;
 
@@ -205,25 +214,41 @@ export default function BalanceSelector({
       <Stack gap="sm">
         {/* Compact Balance Display */}
         {selectedBalance && (
-          <Group justify="space-between" align="center">
-            <Badge
-              color={getBalanceTypeColor(selectedBalance.type)}
-              variant="light"
-              size="sm"
-            >
-              {getBalanceTypeDisplay(selectedBalance.type)}
-            </Badge>
-            <Tooltip label={balanceInfo} position="bottom" withArrow multiline>
-              <Text
-                size="md"
-                fw={600}
-                c={getBalanceTypeColor(selectedBalance.type)}
-                style={{ cursor: "pointer" }}
+          <Tooltip label={balanceInfo} position="bottom" withArrow multiline>
+            <Group justify="space-between" align="center">
+              <Badge
+                color={getBalanceTypeColor(selectedBalance.type)}
+                variant="light"
+                size="sm"
               >
-                {formatAmount(selectedBalance.amount, selectedBalance.currency)}
-              </Text>
-            </Tooltip>
-          </Group>
+                {getBalanceTypeDisplay(selectedBalance.type)}
+              </Badge>
+              <Group gap="xs" align="center">
+                {selectedBalance.amount === 0 && (
+                  <IconAlertTriangle
+                    size={16}
+                    color="orange"
+                    style={{ flexShrink: 0 }}
+                  />
+                )}
+                <Text
+                  size="md"
+                  fw={600}
+                  c={
+                    selectedBalance.amount === 0
+                      ? "orange"
+                      : getBalanceTypeColor(selectedBalance.type)
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  {formatAmount(
+                    selectedBalance.amount,
+                    selectedBalance.currency
+                  )}
+                </Text>
+              </Group>
+            </Group>
+          </Tooltip>
         )}
 
         {/* Balance Selector Dropdown */}

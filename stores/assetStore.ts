@@ -119,6 +119,15 @@ export const useAssetStore = create<AssetStore>()(
           activeAssetId: newAsset.id,
         }));
 
+        // Sync trading store with new asset
+        if (typeof window !== "undefined") {
+          import("./tradingStore").then(({ useTradingStore }) => {
+            const tradingStore = useTradingStore.getState();
+            const assetIds = [...state.assets, newAsset].map((a) => a.id);
+            tradingStore.syncWithAssets(assetIds);
+          });
+        }
+
         return newAsset.id;
       },
 
@@ -149,6 +158,15 @@ export const useAssetStore = create<AssetStore>()(
           assets: newAssets,
           activeAssetId: newActiveAssetId,
         });
+
+        // Sync trading store - remove trading data for deleted asset
+        if (typeof window !== "undefined") {
+          import("./tradingStore").then(({ useTradingStore }) => {
+            const tradingStore = useTradingStore.getState();
+            const assetIds = newAssets.map((a) => a.id);
+            tradingStore.syncWithAssets(assetIds);
+          });
+        }
       },
 
       setActiveAsset: (assetId: string) => {

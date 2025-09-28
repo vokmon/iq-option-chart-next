@@ -56,8 +56,6 @@
   "Account Balance": "Account Balance",
   "Available": "Available",
   "Investment": "Investment",
-  "What is this?": "What is this?",
-  "This shows your available balance for trading": "This shows your available balance for trading",
   "Real": "Real",
   "Practice": "Practice",
   "Select balance": "Select balance",
@@ -80,5 +78,8 @@
   "Session Required": "Session Required",
   "Authentication Required Message": "Please log in to continue using the service.",
   "Go to Login": "Go to Login",
-  "Logging out": "Logging out"
+  "Logging out": "Logging out",
+  "Trading is disabled": "Trading is disabled",
+  "Please enter an amount": "Please enter an amount",
+  "Insufficient balance": "Insufficient balance"
 }
