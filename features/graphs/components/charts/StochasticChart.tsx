@@ -62,6 +62,7 @@ export function StochasticChart({
         secondsVisible: false,
         barSpacing: 80,
         minBarSpacing: 40,
+        rightOffset: 2, // Add space at the end of the chart
         tickMarkFormatter: (time: number) => {
           const date = new Date(time * 1000);
           return date.toLocaleTimeString("en-US", {

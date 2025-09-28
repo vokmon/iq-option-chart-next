@@ -97,6 +97,7 @@ export function MainChart({
         secondsVisible: false,
         barSpacing: 60, // Extremely thin bars
         minBarSpacing: 30, // Minimum bar spacing
+        rightOffset: 2, // Add space at the end of the chart
         tickMarkFormatter: (time: number) => {
           const date = new Date(time * 1000);
           return date.toLocaleTimeString("en-US", {
@@ -109,6 +110,10 @@ export function MainChart({
       rightPriceScale: {
         visible: true,
         borderVisible: false,
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.2,
+        },
       },
     });
 
@@ -120,6 +125,7 @@ export function MainChart({
       },
       lastValueVisible: true,
       priceLineWidth: 4,
+      priceLineStyle: 2, // 0 = solid, 1 = dotted, 2 = dashed
     });
 
     // Create Bollinger Bands series
