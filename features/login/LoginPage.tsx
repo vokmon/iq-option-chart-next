@@ -232,9 +232,14 @@ export default function LoginPage() {
                 rel="noopener noreferrer"
                 className="no-underline"
               >
-                <button className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-2 border-orange-400/50 text-white px-8 py-3 rounded-xl font-semibold text-base hover:from-orange-500/30 hover:to-red-500/30 hover:border-orange-400 hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:shadow-orange-500/25">
+                <Button
+                  variant="gradient"
+                  gradient={{ from: "orange", to: "red" }}
+                  size="md"
+                  radius="xl"
+                >
                   {t("Sign up")}
-                </button>
+                </Button>
               </Anchor>
             </Stack>
           </Paper>

@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { useThemeStore } from "../stores/themeStore";
 import { getTheme } from "../theme/themes";
 
@@ -18,5 +19,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     ? getTheme(currentTheme).theme
     : getTheme("original").theme; // Default theme for SSR
 
-  return <MantineProvider theme={theme}>{children}</MantineProvider>;
+  return (
+    <MantineProvider theme={theme}>
+      <Notifications />
+      {children}
+    </MantineProvider>
+  );
 };

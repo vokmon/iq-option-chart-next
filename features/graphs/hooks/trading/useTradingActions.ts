@@ -1,40 +1,107 @@
+import { useMutation } from "@tanstack/react-query";
+import { useSdk } from "@/hooks/useSdk";
 import { useAssetStore } from "@/stores/assetStore";
-import { Balance } from "@quadcode-tech/client-sdk-js";
+import { useTradingStore } from "@/stores/tradingStore";
+import {
+  Balance,
+  DigitalOptionsDirection,
+  DigitalOptionsOrder,
+} from "@quadcode-tech/client-sdk-js";
+import { notifications } from "@mantine/notifications";
 
-export function useTradingActions() {
+interface TradingParams {
+  balance: Balance;
+  amount: number;
+  direction: DigitalOptionsDirection;
+}
+
+interface UseTradingActionsParams {
+  t: (key: string, values?: Record<string, string>) => string;
+}
+
+export function useTradingActions({ t }: UseTradingActionsParams) {
   const { getActiveAsset } = useAssetStore();
+  const { addOrder } = useTradingStore();
+  const { sdk } = useSdk();
 
-  const handleCall = async (balance: Balance, amount: number) => {
+  const executeTrade = async ({
+    balance,
+    amount,
+    direction,
+  }: TradingParams): Promise<void> => {
     const activeAsset = getActiveAsset();
-
     const asset = activeAsset?.asset;
-    const instruments = await asset?.instruments();
-    const instrument = instruments?.getAvailableForBuyAt(new Date());
-    console.log("Instrument:", instrument);
+    try {
+      if (!asset) {
+        throw new Error("No active asset selected");
+      }
 
-    console.log("=== CALL ORDER ===");
-    console.log("Amount:", amount);
-    console.log("Selected Asset:", activeAsset);
-    console.log("Selected Balance ID:", balance);
-    console.log("==================");
+      const [instruments, digitalOptions] = await Promise.all([
+        asset.instruments(),
+        sdk.digitalOptions(),
+      ]);
 
-    // TODO: Implement actual call order logic here
+      const instrument = instruments?.getAvailableForBuyAt(new Date());
+      const firstInstrument = instrument?.[0];
+
+      if (!firstInstrument) {
+        throw new Error("No available instruments for trading");
+      }
+
+      const order: DigitalOptionsOrder = await digitalOptions.buySpotStrike(
+        firstInstrument,
+        direction,
+        amount,
+        balance
+      );
+
+      // Save order information to trading store
+      if (activeAsset) {
+        addOrder(activeAsset.id, {
+          id: order.id,
+          isByUser: true,
+        });
+      }
+
+      console.log("order", order);
+      notifications.show({
+        title: "Success",
+        message: t("Order placed successfully", {
+          direction,
+          assetName: asset?.name || "",
+        }),
+        color: "green",
+        position: "top-right",
+      });
+    } catch (error) {
+      const errorMessage = t("Error executing order", {
+        direction,
+        assetName: asset?.name || "",
+      });
+      console.warn(error, errorMessage);
+      notifications.show({
+        title: "Error",
+        message: errorMessage,
+        color: "red",
+        position: "top-right",
+      });
+    }
   };
 
-  const handlePut = (balance: Balance, amount: number) => {
-    const activeAsset = getActiveAsset();
+  const callMutation = useMutation({
+    mutationFn: (params: { balance: Balance; amount: number }) =>
+      executeTrade({ ...params, direction: DigitalOptionsDirection.Call }),
+  });
 
-    console.log("=== PUT ORDER ===");
-    console.log("Amount:", amount);
-    console.log("Selected Asset:", activeAsset);
-    console.log("Selected Balance ID:", balance);
-    console.log("=================");
-
-    // TODO: Implement actual put order logic here
-  };
+  const putMutation = useMutation({
+    mutationFn: (params: { balance: Balance; amount: number }) =>
+      executeTrade({ ...params, direction: DigitalOptionsDirection.Put }),
+  });
 
   return {
-    onCall: handleCall,
-    onPut: handlePut,
+    onCall: callMutation.mutate,
+    onPut: putMutation.mutate,
+    callMutation,
+    putMutation,
   };
 }

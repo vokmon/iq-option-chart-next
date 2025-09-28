@@ -82,5 +82,7 @@
   "Trading is disabled": "Trading is disabled",
   "Please enter an amount": "Please enter an amount",
   "Insufficient balance": "Insufficient balance",
-  "No balance": "No balance"
+  "No balance": "No balance",
+  "Order placed successfully": "Order {direction} on {assetName} placed successfully",
+  "Error executing order": "Error executing order {direction} on {assetName}"
 }
