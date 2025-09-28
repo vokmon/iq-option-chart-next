@@ -111,7 +111,7 @@ export function usePositionReferenceLines({
         // Create horizontal line at openQuote level
         const series = chart.addSeries(LineSeries, {
           color,
-          lineWidth: 2,
+          lineWidth: 5,
           lineStyle: LineStyle.Solid,
           title,
           lastValueVisible: true,
