@@ -194,8 +194,6 @@ export function ThemeCSSInjector() {
       "--gradient-primary-button-disabled",
       `linear-gradient(90deg, ${theme.colors.primary[200]} 0%, ${theme.colors.primary[300]} 100%)`
     );
-
-    console.log(`Theme CSS variables updated for: ${currentTheme}`);
   }, [currentTheme]);
 
   return null; // This component doesn't render anything

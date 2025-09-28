@@ -81,5 +81,6 @@
   "Logging out": "กำลังออกจากระบบ",
   "Trading is disabled": "การเทรดถูกปิดใช้งาน",
   "Please enter an amount": "กรุณาใส่จำนวนเงิน",
-  "Insufficient balance": "ยอดเงินไม่เพียงพอ"
+  "Insufficient balance": "ยอดเงินไม่เพียงพอ",
+  "No balance": "ไม่มียอดเงิน"
 }

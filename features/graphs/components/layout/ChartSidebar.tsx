@@ -1,14 +1,15 @@
 "use client";
 import { Divider, Flex, Select } from "@mantine/core";
 import { AssetSelector } from "../input/AssetSelector";
-import { useAssetStore } from "@/stores/assetStore";
 import { useTranslations } from "next-intl";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
-import { useEffect, useState } from "react";
-import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
-import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
-import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
+import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
+import {
+  useAssetSelection,
+  useCandleSize,
+  useAvailableAssets,
+} from "../../hooks/chart";
 
 const candleSizes = [60, 300];
 
@@ -18,53 +19,18 @@ type ChartSidebarProps = {
 
 export default function ChartSidebar({ actives }: ChartSidebarProps) {
   const t = useTranslations();
-  const { activeAssetId, getActiveAsset, updateAsset, updateCandleSize } =
-    useAssetStore();
 
-  const activeAsset = getActiveAsset();
+  // Use custom hooks for asset selection and candle size management
+  const { activeAsset, activeAssetId, handleAssetSelect } = useAssetSelection();
+  const { currentCandleSize, handleCandleSizeChange } = useCandleSize();
+  const availableAssets = useAvailableAssets(actives, activeAsset);
 
-  const [availableAssets, setAvailableAssets] = useState<
-    DigitalOptionsUnderlying[]
-  >([]);
-
-  // Update available assets when assets change
+  // Auto-select asset when it changes
   useEffect(() => {
-    const { getAvailableAssets } = useAssetStore.getState();
-    const availableAssets = getAvailableAssets(actives);
-
-    // Include the current asset's data in available options if it exists
-    if (activeAsset?.asset) {
-      const currentAsset = activeAsset.asset;
-      const isAlreadyIncluded = availableAssets.some(
-        (asset) => asset.activeId === currentAsset.activeId
-      );
-      if (!isAlreadyIncluded) {
-        setAvailableAssets([currentAsset, ...availableAssets]);
-      } else {
-        setAvailableAssets(availableAssets);
-      }
-    } else {
-      setAvailableAssets(availableAssets);
+    if (activeAsset?.asset?.activeId && actives && actives.length > 0) {
+      handleAssetSelect(String(activeAsset?.asset?.activeId), actives);
     }
-  }, [actives, activeAsset?.asset]);
-
-  const handleAssetSelect = (activeId: string) => {
-    if (!activeAssetId) return;
-
-    if (activeId === "none") {
-      updateAsset(activeAssetId, null);
-    } else {
-      const asset = actives.find((a) => String(a.activeId) === activeId);
-      if (asset) {
-        updateAsset(activeAssetId, asset);
-      }
-    }
-  };
-
-  const handleCandleSizeChange = (candleSize: string | null) => {
-    if (!activeAssetId || !candleSize) return;
-    updateCandleSize(activeAssetId, parseInt(candleSize));
-  };
+  }, [activeAsset?.asset?.activeId, actives, handleAssetSelect]);
 
   return (
     <Flex
@@ -82,14 +48,14 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
           selectedActiveId={
             activeAsset?.asset ? String(activeAsset.asset.activeId) : "none"
           }
-          onAssetSelect={handleAssetSelect}
+          onAssetSelect={(activeId) => handleAssetSelect(activeId, actives)}
         />
 
         <Select
           key={`candle-${activeAssetId}`} // Force re-render when active asset changes
           label={t("Candle Size")}
           placeholder={t("Choose candle size")}
-          value={activeAsset ? String(activeAsset.candleSize) : ""}
+          value={currentCandleSize}
           onChange={handleCandleSizeChange}
           data={candleSizes.map((s) => ({
             value: String(s),
@@ -98,14 +64,8 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
         />
       </Flex>
       <Divider />
-
-      <Flex direction="column" gap="xs">
-        <BollingerBandsComponent />
-        <DonchianComponent />
-        <StochasticComponent />
-      </Flex>
       <TradingPanelController />
-
+      <Flex className="h-10 border border-gray-200" />
       <Flex className="flex-1 border border-gray-200" />
       <Flex className="h-10 border border-gray-200" />
     </Flex>

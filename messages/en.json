@@ -81,5 +81,6 @@
   "Logging out": "Logging out",
   "Trading is disabled": "Trading is disabled",
   "Please enter an amount": "Please enter an amount",
-  "Insufficient balance": "Insufficient balance"
+  "Insufficient balance": "Insufficient balance",
+  "No balance": "No balance"
 }

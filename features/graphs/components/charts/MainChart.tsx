@@ -5,30 +5,32 @@ import {
   type UTCTimestamp,
 } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
+import { useWindowHeight } from "@/features/graphs/hooks/chart/useWindowHeight";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsChart";
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
+import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
+import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
 
 interface MainChartProps {
   activeId: number;
   candleSize: number;
-  chartHeight?: number;
   chartMinutesBack?: number;
 }
 
 export function MainChart({
   activeId,
   candleSize,
-  chartHeight = 400,
   chartMinutesBack = 60,
 }: MainChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
+  const chartHeight = useWindowHeight(300);
 
   // Query parameter hooks for indicators
   const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery();
@@ -339,7 +341,24 @@ export function MainChart({
   return (
     <div
       ref={containerRef}
-      style={{ marginTop: "0px", width: "100%", height: chartHeight }}
-    />
+      className="relative mt-0 w-full"
+      style={{ height: chartHeight }}
+    >
+      <div className="absolute top-0 left-0 z-100">
+        <div
+          className="px-3"
+          style={{
+            background: "var(--glass-bg)",
+            backdropFilter: "blur(2px)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "12px",
+            boxShadow: "var(--glass-shadow)",
+          }}
+        >
+          <BollingerBandsComponent />
+          <DonchianComponent />
+        </div>
+      </div>
+    </div>
   );
 }

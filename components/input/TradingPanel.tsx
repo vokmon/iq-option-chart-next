@@ -9,8 +9,8 @@ import OrderDirectionSelector from "./OrderDirectionSelector";
 
 interface TradingPanelProps {
   onBalanceChange?: (balance: Balance) => void;
-  onCall?: (amount: number) => void;
-  onPut?: (amount: number) => void;
+  onCall?: (balance: Balance, amount: number) => void;
+  onPut?: (balance: Balance, amount: number) => void;
   onAmountChange?: (amount: number) => void;
   disabled?: boolean;
   selectedBalanceId?: number;
@@ -35,13 +35,13 @@ export default function TradingPanel({
 
   const handleCall = () => {
     if (amount !== undefined) {
-      onCall?.(amount);
+      onCall?.(selectedBalance!, amount);
     }
   };
 
   const handlePut = () => {
     if (amount !== undefined) {
-      onPut?.(amount);
+      onPut?.(selectedBalance!, amount);
     }
   };
 
@@ -49,6 +49,7 @@ export default function TradingPanel({
   const getDisabledReason = () => {
     if (disabled) return t("Trading is disabled");
     if (!amount) return t("Please enter an amount");
+    if (!selectedBalance) return t("No balance");
     if (selectedBalance?.amount === 0) return t("Insufficient balance");
     return null;
   };
@@ -87,7 +88,10 @@ export default function TradingPanel({
         />
 
         {/* Order Direction Selector or Disabled Message */}
-        {disabled || !amount || selectedBalance?.amount === 0 ? (
+        {disabled ||
+        !amount ||
+        !selectedBalance ||
+        selectedBalance?.amount === 0 ? (
           <Center
             style={{
               minHeight: 36,

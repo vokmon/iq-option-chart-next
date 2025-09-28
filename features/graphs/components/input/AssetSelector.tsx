@@ -42,7 +42,7 @@ export function AssetSelector({
     );
 
     return groupedOptions;
-  }, [actives]);
+  }, [actives, t]);
 
   const selectData = Object.entries(groupedOptions)
     .sort(([a], [b]) => {

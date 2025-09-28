@@ -32,16 +32,13 @@ export function ChartTab() {
           <MainChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
-            chartHeight={window.innerHeight - 300}
             chartMinutesBack={60}
           />
           <div className="my-4" />
           <StochasticChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
-            chartHeight={120}
             chartMinutesBack={60}
-            tabId={activeAssetId}
           />
         </>
       ) : (

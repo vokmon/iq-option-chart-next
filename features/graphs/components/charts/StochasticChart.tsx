@@ -5,21 +5,21 @@ import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
 import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
+import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
 
 interface StochasticChartProps {
   activeId: number;
   candleSize: number;
   chartHeight?: number;
   chartMinutesBack?: number;
-  tabId?: string | null;
 }
+
+const chartHeight = 120;
 
 export function StochasticChart({
   activeId,
   candleSize,
-  chartHeight = 200,
   chartMinutesBack = 60,
-  tabId,
 }: StochasticChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -249,7 +249,6 @@ export function StochasticChart({
     containerRef,
     activeId,
     candleSize,
-    chartHeight,
     chartMinutesBack,
     showStochastic,
     stochasticConfig,
@@ -267,7 +266,23 @@ export function StochasticChart({
   return (
     <div
       ref={containerRef}
-      style={{ marginTop: "0px", width: "100%", height: chartHeight }}
-    />
+      className="relative mt-0 w-full"
+      style={{ height: chartHeight }}
+    >
+      <div className="absolute top-[-20px] left-0 z-100">
+        <div
+          className="px-3"
+          style={{
+            background: "var(--glass-bg)",
+            backdropFilter: "blur(2px)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "12px",
+            boxShadow: "var(--glass-shadow)",
+          }}
+        >
+          <StochasticComponent />
+        </div>
+      </div>
+    </div>
   );
 }
