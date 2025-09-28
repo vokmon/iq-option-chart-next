@@ -24,6 +24,8 @@ interface TradingStore {
   addOrder: (assetId: string, order: OrderState) => void;
   getOrders: (assetId: string) => OrderState[];
   clearOrders: (assetId: string) => void;
+  removeOrder: (assetId: string, orderId: number) => void;
+  getAllOrders: (assetId: string) => OrderState[];
   // Sync with asset store - when assets are added/removed
   syncWithAssets: (assetIds: string[]) => void;
 }
@@ -99,6 +101,26 @@ export const useTradingStore = create<TradingStore>()(
           delete newOrders[assetId];
           return { orders: newOrders };
         });
+      },
+
+      removeOrder: (assetId: string, orderId: number) => {
+        set((state) => {
+          const newOrders = { ...state.orders };
+          if (newOrders[assetId]) {
+            newOrders[assetId] = newOrders[assetId].filter(
+              (order) => order.id !== orderId
+            );
+            if (newOrders[assetId].length === 0) {
+              delete newOrders[assetId];
+            }
+          }
+          return { orders: newOrders };
+        });
+      },
+
+      getAllOrders: (assetId: string) => {
+        const state = get();
+        return state.orders[assetId] || [];
       },
 
       syncWithAssets: (assetIds: string[]) => {

@@ -65,9 +65,9 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
       </Flex>
       <Divider />
       <TradingPanelController />
-      <Flex className="h-10 border border-gray-200" />
-      <Flex className="flex-1 border border-gray-200" />
-      <Flex className="h-10 border border-gray-200" />
+      <Flex className="h-10 border border-gray-200">Signal Indicators</Flex>
+      <Flex className="flex-1 border border-gray-200">Trade History</Flex>
+      <Flex className="h-10 border border-gray-200">Summary for Today</Flex>
     </Flex>
   );
 }

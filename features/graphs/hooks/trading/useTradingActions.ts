@@ -31,6 +31,7 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
   }: TradingParams): Promise<void> => {
     const activeAsset = getActiveAsset();
     const asset = activeAsset?.asset;
+
     try {
       if (!asset) {
         throw new Error("No active asset selected");
@@ -56,6 +57,11 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
       );
 
       // Save order information to trading store
+      console.log(
+        "Saving order information to trading store",
+        order,
+        activeAsset
+      );
       if (activeAsset) {
         addOrder(activeAsset.id, {
           id: order.id,
@@ -63,11 +69,11 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
         });
       }
 
-      console.log("order", order);
       notifications.show({
         title: "Success",
         message: t("Order placed successfully", {
-          direction,
+          direction:
+            direction === DigitalOptionsDirection.Call ? "Call 🔺" : "Put 🔻",
           assetName: asset?.name || "",
         }),
         color: "green",

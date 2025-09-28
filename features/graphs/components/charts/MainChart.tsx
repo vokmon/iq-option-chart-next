@@ -11,6 +11,8 @@ import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bolli
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
+import { useOrderReferenceLines } from "@/features/graphs/hooks/trading/useOrderReferenceLines";
+import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePositionReferenceLines";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
@@ -36,6 +38,11 @@ export function MainChart({
   const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery();
   const { showDonchian, donchianConfig } = useDonchianTabQuery();
 
+  // Order reference lines hook
+  const { data: positions = [] } = useOrderReferenceLines({
+    activeId,
+  });
+
   // Bollinger Bands hook
   const {
     createBollingerBandsSeries,
@@ -56,6 +63,16 @@ export function MainChart({
   } = useDonchianChart({
     showDonchian,
     donchianConfig,
+  });
+
+  // Position reference lines hook
+  const {
+    createPositionReferenceLines,
+    updatePositionReferenceLines,
+    destroyPositionReferenceLines,
+    recreatePositionReferenceLines,
+  } = usePositionReferenceLines({
+    positions,
   });
 
   // Theme change detection
@@ -99,7 +116,7 @@ export function MainChart({
       priceFormat: {
         type: "price",
         precision: 6,
-        minMove: 0.001,
+        minMove: 0.000001,
       },
       lastValueVisible: true,
       priceLineWidth: 4,
@@ -110,6 +127,9 @@ export function MainChart({
 
     // Create Donchian Channels series
     let donchianSeries = createDonchianSeries(chart);
+
+    // Create Position reference lines
+    let positionReferenceLines = createPositionReferenceLines(chart);
 
     // Handle theme changes by recreating series
     const cleanupThemeChange = onThemeChange(() => {
@@ -141,6 +161,12 @@ export function MainChart({
             updateDonchianData(donchianSeries, allCandles);
           }
         }
+
+        // Recreate Position reference lines
+        positionReferenceLines = recreatePositionReferenceLines(
+          chart,
+          positionReferenceLines
+        );
       }, 100); // 100ms delay to ensure CSS variables are updated
     });
 
@@ -173,12 +199,15 @@ export function MainChart({
       // Update Donchian Channels data
       updateDonchianData(donchianSeries, candles);
 
+      // Update Position reference lines
+      updatePositionReferenceLines(positionReferenceLines, chart);
+
       if (candles.length > 0) {
         earliestLoadedRef.current = candles[0].from as number;
       }
 
       // Subscribe to candle changes
-      chartLayer.subscribeOnLastCandleChanged((candle: Candle) => {
+      chartLayer.subscribeOnLastCandleChanged(async (candle: Candle) => {
         if (isDisposed) return;
 
         try {
@@ -206,7 +235,7 @@ export function MainChart({
 
       // Subscribe to consistency recovery
 
-      chartLayer.subscribeOnConsistencyRecovered(() => {
+      chartLayer.subscribeOnConsistencyRecovered(async () => {
         if (isDisposed) return;
 
         try {
@@ -309,6 +338,13 @@ export function MainChart({
         console.warn("Error destroying Donchian Channels series:", error);
       }
 
+      // Clean up Position reference lines
+      try {
+        destroyPositionReferenceLines(chart, positionReferenceLines);
+      } catch (error) {
+        console.warn("Error destroying Position reference lines:", error);
+      }
+
       // Remove the chart
       try {
         chart.remove();
@@ -336,6 +372,11 @@ export function MainChart({
     onThemeChange,
     recreateBollingerBandsSeries,
     recreateDonchianSeries,
+    positions,
+    createPositionReferenceLines,
+    updatePositionReferenceLines,
+    destroyPositionReferenceLines,
+    recreatePositionReferenceLines,
   ]);
 
   return (
