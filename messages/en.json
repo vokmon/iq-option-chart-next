@@ -76,5 +76,9 @@
   "UNKNOWN": "UNKNOWN",
   "OTC": "OTC",
   "Choose an asset": "Choose an asset",
-  "New Asset": "New Asset"
+  "New Asset": "New Asset",
+  "Session Required": "Session Required",
+  "Authentication Required Message": "Please log in to continue using the service.",
+  "Go to Login": "Go to Login",
+  "Logging out": "Logging out"
 }

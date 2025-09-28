@@ -76,5 +76,9 @@
   "UNKNOWN": "ไม่ทราบ",
   "OTC": "OTC",
   "Choose an asset": "เลือกสินทรัพย์",
-  "New Asset": "สินทรัพย์ใหม่"
+  "New Asset": "สินทรัพย์ใหม่",
+  "Session Required": "ต้องเข้าสู่ระบบ",
+  "Authentication Required Message": "กรุณาเข้าสู่ระบบเพื่อใช้งาน",
+  "Go to Login": "ไปที่หน้าเข้าสู่ระบบ",
+  "Logging out": "กำลังออกจากระบบ"
 }

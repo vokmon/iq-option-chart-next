@@ -135,6 +135,7 @@ export default function LoginPage() {
                     key={form.key("email")}
                     {...form.getInputProps("email")}
                     disabled={loginMutation.isPending}
+                    autoFocus
                     styles={{
                       label: { color: "white", fontWeight: 500 },
                       input: {

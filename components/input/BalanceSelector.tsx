@@ -239,7 +239,13 @@ export default function BalanceSelector({
             )}`,
           }))}
           rightSection={<IconChevronDown size={16} />}
-          size="sm"
+          size="xs"
+          styles={{
+            option: {
+              fontSize: "0.875rem", // text-sm equivalent
+              padding: "8px 12px",
+            },
+          }}
         />
       </Stack>
     </Paper>

@@ -20,12 +20,10 @@ export const authService = {
     // Get current state from stores
     const sdk = useSdkStore.getState().sdk;
 
-    try {
-      // 1. Disconnect the SDK if it has a disconnect method
-      if (sdk && "disconnect" in sdk) {
-        (sdk as { disconnect: () => void }).disconnect();
-      }
+    // 1. Shutdown the SDK
+    sdk?.shutdown();
 
+    try {
       // 2. Call logout API
       await authService.logout();
     } catch (error) {

@@ -1,5 +1,5 @@
 "use client";
-import { Divider, Flex, Select, Text } from "@mantine/core";
+import { Divider, Flex, Select } from "@mantine/core";
 import { AssetSelector } from "../input/AssetSelector";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTranslations } from "next-intl";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
 import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
-import TradingPanel from "@/components/input/TradingPanel";
+import TradingPanelController from "../input/TradingPanelController";
 
 const candleSizes = [60, 300];
 
@@ -104,7 +104,7 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
         <DonchianComponent />
         <StochasticComponent />
       </Flex>
-      <TradingPanel />
+      <TradingPanelController />
 
       <Flex className="flex-1 border border-gray-200" />
       <Flex className="h-10 border border-gray-200" />
