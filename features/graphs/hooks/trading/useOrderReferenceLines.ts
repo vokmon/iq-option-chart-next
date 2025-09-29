@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSdk } from "@/hooks/useSdk";
 import { useTradingStore } from "@/stores/tradingStore";
 import { useAssetStore } from "@/stores/assetStore";
+import { useTransition } from "react";
 
 export interface UseOrderReferenceLinesProps {
   activeId: number;
@@ -11,6 +12,7 @@ export interface UseOrderReferenceLinesProps {
 export function useOrderReferenceLines({
   activeId,
 }: UseOrderReferenceLinesProps) {
+  const [isPending, startTransition] = useTransition();
   const { sdk } = useSdk();
   const { getAllOrders, removeOrder } = useTradingStore();
   const { getActiveAsset } = useAssetStore();
@@ -47,8 +49,10 @@ export function useOrderReferenceLines({
           .map((order) => order.id);
 
         // Remove closed orders from store
-        ordersToRemove.forEach((orderId) => {
-          removeOrder(activeAsset.id, orderId);
+        startTransition(async () => {
+          ordersToRemove.forEach((orderId) => {
+            removeOrder(activeAsset.id, orderId);
+          });
         });
 
         // Find positions that have orders matching our asset's orders
@@ -60,8 +64,10 @@ export function useOrderReferenceLines({
         positionsToDrawReferenceLines.forEach((position) => {
           setTimeout(
             () => {
-              position.orderIds?.forEach((orderId) => {
-                removeOrder(activeAsset.id, orderId);
+              startTransition(async () => {
+                position.orderIds?.forEach((orderId) => {
+                  removeOrder(activeAsset.id, orderId);
+                });
               });
             },
             position.expirationTime

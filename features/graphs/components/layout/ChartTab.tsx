@@ -1,4 +1,5 @@
 import { Flex, Text, Center, Stack } from "@mantine/core";
+import { IconChartLine, IconArrowRight } from "@tabler/icons-react";
 import { MainChart } from "../charts/MainChart";
 import { StochasticChart } from "../charts/StochasticChart";
 import { useAssetStore } from "@/stores/assetStore";
@@ -6,7 +7,7 @@ import { useTranslations } from "next-intl";
 
 export function ChartTab() {
   const t = useTranslations();
-  const { activeAssetId, getActiveAsset } = useAssetStore();
+  const { getActiveAsset } = useAssetStore();
 
   const activeAsset = getActiveAsset();
 
@@ -43,16 +44,45 @@ export function ChartTab() {
         </>
       ) : (
         <Center h="100%">
-          <Stack align="center" gap="md" h="100%">
-            <Text size="lg" c="dimmed">
-              {t("Select an asset to view chart")}
-            </Text>
-            <Text size="sm" c="dimmed">
-              {t("Choose an asset from the panel on the right")}
-            </Text>
-          </Stack>
+          <EmptyChart />
         </Center>
       )}
     </Flex>
   );
 }
+
+const EmptyChart = () => {
+  const t = useTranslations();
+  return (
+    <Stack align="center" className="pt-50" gap="md" h="100%">
+      <div
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          borderRadius: "50%",
+          padding: "16px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+        }}
+      >
+        <IconChartLine
+          size={48}
+          color="white"
+          style={{
+            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+          }}
+        />
+      </div>
+      <Text size="xl" c="dimmed" ta="center">
+        {t("Select an asset to view chart")}
+      </Text>
+      <Flex align="center" gap="xs" c="dimmed">
+        <Text size="sm">
+          {t("Choose an asset from the panel on the right")}
+        </Text>
+        <IconArrowRight size={16} />
+      </Flex>
+    </Stack>
+  );
+};

@@ -58,7 +58,7 @@ export function usePositionReferenceLines({
       const directionEmoji =
         direction === "CALL" ? "⬆️" : direction === "PUT" ? "⬇️" : "";
       const icon = isByUser ? "👤" : "🤖";
-      return `${icon} ${direction} ${directionEmoji}`;
+      return `${icon} ${direction} ${directionEmoji} (${position.openQuote})`;
     },
     [getAllOrders, activeAsset?.id]
   );
