@@ -33,7 +33,7 @@ export function useOrderReferenceLines({
         const orderIds = new Set(assetOrdersOfAsset.map((order) => order.id));
 
         // Wait for 1 second to ensure the positions are updated
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         const positions = await sdk.positions();
         const allOpenPositions = await positions.getOpenedPositions();

@@ -1,4 +1,4 @@
-import { Select } from "@mantine/core";
+import { Select, Box, Image, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
@@ -15,7 +15,7 @@ export function AssetSelector({
   onAssetSelect,
 }: AssetSelectorProps) {
   const t = useTranslations();
-  const { actives } = useDigitalOptionsStore();
+  const { actives, activeInformation } = useDigitalOptionsStore();
 
   const groupedOptions = useMemo(() => {
     const options = actives.map((a) => {
@@ -71,6 +71,45 @@ export function AssetSelector({
         input: {
           fontWeight: 700,
         },
+      }}
+      leftSectionWidth={40}
+      leftSection={
+        activeInformation[selectedActiveId as unknown as number]?.imageUrl && (
+          <div className="w-6 h-6">
+            <Image
+              src={
+                activeInformation[selectedActiveId as unknown as number]
+                  .imageUrl
+              }
+              alt={
+                activeInformation[selectedActiveId as unknown as number].name
+              }
+              width={5}
+              height={5}
+            />
+          </div>
+        )
+      }
+      renderOption={({ option }) => {
+        const activeId = parseInt(option.value);
+        const activeInfo = activeInformation[activeId as unknown as number];
+
+        return (
+          <Box style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {activeInfo?.imageUrl && (
+              <div className="w-7 h-7">
+                <Image
+                  src={activeInfo.imageUrl}
+                  alt={activeInfo.name || option.label}
+                  width={5}
+                  height={5}
+                  style={{ borderRadius: "4px" }}
+                />
+              </div>
+            )}
+            <Text size="sm">{option.label}</Text>
+          </Box>
+        );
       }}
       comboboxProps={
         {
