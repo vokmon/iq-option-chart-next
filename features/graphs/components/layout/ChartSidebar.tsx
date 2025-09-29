@@ -1,18 +1,15 @@
 "use client";
-import { Divider, Flex, Select } from "@mantine/core";
+import { Divider, Flex } from "@mantine/core";
 import { AssetSelector } from "../input/AssetSelector";
-import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
-import { useAssetSelection, useCandleSize } from "../../hooks/chart";
+import { useAssetSelection } from "../../hooks/chart";
 import CandleSizeSelector from "../input/CandleSizeSelector";
+import PositionTableController from "../displays/PositionTableController";
 
 export default function ChartSidebar() {
-  const t = useTranslations();
-
   // Use custom hooks for asset selection and candle size management
   const { activeAsset, activeAssetId, handleAssetSelect } = useAssetSelection();
-  const { currentCandleSize, handleCandleSizeChange } = useCandleSize();
 
   // Auto-select asset when it changes
   useEffect(() => {
@@ -46,7 +43,9 @@ export default function ChartSidebar() {
       <Divider />
       <TradingPanelController />
       <Flex className="h-10 border border-gray-200">Signal Indicators</Flex>
-      <Flex className="flex-1 border border-gray-200">Trade History</Flex>
+      <Flex className="flex-1 w-full relative">
+        <PositionTableController />
+      </Flex>
       <Flex className="h-10 border border-gray-200">Summary for Today</Flex>
     </Flex>
   );

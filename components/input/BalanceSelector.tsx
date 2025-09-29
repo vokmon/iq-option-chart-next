@@ -14,6 +14,7 @@ import {
 import { IconChevronDown, IconAlertTriangle } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useSdk } from "@/hooks/useSdk";
+import { formatAmount } from "@/utils/currency";
 import type { Balance, BalanceType } from "@quadcode-tech/client-sdk-js";
 
 interface BalanceSelectorProps {
@@ -36,16 +37,6 @@ export default function BalanceSelector({
   useEffect(() => {
     onBalanceChangeRef.current = onBalanceChange;
   }, [onBalanceChange]);
-
-  // Format currency amount
-  const formatAmount = (amount: number, currency: string) => {
-    const symbol =
-      currency === "USD" ? "$" : currency === "THB" ? "฿" : currency;
-    return `${symbol} ${amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
-  };
 
   // Get balance type display name
   const getBalanceTypeDisplay = (type: BalanceType | undefined) => {

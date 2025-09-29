@@ -21,12 +21,14 @@ export default function CandleSizeSelector() {
         value: String(s),
         label: `${s / 60} min`,
       }))}
+      leftSectionWidth={40}
       leftSection={
         <div
           style={{
             background: "linear-gradient(45deg, #2c3e50, #34495e)",
             borderRadius: "50%",
             padding: "0px",
+            marginRight: "8px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

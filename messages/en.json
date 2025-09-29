@@ -84,5 +84,12 @@
   "Insufficient balance": "Insufficient balance",
   "No balance": "No balance",
   "Order placed successfully": "Order {direction} on {assetName} placed successfully",
-  "Error executing order": "Error executing order {direction} on {assetName}"
+  "Error executing order": "Error executing order {direction} on {assetName}",
+  "Win": "Win",
+  "Loss": "Loss",
+  "Even": "Even",
+  "Open Time": "Open Time",
+  "Close Time": "Close Time",
+  "Position ID": "Position ID",
+  "Active ID": "Active ID"
 }

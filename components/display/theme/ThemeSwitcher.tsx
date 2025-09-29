@@ -15,7 +15,6 @@ export function ThemeSwitcher() {
       placeholder="Select theme"
       value={currentTheme}
       onChange={(value) => {
-        console.log("Theme change:", value);
         if (value) {
           setTheme(value as ThemeName);
         }

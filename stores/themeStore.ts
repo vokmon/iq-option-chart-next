@@ -22,7 +22,6 @@ export const useThemeStore = create<ThemeState>()(
     (set, get) => ({
       currentTheme: "original",
       setTheme: (theme: ThemeName) => {
-        console.log("Setting theme to:", theme);
         set({ currentTheme: theme });
       },
       availableThemes: Object.values(themes),

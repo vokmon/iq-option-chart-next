@@ -11,9 +11,6 @@ export function useThemeChange() {
       previousThemeRef.current !== null &&
       previousThemeRef.current !== currentTheme
     ) {
-      console.log(
-        `Theme changed from ${previousThemeRef.current} to ${currentTheme}`
-      );
       // Theme has changed, trigger all callbacks
       themeChangeCallbacksRef.current.forEach((callback) => {
         try {

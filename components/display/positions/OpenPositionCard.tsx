@@ -1,0 +1,137 @@
+import { Accordion, Text, Badge } from "@mantine/core";
+import { Active, Balance, Position } from "@quadcode-tech/client-sdk-js";
+import {
+  IconTrendingUp,
+  IconTrendingDown,
+  IconCash,
+  IconCircleFilled,
+} from "@tabler/icons-react";
+import { formatAmount, formatAmountOnly } from "@/utils/currency";
+import Image from "next/image";
+import PositionDetails from "./PositionDetails";
+import CountdownTimer from "./CountdownTimer";
+
+interface OpenPositionCardProps {
+  position: Position;
+  activeInfo?: Active;
+  balance?: Balance;
+}
+
+export default function OpenPositionCard({
+  position,
+  activeInfo,
+  balance,
+}: OpenPositionCardProps) {
+  const renderPositionSummary = (position: Position, activeInfo?: Active) => (
+    <div className="flex flex-col justify-center items-start w-full gap-1">
+      <div className="flex flex-row justify-between items-center gap-2 w-full">
+        <div className="flex flex-row justify-start items-center gap-2">
+          <div className="w-6 h-6">
+            {activeInfo?.imageUrl && (
+              <Image
+                src={activeInfo?.imageUrl || ""}
+                alt={activeInfo?.name || ""}
+                width={30}
+                height={30}
+              />
+            )}
+          </div>
+          <Text size="sm" fw={500}>
+            {activeInfo?.name || position.active?.name}
+          </Text>
+          <IconCircleFilled
+            size={8}
+            className="text-green-500"
+            style={{
+              animation: "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            }}
+          />
+        </div>
+        <div className="flex flex-row justify-start items-center gap-2">
+          {position.expirationTime && (
+            <CountdownTimer endTime={position.expirationTime} />
+          )}
+        </div>
+      </div>
+      <div className="flex flex-row justify-start items-center gap-2">
+        <Badge
+          color={position.direction === "call" ? "green" : "red"}
+          variant="light"
+          size="md"
+          w="80px"
+          style={{ textTransform: "none" }}
+        >
+          <div className="flex flex-row justify-start items-center gap-2">
+            {position.direction === "call" ? (
+              <IconTrendingUp size={20} color="green" />
+            ) : (
+              <IconTrendingDown size={20} color="red" />
+            )}
+            {position.direction?.toUpperCase()}
+          </div>
+        </Badge>
+
+        <Text size="md" fw={600}>
+          {balance
+            ? formatAmount(position.invest || 0, balance.currency)
+            : `$${formatAmountOnly(position.invest || 0)}`}
+        </Text>
+      </div>
+
+      <div className="flex justify-between items-center gap-2 w-full">
+        <Text
+          size="lg"
+          fw={600}
+          c={
+            position.pnl === 0
+              ? "black"
+              : (position.pnl ?? 0) > 0
+              ? "green"
+              : "red"
+          }
+        >
+          {balance
+            ? formatAmount(position?.pnl ?? 0, balance.currency)
+            : `${(position?.pnl ?? 0) > 0 ? "+" : ""}$${formatAmountOnly(
+                position?.pnl ?? 0
+              )}`}
+        </Text>
+        <div
+          className="flex items-center gap-1 px-3 py-2 mr-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 hover:scale-105 hover:shadow-md rounded cursor-pointer transition-all duration-200 ease-in-out active:scale-95 active:bg-red-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            position.sell();
+          }}
+        >
+          <IconCash
+            size={14}
+            className="transition-transform duration-200 hover:rotate-12"
+          />
+          Sell
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <Accordion
+      variant="contained"
+      chevronPosition="right"
+      key={position.externalId}
+      className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+    >
+      <Accordion.Item
+        value={String(position.externalId)}
+        className="border-none"
+      >
+        <Accordion.Control className="bg-transparent hover:bg-blue-100/50 transition-colors duration-200">
+          {renderPositionSummary(position, activeInfo)}
+        </Accordion.Control>
+        <Accordion.Panel className="bg-white/80 backdrop-blur-sm">
+          <PositionDetails position={position} />
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
+  );
+}

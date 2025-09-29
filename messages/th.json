@@ -84,5 +84,12 @@
   "Insufficient balance": "ยอดเงินไม่เพียงพอ",
   "No balance": "ไม่มียอดเงิน",
   "Order placed successfully": "คำสั่งซื้อ {direction} บน {assetName} สำเร็จ",
-  "Error executing order": "เกิดข้อผิดพลาดในการทำคำสั่งซื้อ {direction} บน {assetName}"
+  "Error executing order": "เกิดข้อผิดพลาดในการทำคำสั่งซื้อ {direction} บน {assetName}",
+  "Win": "Win",
+  "Loss": "Loss",
+  "Even": "Even",
+  "Open Time": "เวลาที่เปิด",
+  "Close Time": "เวลาที่ปิด",
+  "Position ID": "รหัสตำแหน่ง",
+  "Active ID": "รหัสสินทรัพย์"
 }

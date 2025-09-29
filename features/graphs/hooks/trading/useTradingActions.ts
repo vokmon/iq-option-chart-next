@@ -56,12 +56,6 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
         balance
       );
 
-      // Save order information to trading store
-      console.log(
-        "Saving order information to trading store",
-        order,
-        activeAsset
-      );
       if (activeAsset) {
         addOrder(activeAsset.id, {
           id: order.id,
