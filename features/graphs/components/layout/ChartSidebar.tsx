@@ -5,8 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
 import { useAssetSelection, useCandleSize } from "../../hooks/chart";
-
-const candleSizes = [60, 300];
+import CandleSizeSelector from "../input/CandleSizeSelector";
 
 export default function ChartSidebar() {
   const t = useTranslations();
@@ -40,16 +39,8 @@ export default function ChartSidebar() {
           onAssetSelect={handleAssetSelect}
         />
 
-        <Select
+        <CandleSizeSelector
           key={`candle-${activeAssetId}`} // Force re-render when active asset changes
-          label={t("Candle Size")}
-          placeholder={t("Choose candle size")}
-          value={currentCandleSize}
-          onChange={handleCandleSizeChange}
-          data={candleSizes.map((s) => ({
-            value: String(s),
-            label: `${s / 60} min`,
-          }))}
         />
       </Flex>
       <Divider />
