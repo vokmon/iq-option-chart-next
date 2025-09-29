@@ -28,6 +28,7 @@ const LoadingPage: React.FC = () => {
         justifyContent: "center",
         padding: theme.spacing.md,
       }}
+      className="animate-fade-in"
     >
       <Container size={500} w="100%">
         <Paper

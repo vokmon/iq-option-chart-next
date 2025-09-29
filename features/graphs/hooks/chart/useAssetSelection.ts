@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { useAssetStore } from "@/stores/assetStore";
-import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
+import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 
 export function useAssetSelection() {
   const { activeAssetId, getActiveAsset, updateAsset } = useAssetStore();
+  const { actives } = useDigitalOptionsStore();
 
   const handleAssetSelect = useCallback(
-    (activeId: string, actives: DigitalOptionsUnderlying[]) => {
+    (activeId: string) => {
       if (!activeAssetId) return;
 
       if (activeId === "none") {
@@ -18,7 +19,7 @@ export function useAssetSelection() {
         }
       }
     },
-    [activeAssetId, updateAsset]
+    [activeAssetId, updateAsset, actives]
   );
 
   const activeAsset = getActiveAsset();

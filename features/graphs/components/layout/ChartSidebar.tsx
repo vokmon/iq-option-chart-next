@@ -2,35 +2,25 @@
 import { Divider, Flex, Select } from "@mantine/core";
 import { AssetSelector } from "../input/AssetSelector";
 import { useTranslations } from "next-intl";
-import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
-import {
-  useAssetSelection,
-  useCandleSize,
-  useAvailableAssets,
-} from "../../hooks/chart";
+import { useAssetSelection, useCandleSize } from "../../hooks/chart";
 
 const candleSizes = [60, 300];
 
-type ChartSidebarProps = {
-  actives: DigitalOptionsUnderlying[];
-};
-
-export default function ChartSidebar({ actives }: ChartSidebarProps) {
+export default function ChartSidebar() {
   const t = useTranslations();
 
   // Use custom hooks for asset selection and candle size management
   const { activeAsset, activeAssetId, handleAssetSelect } = useAssetSelection();
   const { currentCandleSize, handleCandleSizeChange } = useCandleSize();
-  const availableAssets = useAvailableAssets(actives, activeAsset);
 
   // Auto-select asset when it changes
   useEffect(() => {
-    if (activeAsset?.asset?.activeId && actives && actives.length > 0) {
-      handleAssetSelect(String(activeAsset?.asset?.activeId), actives);
+    if (activeAsset?.asset?.activeId) {
+      handleAssetSelect(String(activeAsset?.asset?.activeId));
     }
-  }, [activeAsset?.asset?.activeId, actives, handleAssetSelect]);
+  }, [activeAsset?.asset?.activeId, handleAssetSelect]);
 
   return (
     <Flex
@@ -43,12 +33,11 @@ export default function ChartSidebar({ actives }: ChartSidebarProps) {
       <Flex direction="row" gap="md">
         <AssetSelector
           key={activeAssetId} // Force re-render when active asset changes
-          actives={availableAssets}
           className="w-full"
           selectedActiveId={
             activeAsset?.asset ? String(activeAsset.asset.activeId) : "none"
           }
-          onAssetSelect={(activeId) => handleAssetSelect(activeId, actives)}
+          onAssetSelect={handleAssetSelect}
         />
 
         <Select

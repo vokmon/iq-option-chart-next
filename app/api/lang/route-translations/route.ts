@@ -9,7 +9,6 @@ export async function GET(request: Request) {
     queryString ? `?${queryString}` : ""
   }`;
 
-  console.log("📤 apiUrl:", apiUrl);
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {

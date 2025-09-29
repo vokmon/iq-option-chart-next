@@ -16,6 +16,9 @@ import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePo
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
+import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
+import Image from "next/image";
+import { Text } from "@mantine/core";
 
 interface MainChartProps {
   activeId: number;
@@ -112,7 +115,7 @@ export function MainChart({
         borderVisible: false,
         scaleMargins: {
           top: 0.1,
-          bottom: 0.2,
+          bottom: 0.1,
         },
       },
     });
@@ -388,12 +391,12 @@ export function MainChart({
   return (
     <div
       ref={containerRef}
-      className="relative mt-0 w-full"
+      className="relative mt-0 w-full animate-fade-in"
       style={{ height: chartHeight }}
     >
       <div className="absolute top-0 left-0 z-100">
         <div
-          className="px-3"
+          className="px-3 animate-fade-in"
           style={{
             background: "var(--glass-bg)",
             backdropFilter: "blur(2px)",
@@ -402,10 +405,39 @@ export function MainChart({
             boxShadow: "var(--glass-shadow)",
           }}
         >
+          <GraphHeader activeId={activeId} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const GraphHeader = ({ activeId }: { activeId: number }) => {
+  const { activeInformation } = useDigitalOptionsStore();
+  const active = activeInformation[activeId];
+  return (
+    <div>
+      {active && (
+        <Text size="md" fw={700}>
+          {active.name}
+        </Text>
+      )}
+      <div className="flex items-center gap-4">
+        {active && (
+          <div className="flex flex-col items-start gap-2 animate-fade-in">
+            <Image
+              src={active.imageUrl}
+              alt={active.name}
+              width={45}
+              height={45}
+            />
+          </div>
+        )}
+        <div className="flex flex-col gap-0">
           <BollingerBandsComponent />
           <DonchianComponent />
         </div>
       </div>
     </div>
   );
-}
+};

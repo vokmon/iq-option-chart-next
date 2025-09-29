@@ -1,28 +1,29 @@
 import { Select } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 import { useMemo } from "react";
+import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 
 interface AssetSelectorProps {
-  actives: DigitalOptionsUnderlying[];
   className?: string;
   selectedActiveId?: string;
   onAssetSelect?: (activeId: string) => void;
 }
 
 export function AssetSelector({
-  actives,
   className,
   selectedActiveId = "none",
   onAssetSelect,
 }: AssetSelectorProps) {
   const t = useTranslations();
+  const { actives } = useDigitalOptionsStore();
 
   const groupedOptions = useMemo(() => {
-    const options = actives.map((a) => ({
-      value: String(a.activeId),
-      label: (a.name ?? `Asset ${a.activeId}`).replace(/-op$/i, ""),
-    }));
+    const options = actives.map((a) => {
+      return {
+        value: String(a.activeId),
+        label: (a.name ?? `Asset ${a.activeId}`).replace(/-op$/i, ""),
+      };
+    });
 
     const groupedOptions = options.reduce(
       (acc: Record<string, typeof options>, option) => {
