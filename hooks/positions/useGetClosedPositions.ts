@@ -1,46 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { useSdk } from "./useSdk";
-import { usePositionsStore } from "@/stores/positionsStore";
-import { Position } from "@quadcode-tech/client-sdk-js";
 import { useTransition } from "react";
+import { useSdk } from "../useSdk";
+import { usePositionsStore } from "@/stores/positionsStore";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Position } from "@quadcode-tech/client-sdk-js";
 
-const REFRESH_INTERVAL_CLOSE_POSITIONS = 50000;
-const REFRESH_INTERVAL_OPEN_POSITIONS = 10000;
-
-export function useGetOpenPositions() {
-  const { sdk } = useSdk();
-  const { setOpenPositions } = usePositionsStore();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, startTransition] = useTransition();
-
-  const query = useQuery({
-    queryKey: ["openPositions"],
-    queryFn: async () => {
-      try {
-        const positions = await sdk.positions();
-        const allOpenPositions = await positions.getOpenedPositions();
-
-        // Update the store with the fetched open positions
-        startTransition(() => {
-          setOpenPositions(allOpenPositions);
-        });
-
-        return allOpenPositions;
-      } catch (error) {
-        console.error("Error fetching open positions:", error);
-        throw error;
-      }
-    },
-    enabled: !!sdk,
-    retry: 2,
-    refetchOnWindowFocus: true,
-    refetchIntervalInBackground: false,
-    refetchInterval: REFRESH_INTERVAL_OPEN_POSITIONS,
-  });
-
-  return query;
-}
+const REFRESH_INTERVAL_CLOSE_POSITIONS = 1000 * 60 * 5; // 5 minutes
+const QUERY_KEY_CLOSED_POSITIONS = ["closedPositions"];
+let isFetching = false;
 
 export function useGetClosedPositions() {
   const { sdk } = useSdk();
@@ -50,38 +16,44 @@ export function useGetClosedPositions() {
   const [_, startTransition] = useTransition();
 
   const query = useQuery({
-    queryKey: ["closedPositions"],
+    queryKey: QUERY_KEY_CLOSED_POSITIONS,
     queryFn: async () => {
       try {
         const positions = await sdk.positions();
         const now = sdk.currentTime();
+
         const allClosedPositionsHistory = await positions.getPositionsHistory();
 
-        await allClosedPositionsHistory.fetchPrevPage();
+        if (!isFetching) {
+          await allClosedPositionsHistory.fetchPrevPage();
+          isFetching = true;
+        }
 
-        const allClosedPositions: Position[] = [];
+        const allClosedPositions: { [key: number]: Position } = {};
         while (true) {
           const positions = allClosedPositionsHistory.getPositions();
           if (positions.length === 0) {
             if (allClosedPositionsHistory.hasPrevPage()) {
-              allClosedPositionsHistory.fetchPrevPage();
+              await allClosedPositionsHistory.fetchPrevPage();
               continue;
             }
             break;
           }
 
           let foundDifferentDay = false;
+
           positions.forEach((position) => {
             if (position.closeTime) {
               const closeDate = new Date(position.closeTime);
-              const currentDate = new Date(now);
+              const currentDate = now;
               const isSameDay =
                 closeDate.getFullYear() === currentDate.getFullYear() &&
                 closeDate.getMonth() === currentDate.getMonth() &&
                 closeDate.getDate() === currentDate.getDate();
 
               if (isSameDay) {
-                allClosedPositions.push(position);
+                // allClosedPositions.push(position);
+                allClosedPositions[position.externalId!] = position;
               } else {
                 foundDifferentDay = true;
               }
@@ -91,11 +63,12 @@ export function useGetClosedPositions() {
           if (foundDifferentDay) {
             break;
           }
+          await allClosedPositionsHistory.fetchPrevPage();
         }
 
         // Update the store with the fetched closed positions
         startTransition(() => {
-          setClosedPositions(allClosedPositions);
+          setClosedPositions(Object.values(allClosedPositions));
         });
 
         return allClosedPositions;
@@ -114,3 +87,13 @@ export function useGetClosedPositions() {
 
   return query;
 }
+
+export const useRefetchClosedPositions = () => {
+  const queryClient = useQueryClient();
+
+  const refetchClosedPositions = () => {
+    queryClient.refetchQueries({ queryKey: QUERY_KEY_CLOSED_POSITIONS });
+  };
+
+  return { refetchClosedPositions };
+};

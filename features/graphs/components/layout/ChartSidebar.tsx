@@ -6,6 +6,7 @@ import TradingPanelController from "../input/TradingPanelController";
 import { useAssetSelection } from "../../hooks/chart";
 import CandleSizeSelector from "../input/CandleSizeSelector";
 import PositionTableController from "../displays/PositionTableController";
+import TodayTradeSummary from "../displays/TodayTradeSummary";
 
 export default function ChartSidebar() {
   // Use custom hooks for asset selection and candle size management
@@ -42,11 +43,13 @@ export default function ChartSidebar() {
       </Flex>
       <Divider />
       <TradingPanelController />
-      <Flex className="h-10 border border-gray-200">Signal Indicators</Flex>
+      <Flex className="h-15 border border-gray-200">Signal Indicators</Flex>
       <Flex className="flex-1 w-full relative">
         <PositionTableController />
       </Flex>
-      <Flex className="h-10 border border-gray-200">Summary for Today</Flex>
+      <Flex className="h-15">
+        <TodayTradeSummary />
+      </Flex>
     </Flex>
   );
 }

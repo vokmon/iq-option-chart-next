@@ -91,5 +91,15 @@
   "Open Time": "เวลาที่เปิด",
   "Close Time": "เวลาที่ปิด",
   "Position ID": "รหัสตำแหน่ง",
-  "Active ID": "รหัสสินทรัพย์"
+  "Active ID": "รหัสสินทรัพย์",
+  "Sell position successfully": "ขาย {assetName} สำเร็จ",
+  "Trading Summary": "สรุปการเทรด",
+  "Total P&L": "กำไร/ขาดทุนรวม",
+  "Profit": "กำไร",
+  "Trade Statistics": "สถิติการเทรด",
+  "Wins": "ชนะ",
+  "Losses": "แพ้",
+  "Total Trades": "การเทรดทั้งหมด",
+  "Win Rate": "อัตราชนะ",
+  "No trades completed yet": "ยังไม่มีการเทรดที่เสร็จสิ้น"
 }

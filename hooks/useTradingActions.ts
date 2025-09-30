@@ -1,7 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { useSdk } from "@/hooks/useSdk";
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
 import {
   Balance,
   DigitalOptionsDirection,
@@ -10,6 +8,7 @@ import {
 } from "@quadcode-tech/client-sdk-js";
 import { notifications } from "@mantine/notifications";
 import { useTranslations } from "next-intl";
+import { useRefetchOpenPositions } from "./positions/useGetOpenPositions";
 
 interface TradingParams {
   balance: Balance;
@@ -22,11 +21,17 @@ export function useTradingActions({
   onSuccess,
 }: {
   asset: DigitalOptionsUnderlying;
-  onSuccess: (order: DigitalOptionsOrder) => void;
+  onSuccess?: ({
+    order,
+    direction,
+  }: {
+    order: DigitalOptionsOrder;
+    direction: DigitalOptionsDirection;
+  }) => void;
 }) {
   const t = useTranslations();
-
   const { sdk } = useSdk();
+  const { refetchOpenPositions } = useRefetchOpenPositions();
 
   const executeTrade = async ({
     balance,
@@ -58,19 +63,12 @@ export function useTradingActions({
       );
 
       if (onSuccess) {
-        await onSuccess(order);
+        await onSuccess({ order, direction });
       }
 
-      notifications.show({
-        title: "Success",
-        message: t("Order placed successfully", {
-          direction:
-            direction === DigitalOptionsDirection.Call ? "Call 🔺" : "Put 🔻",
-          assetName: asset?.name || "",
-        }),
-        color: "green",
-        position: "top-right",
-      });
+      // Wait for 0.1 second to ensure the positions are updated
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      refetchOpenPositions();
     } catch (error) {
       const errorMessage = t("Error executing order", {
         direction,

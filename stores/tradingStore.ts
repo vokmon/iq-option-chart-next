@@ -3,16 +3,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface OrderState {
-  id: number;
-  isByUser: boolean;
-}
-
 interface TradingStore {
   // Two separate objects keyed by assetId
   selectedBalanceIds: Record<string, number>;
   amounts: Record<string, number>;
-  orders: Record<string, OrderState[]>;
 
   // Actions
   updateSelectedBalance: (assetId: string, selectedBalanceId: number) => void;
@@ -20,12 +14,7 @@ interface TradingStore {
   getSelectedBalanceId: (assetId: string) => number | undefined;
   getAmount: (assetId: string) => number | undefined;
   clearTradingData: (assetId: string) => void;
-  // Order management
-  addOrder: (assetId: string, order: OrderState) => void;
-  getOrders: (assetId: string) => OrderState[];
-  clearOrders: (assetId: string) => void;
-  removeOrder: (assetId: string, orderId: number) => void;
-  getAllOrders: (assetId: string) => OrderState[];
+
   // Sync with asset store - when assets are added/removed
   syncWithAssets: (assetIds: string[]) => void;
 }
@@ -69,65 +58,20 @@ export const useTradingStore = create<TradingStore>()(
         set((state) => {
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
-          const newOrders = { ...state.orders };
           delete newSelectedBalanceIds[assetId];
           delete newAmounts[assetId];
-          delete newOrders[assetId];
+
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
-            orders: newOrders,
           };
         });
-      },
-
-      addOrder: (assetId: string, order: OrderState) => {
-        set((state) => ({
-          orders: {
-            ...state.orders,
-            [assetId]: [...(state.orders[assetId] || []), order],
-          },
-        }));
-      },
-
-      getOrders: (assetId: string) => {
-        const state = get();
-        return state.orders[assetId] || [];
-      },
-
-      clearOrders: (assetId: string) => {
-        set((state) => {
-          const newOrders = { ...state.orders };
-          delete newOrders[assetId];
-          return { orders: newOrders };
-        });
-      },
-
-      removeOrder: (assetId: string, orderId: number) => {
-        set((state) => {
-          const newOrders = { ...state.orders };
-          if (newOrders[assetId]) {
-            newOrders[assetId] = newOrders[assetId].filter(
-              (order) => order.id !== orderId
-            );
-            if (newOrders[assetId].length === 0) {
-              delete newOrders[assetId];
-            }
-          }
-          return { orders: newOrders };
-        });
-      },
-
-      getAllOrders: (assetId: string) => {
-        const state = get();
-        return state.orders[assetId] || [];
       },
 
       syncWithAssets: (assetIds: string[]) => {
         set((state) => {
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
-          const newOrders = { ...state.orders };
 
           // Remove trading data for assets that no longer exist
           Object.keys(newSelectedBalanceIds).forEach((tradingAssetId) => {
@@ -142,16 +86,9 @@ export const useTradingStore = create<TradingStore>()(
             }
           });
 
-          Object.keys(newOrders).forEach((tradingAssetId) => {
-            if (!assetIds.includes(tradingAssetId)) {
-              delete newOrders[tradingAssetId];
-            }
-          });
-
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
-            orders: newOrders,
           };
         });
       },
@@ -161,7 +98,6 @@ export const useTradingStore = create<TradingStore>()(
       partialize: (state) => ({
         selectedBalanceIds: state.selectedBalanceIds,
         amounts: state.amounts,
-        orders: state.orders,
       }),
     }
   )

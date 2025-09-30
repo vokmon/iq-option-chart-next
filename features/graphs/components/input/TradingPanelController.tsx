@@ -2,12 +2,12 @@ import TradingPanel from "@/components/input/TradingPanel";
 import { useTradingState } from "../../hooks/trading/useTradingState";
 import { useTradingActions } from "@/hooks/useTradingActions";
 import { DigitalOptionsDirection } from "@quadcode-tech/client-sdk-js";
-import { useTradingStore } from "@/stores/tradingStore";
 import { useAssetStore } from "@/stores/assetStore";
+import { notifications } from "@mantine/notifications";
+import { OrderSuccessNotification } from "../notifications/OrderSuccessNotification";
 
 export default function TradingPanelController() {
   const { getActiveAsset } = useAssetStore();
-  const { addOrder } = useTradingStore();
   const activeAsset = getActiveAsset();
   const asset = activeAsset?.asset;
 
@@ -16,13 +16,15 @@ export default function TradingPanelController() {
 
   const createOrderMutation = useTradingActions({
     asset: asset!,
-    onSuccess: (order) => {
-      if (activeAsset) {
-        addOrder(activeAsset.id, {
-          id: order.id,
-          isByUser: true,
-        });
-      }
+    onSuccess: ({ direction }) => {
+      notifications.show({
+        title: "Success",
+        message: (
+          <OrderSuccessNotification asset={asset!} direction={direction} />
+        ),
+        color: "green",
+        position: "top-right",
+      });
     },
   });
 

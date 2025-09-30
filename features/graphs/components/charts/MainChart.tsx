@@ -11,7 +11,6 @@ import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bolli
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
-import { useOrderReferenceLines } from "@/features/graphs/hooks/trading/useOrderReferenceLines";
 import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePositionReferenceLines";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
@@ -42,9 +41,6 @@ export function MainChart({
   const { showDonchian, donchianConfig } = useDonchianTabQuery();
 
   // Order reference lines hook
-  const { data: positions = [] } = useOrderReferenceLines({
-    activeId,
-  });
 
   // Bollinger Bands hook
   const {
@@ -75,7 +71,7 @@ export function MainChart({
     destroyPositionReferenceLines,
     recreatePositionReferenceLines,
   } = usePositionReferenceLines({
-    positions,
+    activeId,
   });
 
   // Theme change detection
@@ -381,7 +377,6 @@ export function MainChart({
     onThemeChange,
     recreateBollingerBandsSeries,
     recreateDonchianSeries,
-    positions,
     createPositionReferenceLines,
     updatePositionReferenceLines,
     destroyPositionReferenceLines,

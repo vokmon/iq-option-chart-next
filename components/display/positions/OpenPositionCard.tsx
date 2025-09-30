@@ -14,12 +14,14 @@ interface OpenPositionCardProps {
   position: Position;
   activeInfo?: Active;
   balance?: Balance;
+  onSellClick?: (position: Position) => void;
 }
 
 export default function OpenPositionCard({
   position,
   activeInfo,
   balance,
+  onSellClick,
 }: OpenPositionCardProps) {
   const renderPositionSummary = (position: Position, activeInfo?: Active) => (
     <div className="flex flex-col justify-center items-start w-full gap-1">
@@ -84,10 +86,8 @@ export default function OpenPositionCard({
         </Text>
         <div
           className="flex items-center gap-1 px-3 py-2 mr-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 hover:scale-105 hover:shadow-md rounded cursor-pointer transition-all duration-200 ease-in-out active:scale-95 active:bg-red-200"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            position.sell();
+          onClick={() => {
+            onSellClick?.(position);
           }}
         >
           <IconCash

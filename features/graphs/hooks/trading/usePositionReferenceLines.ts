@@ -7,9 +7,9 @@ import {
   type IChartApi,
 } from "lightweight-charts";
 import { Position } from "@quadcode-tech/client-sdk-js";
-import { useTradingStore } from "@/stores/tradingStore";
-import { useAssetStore } from "@/stores/assetStore";
 import { getPositionColor } from "@/utils/positionColors";
+import { formatAmount } from "@/utils/currency";
+import { useOrderReferenceLines } from "./useOrderReferenceLines";
 
 export interface PositionReferenceLine {
   series: ISeriesApi<"Line"> | null;
@@ -17,7 +17,7 @@ export interface PositionReferenceLine {
 }
 
 export interface UsePositionReferenceLinesProps {
-  positions: Position[];
+  activeId: number;
 }
 
 export interface UsePositionReferenceLinesReturn {
@@ -37,31 +37,24 @@ export interface UsePositionReferenceLinesReturn {
 }
 
 export function usePositionReferenceLines({
-  positions,
+  activeId,
 }: UsePositionReferenceLinesProps): UsePositionReferenceLinesReturn {
+  const positions = useOrderReferenceLines({
+    activeId,
+  });
   const referenceLinesRef = useRef<PositionReferenceLine[]>([]);
   const lastPositionsRef = useRef<Position[]>([]);
-  const { getAllOrders } = useTradingStore();
-  const { getActiveAsset } = useAssetStore();
-  const activeAsset = getActiveAsset();
 
-  const getPositionTitle = useCallback(
-    (position: Position) => {
-      // Check if any of the position's order IDs match user-created orders
-      const userOrders = activeAsset?.id ? getAllOrders(activeAsset.id) : [];
-      const userOrderIds = new Set(userOrders.map((order) => order.id));
-      const isByUser =
-        position.orderIds?.some((orderId) => userOrderIds.has(orderId)) ??
-        false;
+  const getPositionTitle = useCallback((position: Position) => {
+    const direction = position.direction?.toUpperCase() || "UNKNOWN";
+    const directionEmoji =
+      direction === "CALL" ? "⬆️" : direction === "PUT" ? "⬇️" : "";
+    const pnlIcon =
+      (position?.pnl || 0) > 0 ? `🟢` : (position?.pnl || 0) < 0 ? `🔴` : `⚪`;
 
-      const direction = position.direction?.toUpperCase() || "UNKNOWN";
-      const directionEmoji =
-        direction === "CALL" ? "⬆️" : direction === "PUT" ? "⬇️" : "";
-      const icon = isByUser ? "👤" : "🤖";
-      return `${icon} ${direction} ${directionEmoji} (${position.openQuote})`;
-    },
-    [getAllOrders, activeAsset?.id]
-  );
+    const pnl = formatAmount(position.pnl || 0);
+    return `${direction} ${directionEmoji} (${position.openQuote}) ${pnlIcon} ${pnl}`;
+  }, []);
 
   const createPositionReferenceLines = useCallback(
     (chart: IChartApi): PositionReferenceLine[] => {
@@ -101,6 +94,9 @@ export function usePositionReferenceLines({
       const newReferenceLines: PositionReferenceLine[] = [];
 
       positions.forEach((position) => {
+        if (position.status?.toLowerCase().includes("closed")) {
+          return;
+        }
         if (!position.openQuote || !position.expirationTime) {
           return;
         }
@@ -128,13 +124,20 @@ export function usePositionReferenceLines({
           position.expirationTime.getTime() / 1000
         ) as UTCTimestamp;
 
+        // Ensure we have different timestamps and proper ordering
+        const startTime = currentTime;
+        const endTime = Math.max(
+          expirationTime,
+          currentTime + 1
+        ) as UTCTimestamp; // Ensure at least 1 second difference
+
         series.setData([
           {
-            time: currentTime,
+            time: startTime,
             value: position.openQuote,
           },
           {
-            time: expirationTime,
+            time: endTime,
             value: position.openQuote,
           },
         ]);
