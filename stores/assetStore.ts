@@ -7,6 +7,8 @@ import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 import { type DonchianConfig } from "@/types/indicators/donchian";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
 
+export const MAX_ASSETS = 7;
+
 export interface AssetIndicatorSettings {
   bollingerBands: {
     enabled: boolean;
@@ -95,7 +97,7 @@ export const useAssetStore = create<AssetStore>()(
     (set, get) => ({
       assets: [],
       activeAssetId: null,
-      maxAssets: 15,
+      maxAssets: MAX_ASSETS,
 
       addAsset: (asset?: DigitalOptionsUnderlying) => {
         const state = get();

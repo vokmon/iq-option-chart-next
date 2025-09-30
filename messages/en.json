@@ -101,5 +101,8 @@
   "Losses": "Losses",
   "Total Trades": "Total Trades",
   "Win Rate": "Win Rate",
-  "No trades completed yet": "No trades completed yet"
+  "No trades completed yet": "No trades completed yet",
+  "No trading history": "No trading history",
+  "You haven't started trading yet": "You haven't started trading yet",
+  "Place your first trade to see your positions here": "Place your first trade to see your positions here"
 }

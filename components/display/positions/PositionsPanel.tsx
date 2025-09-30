@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Pagination, Group, Text } from "@mantine/core";
+import { Pagination, Text } from "@mantine/core";
 import ClosePositionCard from "./ClosePositionCard";
 import OpenPositionCard from "./OpenPositionCard";
 import { Active, Balance, Position } from "@quadcode-tech/client-sdk-js";
+import { EmptyClosedPositions } from "./EmptyClosedPositions";
 
 interface PositionsPanelProps {
   openPositions: Position[];
@@ -40,17 +41,25 @@ export default function PositionsPanel({
     return [...openPositionsWithType, ...closedPositionsWithType];
   }, [openPositions, closedPositions]);
 
+  // Reset to first page when positions change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [openPositions, closedPositions]);
+
+  if (allPositions.length === 0) {
+    return (
+      <div className="flex flex-grow h-full">
+        <EmptyClosedPositions />
+      </div>
+    );
+  }
+
   // Calculate pagination
   const totalItems = allPositions.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPositions = allPositions.slice(startIndex, endIndex);
-
-  // Reset to first page when positions change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [openPositions, closedPositions]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

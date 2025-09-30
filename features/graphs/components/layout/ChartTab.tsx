@@ -56,6 +56,7 @@ const EmptyChart = () => {
   return (
     <Stack align="center" className="pt-50" gap="md" h="100%">
       <div
+        className="animate-bounce"
         style={{
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
           borderRadius: "50%",
@@ -64,6 +65,9 @@ const EmptyChart = () => {
           alignItems: "center",
           justifyContent: "center",
           boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)",
+          animationDuration: "2s",
+          animationIterationCount: "infinite",
+          animationTimingFunction: "ease-in-out",
         }}
       >
         <IconChartLine

@@ -15,7 +15,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore, MAX_ASSETS } from "@/stores/assetStore";
 import { getCandleSizeLabel, getCandleColor } from "@/utils/candleColors";
 import { useTranslations } from "next-intl";
 import { useTabScroll } from "../../hooks/tab/useTabScroll";
@@ -279,37 +279,50 @@ export function TabBar() {
                 );
               })}
 
-              <Tooltip
-                label={
-                  canAddAsset()
-                    ? t("Add new asset")
-                    : assets.some((asset) => asset.isEmpty)
-                    ? t("Please fill the empty asset first")
-                    : t("Maximum number of assets reached")
-                }
-                position="top"
-                withArrow
-              >
-                <ActionIcon
-                  id="add-asset-button"
+              <Box className="relative flex-shrink-0">
+                <Tooltip
+                  label={
+                    canAddAsset()
+                      ? t("Add new asset")
+                      : assets.some((asset) => asset.isEmpty)
+                      ? t("Please fill the empty asset first")
+                      : t("Maximum number of assets reached")
+                  }
+                  position="top"
+                  withArrow
+                >
+                  <ActionIcon
+                    id="add-asset-button"
+                    variant="filled"
+                    color={canAddAsset() ? "blue" : "gray"}
+                    onClick={canAddAsset() ? handleAddAsset : () => {}}
+                    className={`flex items-center justify-center flex-shrink-0 ${
+                      canAddAsset() ? "cursor-pointer" : "cursor-not-allowed"
+                    }`}
+                    style={{
+                      borderRadius: "var(--mantine-radius-sm)",
+                      minWidth: 32,
+                      minHeight: 32,
+                      opacity: canAddAsset() ? 1 : 0.7,
+                    }}
+                  >
+                    <IconPlus size={16} />
+                  </ActionIcon>
+                </Tooltip>
+                <Badge
+                  size="xs"
                   variant="filled"
-                  color={canAddAsset() ? "blue" : "gray"}
-                  onClick={canAddAsset() ? handleAddAsset : () => {}}
+                  color={assets.length >= MAX_ASSETS ? "gray" : "blue"}
+                  className="absolute -top-3 -right-4 min-w-[18px] h-[18px] text-[9px] font-semibold flex items-center justify-center rounded-full shadow-sm"
                   style={{
-                    borderRadius: "var(--mantine-radius-sm)",
-                    flexShrink: 0,
-                    cursor: canAddAsset() ? "pointer" : "not-allowed",
-                    minWidth: 32,
-                    minHeight: 32,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: canAddAsset() ? 1 : 0.7,
+                    border: "1px solid white",
+                    boxShadow:
+                      "0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5)",
                   }}
                 >
-                  <IconPlus size={16} />
-                </ActionIcon>
-              </Tooltip>
+                  {assets.length}/{MAX_ASSETS}
+                </Badge>
+              </Box>
             </Tabs.List>
           </div>
         </Box>

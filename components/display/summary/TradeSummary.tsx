@@ -7,6 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { formatAmount } from "@/utils/currency";
 import { useTranslations } from "next-intl";
+import EmptyTradingSummary from "./EmptyTradingSummary";
 
 type TradeSummaryProps = {
   closedPositions: Position[];
@@ -90,11 +91,7 @@ export default function TradeSummary({
       }}
     >
       {totalTrades === 0 ? (
-        <Group justify="center" align="center" h="100%">
-          <Text size="sm" c="dimmed">
-            {t("No trades completed yet")}
-          </Text>
-        </Group>
+        <EmptyTradingSummary />
       ) : (
         <div className="flex flex-col justify-center items-start gap-0 w-full">
           <div className="flex flex-row justify-center items-center gap-2 w-full">

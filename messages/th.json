@@ -101,5 +101,8 @@
   "Losses": "แพ้",
   "Total Trades": "การเทรดทั้งหมด",
   "Win Rate": "อัตราชนะ",
-  "No trades completed yet": "ยังไม่มีการเทรดที่เสร็จสิ้น"
+  "No trades completed yet": "ยังไม่มีการเทรดที่เสร็จสิ้น",
+  "No trading history": "ไม่มีประวัติการเทรด",
+  "You haven't started trading yet": "คุณยังไม่ได้เริ่มเทรด",
+  "Place your first trade to see your positions here": "เริ่มเทรดเพื่อดูประวัติการเทรดของคุณ"
 }
