@@ -6,8 +6,10 @@ import {
   Balance,
   DigitalOptionsDirection,
   DigitalOptionsOrder,
+  DigitalOptionsUnderlying,
 } from "@quadcode-tech/client-sdk-js";
 import { notifications } from "@mantine/notifications";
+import { useTranslations } from "next-intl";
 
 interface TradingParams {
   balance: Balance;
@@ -15,13 +17,15 @@ interface TradingParams {
   direction: DigitalOptionsDirection;
 }
 
-interface UseTradingActionsParams {
-  t: (key: string, values?: Record<string, string>) => string;
-}
+export function useTradingActions({
+  asset,
+  onSuccess,
+}: {
+  asset: DigitalOptionsUnderlying;
+  onSuccess: (order: DigitalOptionsOrder) => void;
+}) {
+  const t = useTranslations();
 
-export function useTradingActions({ t }: UseTradingActionsParams) {
-  const { getActiveAsset } = useAssetStore();
-  const { addOrder } = useTradingStore();
   const { sdk } = useSdk();
 
   const executeTrade = async ({
@@ -29,9 +33,6 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
     amount,
     direction,
   }: TradingParams): Promise<void> => {
-    const activeAsset = getActiveAsset();
-    const asset = activeAsset?.asset;
-
     try {
       if (!asset) {
         throw new Error("No active asset selected");
@@ -56,11 +57,8 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
         balance
       );
 
-      if (activeAsset) {
-        addOrder(activeAsset.id, {
-          id: order.id,
-          isByUser: true,
-        });
+      if (onSuccess) {
+        await onSuccess(order);
       }
 
       notifications.show({
@@ -88,20 +86,13 @@ export function useTradingActions({ t }: UseTradingActionsParams) {
     }
   };
 
-  const callMutation = useMutation({
-    mutationFn: (params: { balance: Balance; amount: number }) =>
-      executeTrade({ ...params, direction: DigitalOptionsDirection.Call }),
+  const createOrderMutation = useMutation({
+    mutationFn: (params: {
+      balance: Balance;
+      amount: number;
+      direction: DigitalOptionsDirection;
+    }) => executeTrade({ ...params }),
   });
 
-  const putMutation = useMutation({
-    mutationFn: (params: { balance: Balance; amount: number }) =>
-      executeTrade({ ...params, direction: DigitalOptionsDirection.Put }),
-  });
-
-  return {
-    onCall: callMutation.mutate,
-    onPut: putMutation.mutate,
-    callMutation,
-    putMutation,
-  };
+  return createOrderMutation;
 }

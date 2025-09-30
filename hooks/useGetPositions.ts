@@ -9,12 +9,7 @@ const REFRESH_INTERVAL_OPEN_POSITIONS = 10000;
 
 export function useGetOpenPositions() {
   const { sdk } = useSdk();
-  const {
-    setOpenPositions,
-    setOpenPositionsLoading,
-    setOpenPositionsError,
-    clearOpenPositionsError,
-  } = usePositionsStore();
+  const { setOpenPositions } = usePositionsStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
@@ -23,9 +18,6 @@ export function useGetOpenPositions() {
     queryKey: ["openPositions"],
     queryFn: async () => {
       try {
-        setOpenPositionsLoading(true);
-        clearOpenPositionsError();
-
         const positions = await sdk.positions();
         const allOpenPositions = await positions.getOpenedPositions();
 
@@ -36,35 +28,23 @@ export function useGetOpenPositions() {
 
         return allOpenPositions;
       } catch (error) {
-        setOpenPositionsError(error as Error);
+        console.error("Error fetching open positions:", error);
         throw error;
-      } finally {
-        setOpenPositionsLoading(false);
       }
     },
     enabled: !!sdk,
     retry: 2,
-    refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: false,
     refetchInterval: REFRESH_INTERVAL_OPEN_POSITIONS,
   });
 
-  return {
-    isLoading: query.isLoading,
-    isError: query.isError,
-    error: query.error,
-    refetch: query.refetch,
-  };
+  return query;
 }
 
 export function useGetClosedPositions() {
   const { sdk } = useSdk();
-  const {
-    setClosedPositions,
-    setClosedPositionsLoading,
-    setClosedPositionsError,
-    clearClosedPositionsError,
-  } = usePositionsStore();
+  const { setClosedPositions } = usePositionsStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
@@ -73,9 +53,6 @@ export function useGetClosedPositions() {
     queryKey: ["closedPositions"],
     queryFn: async () => {
       try {
-        setClosedPositionsLoading(true);
-        clearClosedPositionsError();
-
         const positions = await sdk.positions();
         const now = sdk.currentTime();
         const allClosedPositionsHistory = await positions.getPositionsHistory();
@@ -123,23 +100,17 @@ export function useGetClosedPositions() {
 
         return allClosedPositions;
       } catch (error) {
-        setClosedPositionsError(error as Error);
+        console.error("Error fetching closed positions:", error);
         throw error;
       } finally {
-        setClosedPositionsLoading(false);
       }
     },
     enabled: !!sdk,
     retry: 2,
-    refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: false,
     refetchInterval: REFRESH_INTERVAL_CLOSE_POSITIONS,
   });
 
-  return {
-    isLoading: query.isLoading,
-    isError: query.isError,
-    error: query.error,
-    refetch: query.refetch,
-  };
+  return query;
 }

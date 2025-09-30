@@ -7,7 +7,7 @@ import {
   IconX,
   IconMinus,
 } from "@tabler/icons-react";
-import { formatAmount, formatAmountOnly } from "@/utils/currency";
+import { formatAmount } from "@/utils/currency";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import PositionDetails from "./PositionDetails";
@@ -43,31 +43,33 @@ export default function ClosePositionCard({
             {activeInfo?.name || position.active?.name}
           </Text>
         </div>
-      </div>
-      <div className="flex flex-row justify-start items-center gap-2">
-        <Badge
-          color={position.direction === "call" ? "green" : "red"}
-          variant="light"
-          size="md"
-          w="80px"
-          style={{ textTransform: "none" }}
-        >
-          <div className="flex flex-row justify-start items-center gap-2">
-            {position.direction === "call" ? (
-              <IconTrendingUp size={20} color="green" />
-            ) : (
-              <IconTrendingDown size={20} color="red" />
-            )}
-            {position.direction?.toUpperCase()}
-          </div>
-        </Badge>
 
-        <Text size="md" fw={600}>
-          {balance
-            ? formatAmount(position.invest || 0, balance.currency)
-            : `$${formatAmountOnly(position.invest || 0)}`}
-        </Text>
+        <div className="flex flex-row justify-start items-center gap-2 no-wrap">
+          <Badge
+            color={position.direction === "call" ? "green" : "red"}
+            variant="light"
+            size="sm"
+            w="50px"
+            style={{ textTransform: "none" }}
+          >
+            <div className="flex flex-row justify-start items-center gap-2">
+              {/* {position.direction === "call" ? (
+                <IconTrendingUp size={20} color="green" />
+              ) : (
+                <IconTrendingDown size={20} color="red" />
+              )} */}
+              {position.direction?.toUpperCase()}
+            </div>
+          </Badge>
+
+          <Text size="sm" fw={600}>
+            {formatAmount(position.invest || 0, balance?.currency, {
+              noDecimals: true,
+            })}
+          </Text>
+        </div>
       </div>
+
       <div className="flex flex-row justify-start items-center gap-2">
         <Badge
           size="md"
@@ -108,18 +110,12 @@ export default function ClosePositionCard({
               : "red"
           }
         >
-          {balance
-            ? formatAmount(
-                (position?.pnl ?? 0) > 0
-                  ? position.closeProfit ?? 0
-                  : position.pnl ?? 0,
-                balance.currency
-              )
-            : `${(position?.pnl ?? 0) > 0 ? "+" : ""}$${formatAmountOnly(
-                (position?.pnl ?? 0) > 0
-                  ? position.closeProfit ?? 0
-                  : position.pnl ?? 0
-              )}`}
+          {formatAmount(
+            (position?.pnl ?? 0) > 0
+              ? position.closeProfit ?? 0
+              : position.pnl ?? 0,
+            balance?.currency
+          )}
         </Text>
       </div>
     </div>

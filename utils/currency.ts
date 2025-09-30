@@ -3,17 +3,27 @@
  */
 
 /**
- * Format currency amount with appropriate symbol and formatting
+ * Format currency amount with optional symbol
  * @param amount - The amount to format
- * @param currency - The currency code (USD, THB, etc.)
+ * @param currency - The currency code (USD, THB, etc.) - optional
  * @returns Formatted currency string
  */
-export function formatAmount(amount: number, currency: string): string {
+export function formatAmount(
+  amount: number,
+  currency?: string,
+  { noDecimals }: { noDecimals?: boolean } = {}
+): string {
+  const formattedNumber = amount.toLocaleString("en-US", {
+    minimumFractionDigits: noDecimals ? 0 : 2,
+    maximumFractionDigits: noDecimals ? 0 : 2,
+  });
+
+  if (!currency) {
+    return formattedNumber;
+  }
+
   const symbol = getCurrencySymbol(currency);
-  return `${symbol} ${amount.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  return `${symbol} ${formattedNumber}`;
 }
 
 /**
@@ -128,16 +138,4 @@ export function getCurrencySymbol(currency: string): string {
     default:
       return currency; // Return the currency code if no symbol is found
   }
-}
-
-/**
- * Format amount without currency symbol (just the number)
- * @param amount - The amount to format
- * @returns Formatted number string
- */
-export function formatAmountOnly(amount: number): string {
-  return amount.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 }

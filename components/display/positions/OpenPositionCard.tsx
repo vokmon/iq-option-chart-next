@@ -4,9 +4,8 @@ import {
   IconTrendingUp,
   IconTrendingDown,
   IconCash,
-  IconCircleFilled,
 } from "@tabler/icons-react";
-import { formatAmount, formatAmountOnly } from "@/utils/currency";
+import { formatAmount } from "@/utils/currency";
 import Image from "next/image";
 import PositionDetails from "./PositionDetails";
 import CountdownTimer from "./CountdownTimer";
@@ -39,13 +38,6 @@ export default function OpenPositionCard({
           <Text size="sm" fw={500}>
             {activeInfo?.name || position.active?.name}
           </Text>
-          <IconCircleFilled
-            size={8}
-            className="text-green-500"
-            style={{
-              animation: "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-            }}
-          />
         </div>
         <div className="flex flex-row justify-start items-center gap-2">
           {position.expirationTime && (
@@ -72,9 +64,7 @@ export default function OpenPositionCard({
         </Badge>
 
         <Text size="md" fw={600}>
-          {balance
-            ? formatAmount(position.invest || 0, balance.currency)
-            : `$${formatAmountOnly(position.invest || 0)}`}
+          {formatAmount(position.invest || 0, balance?.currency)}
         </Text>
       </div>
 
@@ -90,11 +80,7 @@ export default function OpenPositionCard({
               : "red"
           }
         >
-          {balance
-            ? formatAmount(position?.pnl ?? 0, balance.currency)
-            : `${(position?.pnl ?? 0) > 0 ? "+" : ""}$${formatAmountOnly(
-                position?.pnl ?? 0
-              )}`}
+          {formatAmount(position?.pnl ?? 0, balance?.currency)}
         </Text>
         <div
           className="flex items-center gap-1 px-3 py-2 mr-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 hover:scale-105 hover:shadow-md rounded cursor-pointer transition-all duration-200 ease-in-out active:scale-95 active:bg-red-200"
