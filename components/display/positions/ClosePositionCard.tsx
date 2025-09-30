@@ -1,12 +1,6 @@
 import { Accordion, Text, Badge } from "@mantine/core";
 import { Active, Balance, Position } from "@quadcode-tech/client-sdk-js";
-import {
-  IconTrendingUp,
-  IconTrendingDown,
-  IconCheck,
-  IconX,
-  IconMinus,
-} from "@tabler/icons-react";
+import { IconCheck, IconX, IconMinus } from "@tabler/icons-react";
 import { formatAmount } from "@/utils/currency";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
