@@ -1,7 +1,7 @@
 "use client";
+import { useAnimationTrigger } from "@/components/ui/hooks/useAnimationTrigger";
 import { Group, Text } from "@mantine/core";
 import { IconCashBanknote } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 
 interface NumberOfOpenPositionCardProps {
   number: number;
@@ -10,13 +10,7 @@ interface NumberOfOpenPositionCardProps {
 export default function NumberOfOpenPositionCard({
   number,
 }: NumberOfOpenPositionCardProps) {
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    setIsAnimating(true);
-    const timer = setTimeout(() => setIsAnimating(false), 500);
-    return () => clearTimeout(timer);
-  }, [number]);
+  const isAnimating = useAnimationTrigger(number);
 
   return (
     <div

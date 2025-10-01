@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { Text, Indicator, Group } from "@mantine/core";
 import { SignalType } from "@/types/signal/Signal";
 import { useTranslations } from "next-intl";
 import { useGetSignalConfig } from "./utils/signal-utils";
+import { useAnimationTrigger } from "@/components/ui/hooks/useAnimationTrigger";
 
 export interface SignalIndicatorLabelProps {
   signal: SignalType;
@@ -12,13 +12,7 @@ export default function SignalIndicatorLabel({
   signal,
 }: SignalIndicatorLabelProps) {
   const t = useTranslations();
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    setIsAnimating(true);
-    const timer = setTimeout(() => setIsAnimating(false), 500);
-    return () => clearTimeout(timer);
-  }, [signal]);
+  const isAnimating = useAnimationTrigger(signal);
 
   const config = useGetSignalConfig(signal);
   const IconComponent = config.icon;

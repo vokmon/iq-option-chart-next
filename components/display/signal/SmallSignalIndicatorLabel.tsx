@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { Text, Group } from "@mantine/core";
 import { SignalType } from "@/types/signal/Signal";
 import { useGetSignalConfig } from "./utils/signal-utils";
+import { useAnimationTrigger } from "@/components/ui/hooks/useAnimationTrigger";
 
 export interface SmallSignalIndicatorLabelProps {
   signal: SignalType;
@@ -10,13 +10,7 @@ export interface SmallSignalIndicatorLabelProps {
 export default function SmallSignalIndicatorLabel({
   signal,
 }: SmallSignalIndicatorLabelProps) {
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    setIsAnimating(true);
-    const timer = setTimeout(() => setIsAnimating(false), 500);
-    return () => clearTimeout(timer);
-  }, [signal]);
+  const isAnimating = useAnimationTrigger(signal);
 
   const config = useGetSignalConfig(signal);
   const IconComponent = config.icon;

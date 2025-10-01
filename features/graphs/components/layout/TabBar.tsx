@@ -228,7 +228,7 @@ export function TabBar() {
                     }}
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
-                      <div className="absolute flex flex-row gap-2 z-10 -top-2 left-0 m-1 justify-space-around">
+                      <div className="absolute flex flex-row gap-2 z-10 -top-3.5 left-0 m-1 justify-space-around">
                         {signal && (
                           <SmallSignalIndicatorLabel signal={signal} />
                         )}
