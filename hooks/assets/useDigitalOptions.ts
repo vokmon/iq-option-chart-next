@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSdk } from "./useSdk";
+import { useSdk } from "../useSdk";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 

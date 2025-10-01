@@ -1,0 +1,46 @@
+"use client";
+import { Group, Text } from "@mantine/core";
+import { IconCashBanknote } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+
+interface NumberOfOpenPositionCardProps {
+  number: number;
+}
+
+export default function NumberOfOpenPositionCard({
+  number,
+}: NumberOfOpenPositionCardProps) {
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    setIsAnimating(true);
+    const timer = setTimeout(() => setIsAnimating(false), 500);
+    return () => clearTimeout(timer);
+  }, [number]);
+
+  return (
+    <div
+      className={`animate-pulse transition-all duration-200 ${
+        isAnimating ? "animate-fade-in" : ""
+      }`}
+    >
+      <div
+        className={`flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-default select-none px-2 py-0 text-base rounded-lg border shadow-sm bg-orange-50 border-orange-300 text-orange-800`}
+      >
+        <Group gap="xs" justify="center" align="center">
+          <div className="relative">
+            <div
+              className={`w-6 h-4 rounded-full  shadow-lg flex items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 `}
+            >
+              <IconCashBanknote size={13} className="text-white" />
+            </div>
+          </div>
+
+          <Text size="xs" fw={700} className="tracking-wide">
+            {number > 99 ? "99+" : number}
+          </Text>
+        </Group>
+      </div>
+    </div>
+  );
+}

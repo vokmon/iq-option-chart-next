@@ -61,6 +61,7 @@
   "Select Direction": "Select Direction",
   "CALL": "CALL",
   "PUT": "PUT",
+  "HOLD": "HOLD",
   "Choose your balance and trading direction to place an order": "Choose your balance and trading direction to place an order",
   "Loading balances": "Loading balances",
   "No balances available": "No balances available",
@@ -123,5 +124,7 @@
   "Back": "Back",
   "Resend In": "Resend In",
   "Authentication failed": "Authentication failed",
-  "Verification data fetch failed": "Verification data fetch failed"
+  "Verification data fetch failed": "Verification data fetch failed",
+  "Resistance zone": "Resistance zone",
+  "No Signal": "No Signal"
 }

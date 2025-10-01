@@ -30,10 +30,7 @@ export const authService = {
       console.error("Logout API error:", error);
       // Continue with logout even if API call fails
     } finally {
-      // 3. Clear user data from localStorage
-      localStorage.removeItem("user");
-
-      // 4. Redirect to login page
+      // 3. Redirect to login page
       window.location.href = "/login";
     }
   },

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSdk } from "./useSdk";
+import { useSdk } from "../useSdk";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import { Active } from "@quadcode-tech/client-sdk-js";
 import { useTransition } from "react";
@@ -7,7 +7,8 @@ import { useTransition } from "react";
 export function useGetActiveInformation() {
   const { sdk } = useSdk();
   const { actives, setActiveInformation } = useDigitalOptionsStore();
-  const [isPending, startTransition] = useTransition();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, startTransition] = useTransition();
 
   const query = useQuery({
     queryKey: ["activeInformation", actives.map((a) => a.activeId)],

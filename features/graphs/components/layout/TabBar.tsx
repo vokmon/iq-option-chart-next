@@ -24,12 +24,16 @@ import { useTabScrollEffects } from "../../hooks/tab/useTabScrollEffects";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
 import { useFilteredPositions } from "../../hooks/positions/useFilteredPositions";
+import { useSignalStore } from "@/stores/signalStore";
+import SmallSignalIndicatorLabel from "@/components/display/signal/SmallSignalIndicatorLabel";
+import NumberOfOpenPositionCard from "@/components/display/positions/NumberOfOpenPositionCard";
 
 export function TabBar() {
   const t = useTranslations();
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const { assets, getActiveAsset } = useAssetStore();
+  const { assets } = useAssetStore();
+  const { getSignal } = useSignalStore();
   const { activeInformation } = useDigitalOptionsStore();
   // Use custom hooks for scroll functionality
   const {
@@ -163,6 +167,7 @@ export function TabBar() {
                   openPositionsForSelectedBalance.filter(
                     (position) => position.activeId === asset?.asset?.activeId
                   );
+                const signal = getSignal(asset.asset?.activeId || 0);
 
                 return (
                   <Tabs.Tab
@@ -223,22 +228,16 @@ export function TabBar() {
                     }}
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
-                      {openPositionsForActive.length > 0 && (
-                        <Badge
-                          size="xs"
-                          variant="filled"
-                          color="red"
-                          className="absolute z-10 -top-2 -right-1 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center shadow-lg border-2 border-white animate-pulse"
-                          style={{
-                            boxShadow:
-                              "0 2px 8px rgba(255, 0, 0, 0.3), 0 0 0 2px white",
-                          }}
-                        >
-                          {openPositionsForActive.length > 99
-                            ? "99+"
-                            : openPositionsForActive.length}
-                        </Badge>
-                      )}
+                      <div className="absolute flex flex-row gap-2 z-10 -top-2 left-0 m-1 justify-space-around">
+                        {signal && (
+                          <SmallSignalIndicatorLabel signal={signal} />
+                        )}
+                        {openPositionsForActive.length > 0 && (
+                          <NumberOfOpenPositionCard
+                            number={openPositionsForActive.length}
+                          />
+                        )}
+                      </div>
                       {activeData?.imageUrl && (
                         <div className="w-6 h-6">
                           <Image

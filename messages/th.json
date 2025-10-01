@@ -61,6 +61,7 @@
   "Select Direction": "เลือกทิศทาง",
   "CALL": "CALL",
   "PUT": "PUT",
+  "HOLD": "HOLD",
   "Choose your balance and trading direction to place an order": "เลือกยอดเงินและทิศทางเทรดเพื่อทำคำสั่งซื้อ",
   "Loading balances": "กำลังโหลดยอดเงิน",
   "No balances available": "ไม่มียอดเงินที่ใช้ได้",
@@ -123,5 +124,7 @@
   "Back": "กลับ",
   "Resend In": "ส่งใหม่ใน",
   "Authentication failed": "ยืนยันตัวตนล้มเหลว",
-  "Verification data fetch failed": "ขออภัย ไม่สามารถยืนยันตัวตนได้"
+  "Verification data fetch failed": "ขออภัย ไม่สามารถยืนยันตัวตนได้",
+  "Resistance zone": "Resistance zone",
+  "No Signal": "ไม่มีสัญญาณ"
 }

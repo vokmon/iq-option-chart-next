@@ -7,7 +7,7 @@ export const EmptyClosedPositions = () => {
   const t = useTranslations();
 
   return (
-    <Box className="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 animate-in fade-in slide-in-from-bottom-5 duration-600">
+    <Box className="w-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 animate-in fade-in slide-in-from-bottom-5 duration-600">
       <Center className="mb-4">
         <Box
           className="flex items-center justify-center w-16 h-16 rounded-full animate-bounce"
