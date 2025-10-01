@@ -97,3 +97,10 @@ export const useRefetchClosedPositions = () => {
 
   return { refetchClosedPositions };
 };
+
+export const useClosedPositionsLoading = () => {
+  const queryClient = useQueryClient();
+  return (
+    queryClient.getQueryState(QUERY_KEY_CLOSED_POSITIONS)?.status === "pending"
+  );
+};

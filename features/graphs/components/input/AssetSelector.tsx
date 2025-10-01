@@ -2,7 +2,6 @@ import { Select, Box, Image, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
-import { useAssetStore } from "@/stores/assetStore";
 import { useAvailableAssets } from "../../hooks/useAvailableAssets";
 
 interface AssetSelectorProps {

@@ -7,6 +7,7 @@ import { useAssetSelection } from "../../hooks/chart";
 import CandleSizeSelector from "../input/CandleSizeSelector";
 import PositionTableController from "../displays/PositionTableController";
 import TodayTradeSummary from "../displays/TodayTradeSummary";
+import AssetSelectorAttentions from "@/components/cta/AssetSelectorAttentions";
 
 export default function ChartSidebar() {
   // Use custom hooks for asset selection and candle size management
@@ -28,14 +29,17 @@ export default function ChartSidebar() {
       style={{ minHeight: 0 }}
     >
       <Flex direction="row" gap="md">
-        <AssetSelector
-          key={activeAssetId} // Force re-render when active asset changes
-          className="w-full"
-          selectedActiveId={
-            activeAsset?.asset ? String(activeAsset.asset.activeId) : "none"
-          }
-          onAssetSelect={handleAssetSelect}
-        />
+        <div className="relative">
+          {!activeAsset?.asset && <AssetSelectorAttentions />}
+          <AssetSelector
+            key={activeAssetId} // Force re-render when active asset changes
+            className="w-full"
+            selectedActiveId={
+              activeAsset?.asset ? String(activeAsset.asset.activeId) : "none"
+            }
+            onAssetSelect={handleAssetSelect}
+          />
+        </div>
 
         <CandleSizeSelector
           key={`candle-${activeAssetId}`} // Force re-render when active asset changes

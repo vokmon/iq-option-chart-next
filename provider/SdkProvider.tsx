@@ -7,7 +7,7 @@ import {
   SsidAuthMethod,
 } from "@quadcode-tech/client-sdk-js";
 import { useSdkStore } from "../stores/sdkStore";
-import LoadingPage from "../features/graphs/components/LoadingPage";
+import LoadingPage from "@/components/loader/LoadingPage";
 import { getCookie } from "@/utils/cookies";
 import { AuthenticationRequiredDialog } from "../components/dialogs/AuthenticationRequiredDialog";
 

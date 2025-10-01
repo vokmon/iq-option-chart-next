@@ -4,13 +4,21 @@ import { useSelectedBalance } from "@/features/graphs/hooks/positions/useSelecte
 import { useFilteredPositions } from "@/features/graphs/hooks/positions/useFilteredPositions";
 import { Position } from "@quadcode-tech/client-sdk-js";
 import { notifications } from "@mantine/notifications";
-import SellPositionNotitication from "../notifications/SellPositionNotitication";
+import SellPositionNotitication from "@/components/notifications/SellPositionNotitication";
+import { useClosedPositionsLoading } from "@/hooks/positions/useGetClosedPositions";
+import PositionsPanelLoader from "@/components/display/positions/PositionsPanelLoader";
 
 export default function PositionTableController() {
   const { activeInformation } = useDigitalOptionsStore();
   const { selectedBalance } = useSelectedBalance();
   const { openPositionsForSelectedBalance, closedPositionsForSelectedBalance } =
     useFilteredPositions();
+
+  const isLoading = useClosedPositionsLoading();
+
+  if (isLoading) {
+    return <PositionsPanelLoader />;
+  }
 
   const handleSellClick = async (position: Position) => {
     await position.sell();

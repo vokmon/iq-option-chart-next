@@ -2,6 +2,20 @@
 @import "@mantine/core/styles.css";
 @import "@mantine/notifications/styles.css";
 
+/* Custom wiggle animation for arrow */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

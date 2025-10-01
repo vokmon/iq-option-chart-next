@@ -4,7 +4,7 @@ import { useTradingActions } from "@/hooks/useTradingActions";
 import { DigitalOptionsDirection } from "@quadcode-tech/client-sdk-js";
 import { useAssetStore } from "@/stores/assetStore";
 import { notifications } from "@mantine/notifications";
-import { OrderSuccessNotification } from "../notifications/OrderSuccessNotification";
+import { OrderSuccessNotification } from "@/components/notifications/OrderSuccessNotification";
 
 export default function TradingPanelController() {
   const { getActiveAsset } = useAssetStore();

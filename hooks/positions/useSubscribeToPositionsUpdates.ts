@@ -1,9 +1,13 @@
 import { useSdk } from "../useSdk";
 import { usePositionsStore } from "@/stores/positionsStore";
-import { Positions } from "@quadcode-tech/client-sdk-js";
+import { Positions, Position } from "@quadcode-tech/client-sdk-js";
 import { useEffect, useRef, useTransition } from "react";
 
-export const useSubscribeToPositionsUpdates = () => {
+export const useSubscribeToPositionsUpdates = ({
+  onPositionClosed,
+}: {
+  onPositionClosed?: (position: Position) => void;
+}) => {
   const positionsRef = useRef<Positions | null>(null);
   const positionsTimeoutRef = useRef<{ [key: number]: NodeJS.Timeout }>({});
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,11 +29,14 @@ export const useSubscribeToPositionsUpdates = () => {
           () => {
             startTransition(() => {
               removeOpenPosition(position.externalId!);
-              addClosedPositionOnce(position);
+              const wasAdded = addClosedPositionOnce(position);
+              if (wasAdded) {
+                onPositionClosed?.(position);
+              }
             });
           },
           position.expirationTime
-            ? position.expirationTime?.getTime() - Date.now()
+            ? position.expirationTime?.getTime() - Date.now() + 500
             : 60
         );
         positionsTimeoutRef.current[position.externalId!] = timeoutId;
@@ -42,7 +49,10 @@ export const useSubscribeToPositionsUpdates = () => {
         if (position.status?.toLowerCase().includes("closed")) {
           startTransition(() => {
             removeOpenPosition(position.externalId!);
-            addClosedPositionOnce(position);
+            const wasAdded = addClosedPositionOnce(position);
+            if (wasAdded) {
+              onPositionClosed?.(position);
+            }
           });
           clearTimeout(positionsTimeoutRef.current[position.externalId!]);
           delete positionsTimeoutRef.current[position.externalId!];
@@ -69,5 +79,6 @@ export const useSubscribeToPositionsUpdates = () => {
     sdk,
     addClosedPositionOnce,
     upsertOpenPosition,
+    onPositionClosed,
   ]);
 };

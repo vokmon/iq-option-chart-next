@@ -16,7 +16,7 @@ interface PositionsStore {
   removeOpenPosition: (externalId: number) => void;
   updateOpenPosition: (externalId: number, position: Position) => void;
   upsertOpenPosition: (position: Position) => void;
-  addClosedPositionOnce: (position: Position) => void;
+  addClosedPositionOnce: (position: Position) => boolean;
 }
 
 export const usePositionsStore = create<PositionsStore>((set) => ({
@@ -84,20 +84,22 @@ export const usePositionsStore = create<PositionsStore>((set) => ({
   },
 
   addClosedPositionOnce: (position: Position) => {
+    let wasAdded = false;
     set((state) => {
       const existingIndex = state.closedPositions.findIndex(
         (p) => p.externalId === position.externalId
       );
 
-      if (existingIndex >= 0) {
-        // Update existing position
-        const updatedPositions = [...state.closedPositions];
-        updatedPositions[existingIndex] = position;
-        return { closedPositions: updatedPositions };
+      if (existingIndex === -1) {
+        wasAdded = true;
+        return { closedPositions: [position, ...state.closedPositions] };
       } else {
-        // Position doesn't exist, do nothing (don't add duplicates)
+        wasAdded = false;
         return state;
       }
     });
+
+    console.log("wasAdded", wasAdded);
+    return wasAdded;
   },
 }));

@@ -92,7 +92,7 @@
   "Close Time": "เวลาที่ปิด",
   "Position ID": "รหัสตำแหน่ง",
   "Active ID": "รหัสสินทรัพย์",
-  "Sell position successfully": "ขาย {assetName} สำเร็จ",
+  "Position ended successfully": "ตำแหน่ง {assetName} จบแล้ว",
   "Trading Summary": "สรุปการเทรด",
   "Total P&L": "กำไร/ขาดทุนรวม",
   "Profit": "กำไร",
@@ -104,5 +104,17 @@
   "No trades completed yet": "ยังไม่มีการเทรดที่เสร็จสิ้น",
   "No trading history": "ไม่มีประวัติการเทรด",
   "You haven't started trading yet": "คุณยังไม่ได้เริ่มเทรด",
-  "Place your first trade to see your positions here": "เริ่มเทรดเพื่อดูประวัติการเทรดของคุณ"
+  "Place your first trade to see your positions here": "เริ่มเทรดเพื่อดูประวัติการเทรดของคุณ",
+  "Page Not Found": "ไม่พบหน้า",
+  "404 Error Message": "ขออภัย เราไม่สามารถหาหน้าที่คุณกำลังมองหาได้ หน้าอาจถูกย้าย ลบ หรือไม่มีอยู่",
+  "Go Home": "ไปหน้าแรก",
+  "Go Back": "← กลับ",
+  "Something went wrong!": "เกิดข้อผิดพลาด!",
+  "Error Message": "เกิดข้อผิดพลาดที่ไม่คาดคิด ไม่ต้องกังวล ทีมของเราได้รับการแจ้งเตือนและกำลังแก้ไขอยู่",
+  "Error Details": "รายละเอียดข้อผิดพลาด",
+  "Error ID": "รหัสข้อผิดพลาด",
+  "Try Again": "ลองใหม่",
+  "Critical Error": "ข้อผิดพลาดร้ายแรง",
+  "Critical Error Message": "เกิดข้อผิดพลาดร้ายแรงที่ป้องกันไม่ให้แอปพลิเคชันโหลดได้อย่างถูกต้อง",
+  "Go to Homepage": "← ไปหน้าแรก"
 }

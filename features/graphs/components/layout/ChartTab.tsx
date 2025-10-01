@@ -81,11 +81,10 @@ const EmptyChart = () => {
       <Text size="xl" c="dimmed" ta="center">
         {t("Select an asset to view chart")}
       </Text>
-      <Flex align="center" gap="xs" c="dimmed">
+      <Flex align="center" gap="md" c="dimmed">
         <Text size="xl">
           {t("Choose an asset from the panel on the right")}
         </Text>
-        <IconArrowRight size={16} />
       </Flex>
     </Stack>
   );
