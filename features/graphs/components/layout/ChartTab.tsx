@@ -1,5 +1,5 @@
 import { Flex, Text, Center, Stack } from "@mantine/core";
-import { IconChartLine, IconArrowRight } from "@tabler/icons-react";
+import { IconChartLine } from "@tabler/icons-react";
 import { MainChart } from "../charts/MainChart";
 import { StochasticChart } from "../charts/StochasticChart";
 import { useAssetStore } from "@/stores/assetStore";

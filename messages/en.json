@@ -11,7 +11,6 @@
   "Donchian Channels": "Donchian Channels",
   "Stochastic Oscillator": "Stochastic Oscillator",
   "Login": "Login",
-  "Welcome": "Welcome",
   "Please login to continue": "Please login to continue",
   "Loading": "Loading...",
   "An error occurred": "An error occurred",
@@ -116,5 +115,13 @@
   "Try Again": "Try Again",
   "Critical Error": "Critical Error",
   "Critical Error Message": "A critical error has occurred that prevented the application from loading properly.",
-  "Go to Homepage": "← Go to Homepage"
+  "Go to Homepage": "← Go to Homepage",
+  "Verification Code": "Verification Code",
+  "Enter the 5-digit code sent to": "Enter the 5-digit code sent to",
+  "Verifying": "Verifying...",
+  "Verify Code": "Verify Code",
+  "Back": "Back",
+  "Resend In": "Resend In",
+  "Authentication failed": "Authentication failed",
+  "Verification data fetch failed": "Verification data fetch failed"
 }

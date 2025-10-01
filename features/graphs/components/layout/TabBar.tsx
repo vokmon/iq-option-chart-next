@@ -23,12 +23,13 @@ import { useTabAssetHandlers } from "../../hooks/tab/useTabAssetHandlers";
 import { useTabScrollEffects } from "../../hooks/tab/useTabScrollEffects";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
+import { useFilteredPositions } from "../../hooks/positions/useFilteredPositions";
 
 export function TabBar() {
   const t = useTranslations();
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const { assets } = useAssetStore();
+  const { assets, getActiveAsset } = useAssetStore();
   const { activeInformation } = useDigitalOptionsStore();
   // Use custom hooks for scroll functionality
   const {
@@ -60,6 +61,8 @@ export function TabBar() {
     updateScrollButtons,
     scrollToActiveTab,
   });
+
+  const { openPositionsForSelectedBalance } = useFilteredPositions();
 
   if (assets.length === 0) {
     return null;
@@ -155,6 +158,12 @@ export function TabBar() {
               {assets.map((asset) => {
                 const activeData =
                   activeInformation[asset.asset?.activeId || 0];
+
+                const openPositionsForActive =
+                  openPositionsForSelectedBalance.filter(
+                    (position) => position.activeId === asset?.asset?.activeId
+                  );
+
                 return (
                   <Tabs.Tab
                     key={asset.id}
@@ -214,6 +223,22 @@ export function TabBar() {
                     }}
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
+                      {openPositionsForActive.length > 0 && (
+                        <Badge
+                          size="xs"
+                          variant="filled"
+                          color="red"
+                          className="absolute z-10 -top-2 -right-1 min-w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center shadow-lg border-2 border-white animate-pulse"
+                          style={{
+                            boxShadow:
+                              "0 2px 8px rgba(255, 0, 0, 0.3), 0 0 0 2px white",
+                          }}
+                        >
+                          {openPositionsForActive.length > 99
+                            ? "99+"
+                            : openPositionsForActive.length}
+                        </Badge>
+                      )}
                       {activeData?.imageUrl && (
                         <div className="w-6 h-6">
                           <Image

@@ -63,7 +63,11 @@ export function useGetClosedPositions() {
           if (foundDifferentDay) {
             break;
           }
-          await allClosedPositionsHistory.fetchPrevPage();
+          if (allClosedPositionsHistory.hasPrevPage()) {
+            await allClosedPositionsHistory.fetchPrevPage();
+          } else {
+            break;
+          }
         }
 
         // Update the store with the fetched closed positions

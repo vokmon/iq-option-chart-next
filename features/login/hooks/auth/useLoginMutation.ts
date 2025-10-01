@@ -1,26 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-
-export interface LoginCredentials {
-  identifier: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  code: string;
-  company_id: number;
-  created_at: number;
-  ssid: string;
-  user_id: number;
-}
-
-export interface LoginError {
-  error: string;
-  details?: string;
-}
+import {
+  LoginCredentials,
+  LoginResponse,
+  VerifyResponse,
+  LoginError,
+} from "../../types/AuthTypes";
 
 async function loginUser(
   credentials: LoginCredentials
-): Promise<LoginResponse> {
+): Promise<LoginResponse | VerifyResponse> {
   const response = await fetch("/api/v2/login", {
     method: "POST",
     headers: {
@@ -41,5 +29,6 @@ async function loginUser(
 export function useLoginMutation() {
   return useMutation({
     mutationFn: loginUser,
+    retry: false,
   });
 }

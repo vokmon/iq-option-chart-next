@@ -31,7 +31,11 @@ export function formatAmount(
  * @param currency - The currency code
  * @returns Currency symbol
  */
-export function getCurrencySymbol(currency: string): string {
+export function getCurrencySymbol(currency?: string): string {
+  if (!currency) {
+    return "";
+  }
+
   switch (currency.toUpperCase()) {
     case "USD":
       return "$";

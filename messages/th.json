@@ -11,7 +11,6 @@
   "Donchian Channels": "ช่อง Donchian",
   "Stochastic Oscillator": "Stochastic Oscillator",
   "Login": "เข้าสู่ระบบ",
-  "Welcome": "ยินดีต้อนรับ",
   "Please login to continue": "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
   "Loading,": "กำลังโหลด...",
   "An error occurred": "เกิดข้อผิดพลาด",
@@ -116,5 +115,13 @@
   "Try Again": "ลองใหม่",
   "Critical Error": "ข้อผิดพลาดร้ายแรง",
   "Critical Error Message": "เกิดข้อผิดพลาดร้ายแรงที่ป้องกันไม่ให้แอปพลิเคชันโหลดได้อย่างถูกต้อง",
-  "Go to Homepage": "← ไปหน้าแรก"
+  "Go to Homepage": "← ไปหน้าแรก",
+  "Verification Code": "รหัสยืนยัน",
+  "Enter the 5-digit code sent to": "กรอกรหัส 5 หลักที่ส่งไปยัง",
+  "Verifying": "กำลังยืนยัน...",
+  "Verify Code": "ยืนยันรหัส",
+  "Back": "กลับ",
+  "Resend In": "ส่งใหม่ใน",
+  "Authentication failed": "ยืนยันตัวตนล้มเหลว",
+  "Verification data fetch failed": "ขออภัย ไม่สามารถยืนยันตัวตนได้"
 }

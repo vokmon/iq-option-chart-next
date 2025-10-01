@@ -29,7 +29,7 @@ export default function ChartSidebar() {
       style={{ minHeight: 0 }}
     >
       <Flex direction="row" gap="md">
-        <div className="relative">
+        <div className="relative w-full">
           {!activeAsset?.asset && <AssetSelectorAttentions />}
           <AssetSelector
             key={activeAssetId} // Force re-render when active asset changes

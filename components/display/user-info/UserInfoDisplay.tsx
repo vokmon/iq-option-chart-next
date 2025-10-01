@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Text } from "@mantine/core";
+import { Avatar, Indicator, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
 interface UserInfoDisplayProps {
@@ -26,17 +26,33 @@ export default function UserInfoDisplay({
   return (
     <div style={{ padding: "8px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <Avatar size="md" radius="xl" color="blue" style={{ fontSize: "14px" }}>
-          {getInitials(firstName || "", lastName || "")}
-        </Avatar>
-        <div>
-          <Text size="sm" fw={600} c="var(--mantine-color-gray-9)">
-            {fullName}
-          </Text>
-          <Text size="xs" c="var(--mantine-color-gray-6)">
-            ID: {userId}
-          </Text>
-        </div>
+        <Indicator
+          inline
+          size={16}
+          offset={9}
+          position="bottom-end"
+          color="green"
+          withBorder
+          processing
+        >
+          <Avatar
+            size="md"
+            radius="xl"
+            color="blue"
+            style={{ fontSize: "14px" }}
+          >
+            {getInitials(firstName || "", lastName || "")}
+          </Avatar>
+
+          <div>
+            <Text size="sm" fw={600} c="var(--mantine-color-gray-9)">
+              {fullName}
+            </Text>
+            <Text size="xs" c="var(--mantine-color-gray-6)">
+              ID: {userId}
+            </Text>
+          </div>
+        </Indicator>
       </div>
     </div>
   );

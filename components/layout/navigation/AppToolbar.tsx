@@ -8,6 +8,7 @@ import UserInfoDisplay from "@/components/display/user-info/UserInfoDisplay";
 import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
 import { ThemeSwitcher } from "@/components/display/theme/ThemeSwitcher";
 import { useTranslations } from "next-intl";
+import TimePanel from "@/components/display/time/TimePanel";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -45,6 +46,7 @@ export default function AppToolbar() {
 
       {/* Right side - User menu */}
       <Group>
+        <TimePanel />
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
             <UserMenuButton

@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import type { Balance } from "@quadcode-tech/client-sdk-js";
 import BalanceSelector from "./BalanceSelector";
 import OrderDirectionSelector from "./OrderDirectionSelector";
+import { getCurrencySymbol } from "@/utils/currency";
 
 interface TradingPanelProps {
   onBalanceChange?: (balance: Balance) => void;
@@ -74,6 +75,7 @@ export default function TradingPanel({
             const newAmount = typeof value === "number" ? value : 0;
             onAmountChange?.(newAmount);
           }}
+          leftSection={getCurrencySymbol(selectedBalance?.currency)}
           min={minAmount}
           max={maxAmount}
           step={1}

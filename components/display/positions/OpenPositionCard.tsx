@@ -1,4 +1,4 @@
-import { Accordion, Text, Badge } from "@mantine/core";
+import { Accordion, Text, Badge, Indicator } from "@mantine/core";
 import { Active, Balance, Position } from "@quadcode-tech/client-sdk-js";
 import {
   IconTrendingUp,
@@ -26,21 +26,23 @@ export default function OpenPositionCard({
   const renderPositionSummary = (position: Position, activeInfo?: Active) => (
     <div className="flex flex-col justify-center items-start w-full gap-1">
       <div className="flex flex-row justify-between items-center gap-2 w-full">
-        <div className="flex flex-row justify-start items-center gap-2">
-          <div className="w-6 h-6">
-            {activeInfo?.imageUrl && (
-              <Image
-                src={activeInfo?.imageUrl || ""}
-                alt={activeInfo?.name || ""}
-                width={30}
-                height={30}
-              />
-            )}
+        <Indicator inline processing color="orange" offset={-2} size={12}>
+          <div className="flex flex-row justify-start items-center gap-2">
+            <div className="w-6 h-6">
+              {activeInfo?.imageUrl && (
+                <Image
+                  src={activeInfo?.imageUrl || ""}
+                  alt={activeInfo?.name || ""}
+                  width={30}
+                  height={30}
+                />
+              )}
+            </div>
+            <Text size="sm" fw={500}>
+              {activeInfo?.name || position.active?.name}
+            </Text>
           </div>
-          <Text size="sm" fw={500}>
-            {activeInfo?.name || position.active?.name}
-          </Text>
-        </div>
+        </Indicator>
         <div className="flex flex-row justify-start items-center gap-2">
           {position.expirationTime && (
             <CountdownTimer endTime={position.expirationTime} />
