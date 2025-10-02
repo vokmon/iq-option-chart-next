@@ -75,7 +75,7 @@ export default function LoginUserPassword({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full animate-fade-in">
       <Paper
         radius="xl"
         p="lg"

@@ -76,8 +76,7 @@ export default function VerifyStep({
   }, [focusFirstInput]);
 
   const handleCountdownComplete = () => {
-    // Refetch 2FA methods when countdown completes
-    twoFAMethodsQuery.refetch();
+    verifyDataQuery.refetch();
   };
 
   // Determine which 2FA method is enabled
