@@ -80,8 +80,20 @@ export default function VerifyStep({
     twoFAMethodsQuery.refetch();
   };
 
+  // Determine which 2FA method is enabled
+  const getEnabled2FAMethod = () => {
+    if (!twoFAMethodsQuery.data?.methods) return null;
+
+    const enabledMethod = twoFAMethodsQuery.data.methods.find(
+      (method) => method.enabled
+    );
+    return enabledMethod?.name;
+  };
+
+  const enabledMethod = getEnabled2FAMethod();
+
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full animate-fade-in">
       <Paper
         radius="xl"
         p="lg"
@@ -99,12 +111,44 @@ export default function VerifyStep({
             <Text c="white" size="lg" fw={600} ta="center">
               {t("Verification Code")}
             </Text>
-            <Text c="dimmed" size="sm" ta="center">
-              {t("Enter the 5-digit code sent to")}{" "}
-            </Text>
-            <Text fw={600} c="white" size="lg">
-              {verifyData.email}
-            </Text>
+
+            {/* Dynamic message based on enabled 2FA method */}
+            {enabledMethod === "email" && (
+              <>
+                <Text c="dimmed" size="sm" ta="center">
+                  {t("Enter the 5-digit code sent to")}{" "}
+                </Text>
+                <Text fw={600} c="white" size="lg">
+                  {verifyData.email}
+                </Text>
+              </>
+            )}
+
+            {enabledMethod === "sms" && (
+              <Text c="dimmed" size="sm" ta="center">
+                {t(
+                  "Enter the 5-digit code sent to your registered phone number"
+                )}
+              </Text>
+            )}
+
+            {enabledMethod === "push" && (
+              <Text c="dimmed" size="sm" ta="center">
+                {t("Enter the code from your authenticator app")}
+              </Text>
+            )}
+
+            {/* Fallback for when 2FA methods are loading or no method is enabled */}
+            {!enabledMethod && (
+              <>
+                <Text c="dimmed" size="sm" ta="center">
+                  {t("Enter the 5-digit code sent to")}{" "}
+                </Text>
+                <Text fw={600} c="white" size="lg">
+                  {verifyData.email}
+                </Text>
+              </>
+            )}
           </Stack>
 
           {hasError && (

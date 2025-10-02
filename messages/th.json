@@ -119,6 +119,8 @@
   "Go to Homepage": "← ไปหน้าแรก",
   "Verification Code": "รหัสยืนยัน",
   "Enter the 5-digit code sent to": "กรอกรหัส 5 หลักที่ส่งไปยัง",
+  "Enter the 5-digit code sent to your registered phone number": "กรอกรหัส 5 หลักที่ส่งไปยังเบอร์โทรศัพท์ที่ลงทะเบียนไว้",
+  "Enter the code from your authenticator app": "กรอกรหัสจากแอปยืนยันตัวตนของคุณ",
   "Verifying": "กำลังยืนยัน...",
   "Verify Code": "ยืนยันรหัส",
   "Back": "กลับ",

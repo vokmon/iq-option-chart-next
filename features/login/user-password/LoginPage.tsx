@@ -36,6 +36,7 @@ export default function LoginPage() {
         justifyContent: "center",
         padding: theme.spacing.md,
       }}
+      className="animate-fade-in"
     >
       <Container size={420} w="100%">
         <Stack gap="lg" align="center">
