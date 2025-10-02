@@ -26,24 +26,25 @@ export default function UserInfoDisplay({
   return (
     <div style={{ padding: "8px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <Indicator
-          inline
-          size={16}
-          offset={9}
-          position="bottom-end"
-          color="green"
-          withBorder
-          processing
-        >
-          <Avatar
-            size="md"
-            radius="xl"
-            color="blue"
-            style={{ fontSize: "14px" }}
+        <div className="flex flex-row justify-start items-center gap-2">
+          <Indicator
+            inline
+            size={16}
+            offset={9}
+            position="bottom-end"
+            color="green"
+            withBorder
+            processing
           >
-            {getInitials(firstName || "", lastName || "")}
-          </Avatar>
-
+            <Avatar
+              size="md"
+              radius="xl"
+              color="blue"
+              style={{ fontSize: "14px" }}
+            >
+              {getInitials(firstName || "", lastName || "")}
+            </Avatar>
+          </Indicator>
           <div>
             <Text size="sm" fw={600} c="var(--mantine-color-gray-9)">
               {fullName}
@@ -52,7 +53,7 @@ export default function UserInfoDisplay({
               ID: {userId}
             </Text>
           </div>
-        </Indicator>
+        </div>
       </div>
     </div>
   );

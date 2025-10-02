@@ -3,10 +3,12 @@ import { useSdk } from "../useSdk";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import { Active } from "@quadcode-tech/client-sdk-js";
 import { useTransition } from "react";
+import { useAssetStore } from "@/stores/assetStore";
 
 export function useGetActiveInformation() {
   const { sdk } = useSdk();
   const { actives, setActiveInformation } = useDigitalOptionsStore();
+  const { assets } = useAssetStore();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
 
@@ -17,6 +19,15 @@ export function useGetActiveInformation() {
         throw new Error("SDK or actives not available");
       }
 
+      const assetsIds = assets.map((a) => a.asset?.activeId);
+
+      const allActiveIds = [
+        ...assetsIds.filter((id) => id !== undefined),
+        ...actives.map((a) => a.activeId),
+      ];
+
+      const uniqueActiveIds = [...new Set(allActiveIds)];
+
       const activesSdk = sdk.actives();
       const activeInformation: Record<number, Active> = {};
 
@@ -24,20 +35,18 @@ export function useGetActiveInformation() {
       const BATCH_SIZE = 10; // Process 5 actives at a time
       const batches = [];
 
-      for (let i = 0; i < actives.length; i += BATCH_SIZE) {
-        batches.push(actives.slice(i, i + BATCH_SIZE));
+      for (let i = 0; i < uniqueActiveIds.length; i += BATCH_SIZE) {
+        batches.push(uniqueActiveIds.slice(i, i + BATCH_SIZE));
       }
 
       for (const batch of batches) {
-        const promises = batch.map(async (active) => {
+        const promises = batch.map(async (activeId) => {
           try {
-            const activeData = await (
-              await activesSdk
-            ).getActive(active.activeId);
-            return { activeId: active.activeId, data: activeData };
+            const activeData = await (await activesSdk).getActive(activeId);
+            return { activeId: activeId, data: activeData };
           } catch (error) {
-            console.error(`Failed to fetch active ${active.activeId}:`, error);
-            return { activeId: active.activeId, data: null, error };
+            console.error(`Failed to fetch active ${activeId}:`, error);
+            return { activeId: activeId, data: null, error };
           }
         });
 

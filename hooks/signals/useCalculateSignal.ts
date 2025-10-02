@@ -28,12 +28,12 @@ export function useCalculateSignal() {
       calculateSignals();
     });
 
-    // Set up interval to recalculate signals every 5 seconds
+    // Set up interval to recalculate signals every 10 seconds
     const interval = setInterval(() => {
       startTransition(() => {
         calculateSignals();
       });
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);

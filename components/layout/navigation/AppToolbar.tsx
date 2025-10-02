@@ -47,7 +47,7 @@ export default function AppToolbar() {
       {/* Right side - User menu */}
       <Group>
         <TimePanel />
-        <Menu shadow="md" width={200} position="bottom-end">
+        <Menu shadow="md" width={300} position="bottom-end">
           <Menu.Target>
             <UserMenuButton
               firstName={firstName}
@@ -60,7 +60,7 @@ export default function AppToolbar() {
             <Menu.Label>{t("Account")}</Menu.Label>
 
             {/* User Info Display */}
-            <Menu.Item disabled>
+            <Menu.Item className="pointer-events-none">
               <UserInfoDisplay
                 firstName={firstName}
                 lastName={lastName}
