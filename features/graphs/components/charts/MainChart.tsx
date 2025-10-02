@@ -144,6 +144,7 @@ export function MainChart({
       setTimeout(() => {
         if (isDisposed) return;
 
+        const allCandles = chartLayer.getAllCandles();
         // Recreate Bollinger Bands series
         if (showBollingerBands) {
           bollingerBandsSeries = recreateBollingerBandsSeries(
@@ -152,7 +153,6 @@ export function MainChart({
           );
           // Re-update data with current candles
           if (chartLayer) {
-            const allCandles = chartLayer.getAllCandles();
             updateBollingerBandsData(bollingerBandsSeries, allCandles);
           }
         }
@@ -162,7 +162,6 @@ export function MainChart({
           donchianSeries = recreateDonchianSeries(chart, donchianSeries);
           // Re-update data with current candles
           if (chartLayer) {
-            const allCandles = chartLayer.getAllCandles();
             updateDonchianData(donchianSeries, allCandles);
           }
         }
