@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { identifier, password } = body;
+    const { identifier, password, token } = body;
 
     if (!identifier || !password) {
       return NextResponse.json(
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         identifier,
         password,
+        token,
       }),
     });
 

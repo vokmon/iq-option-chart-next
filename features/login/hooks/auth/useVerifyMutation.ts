@@ -1,7 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { VerifyCredentials, LoginError } from "../../types/AuthTypes";
+import {
+  VerifyCredentials,
+  LoginError,
+  VerifyApiResponse,
+} from "../../types/AuthTypes";
 
-async function verifyCode(credentials: VerifyCredentials): Promise<void> {
+async function verifyCode(
+  credentials: VerifyCredentials
+): Promise<VerifyApiResponse> {
   const response = await fetch("/api/v2/verify", {
     method: "POST",
     headers: {
@@ -15,7 +21,7 @@ async function verifyCode(credentials: VerifyCredentials): Promise<void> {
     throw new Error(errorData.error || "Verification failed");
   }
 
-  const data = await response.json();
+  const data: VerifyApiResponse = await response.json();
   return data;
 }
 

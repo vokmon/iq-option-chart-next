@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Button,
   Paper,
@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { IconArrowLeft } from "@tabler/icons-react";
-import CountdownTimer from "./CountdownTimer";
+import CountdownTimer, { CountdownTimerRef } from "./CountdownTimer";
 import { VerifyResponse } from "../types/AuthTypes";
 import { useVerificationCodeInput } from "../hooks/useVerificationCodeInput";
 import { useVerificationSubmit } from "../hooks/useVerificationSubmit";
@@ -21,6 +21,7 @@ import { useVerificationErrors } from "../hooks/useVerificationErrors";
 type VerifyStepProps = {
   verifyData: {
     email: string;
+    password: string;
     verifyResponse: VerifyResponse;
   };
   onSuccess: () => void;
@@ -33,6 +34,7 @@ export default function VerifyStep({
   onBack,
 }: VerifyStepProps) {
   const t = useTranslations();
+  const countdownTimerRef = useRef<CountdownTimerRef>(null);
 
   // Use custom hooks for better organization
   const {
@@ -72,6 +74,11 @@ export default function VerifyStep({
     // Focus first input on mount
     focusFirstInput();
   }, [focusFirstInput]);
+
+  const handleCountdownComplete = () => {
+    // Refetch 2FA methods when countdown completes
+    twoFAMethodsQuery.refetch();
+  };
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -243,7 +250,9 @@ export default function VerifyStep({
                   </Button>
 
                   <CountdownTimer
+                    ref={countdownTimerRef}
                     initialSeconds={verifyDataQuery.data?.ttl || 58}
+                    onComplete={handleCountdownComplete}
                   />
                 </Group>
               </Stack>

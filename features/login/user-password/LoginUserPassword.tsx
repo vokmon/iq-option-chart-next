@@ -20,9 +20,11 @@ type LoginUserPasswordProps = {
   onSuccess: () => void;
   onVerify: ({
     email,
+    password,
     verifyResponse,
   }: {
     email: string;
+    password: string;
     verifyResponse: VerifyResponse;
   }) => void;
 };
@@ -55,7 +57,11 @@ export default function LoginUserPassword({
       onSuccess: (response) => {
         if (response.code === "verify") {
           const verifyResponse: VerifyResponse = response as VerifyResponse;
-          onVerify({ email: values.email, verifyResponse });
+          onVerify({
+            email: values.email,
+            password: values.password,
+            verifyResponse,
+          });
         } else if (response.code === "success") {
           onSuccess();
         } else {

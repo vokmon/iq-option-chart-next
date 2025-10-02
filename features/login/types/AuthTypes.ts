@@ -1,6 +1,7 @@
 export interface LoginCredentials {
   identifier: string;
   password: string;
+  token?: string;
 }
 
 export interface LoginResponse {
@@ -37,6 +38,11 @@ export interface TwoFAMethodsResponse {
 export interface VerifyCredentials {
   code: string;
   token: string;
+}
+
+export interface VerifyApiResponse {
+  token: string;
+  // Add other fields that the verify API returns
 }
 
 export interface LoginError {

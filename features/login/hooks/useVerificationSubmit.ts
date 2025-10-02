@@ -2,11 +2,13 @@ import { useCallback } from "react";
 import { useVerifyMutation } from "./auth/useVerifyMutation";
 import { useVerifyDataQuery } from "./auth/useVerifyDataQuery";
 import { useTwoFAMethodsQuery } from "./auth/useTwoFAMethodsQuery";
-import { VerifyResponse } from "../types/AuthTypes";
+import { useLoginMutation } from "./auth/useLoginMutation";
+import { VerifyResponse, VerifyApiResponse } from "../types/AuthTypes";
 
 type UseVerificationSubmitProps = {
   verifyData: {
     email: string;
+    password: string;
     verifyResponse: VerifyResponse;
   };
   onSuccess: () => void;
@@ -19,6 +21,7 @@ export const useVerificationSubmit = ({
   onError,
 }: UseVerificationSubmitProps) => {
   const verifyMutation = useVerifyMutation();
+  const loginMutation = useLoginMutation();
   const verifyDataQuery = useVerifyDataQuery(verifyData.verifyResponse.token);
   const twoFAMethodsQuery = useTwoFAMethodsQuery(
     verifyDataQuery.data?.token || ""
@@ -34,25 +37,33 @@ export const useVerificationSubmit = ({
       const tokenToUse =
         verifyDataQuery.data?.token || verifyData.verifyResponse.token;
 
-      verifyMutation.mutate(
-        {
-          code: verificationCode,
-          token: tokenToUse,
-        },
-        {
-          onSuccess: () => {
-            onSuccess();
-          },
-          onError: () => {
-            onError();
-          },
-        }
-      );
+      try {
+        // Step 1: Verify the code
+        const verifyResult: VerifyApiResponse =
+          await verifyMutation.mutateAsync({
+            code: verificationCode,
+            token: tokenToUse,
+          });
+
+        // Step 2: Call login with the token from verification
+        await loginMutation.mutateAsync({
+          identifier: verifyData.email,
+          password: verifyData.password,
+          token: verifyResult.token,
+        });
+
+        onSuccess();
+      } catch {
+        onError();
+      }
     },
     [
+      verifyData.email,
+      verifyData.password,
       verifyData.verifyResponse.token,
       verifyDataQuery.data?.token,
       verifyMutation,
+      loginMutation,
       onSuccess,
       onError,
     ]
@@ -60,6 +71,7 @@ export const useVerificationSubmit = ({
 
   const isLoading =
     verifyMutation.isPending ||
+    loginMutation.isPending ||
     verifyDataQuery.isLoading ||
     twoFAMethodsQuery.isLoading;
 
@@ -67,6 +79,7 @@ export const useVerificationSubmit = ({
     handleSubmit,
     isLoading,
     verifyMutation,
+    loginMutation,
     verifyDataQuery,
     twoFAMethodsQuery,
   };

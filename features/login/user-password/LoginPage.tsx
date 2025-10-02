@@ -18,9 +18,11 @@ export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verify">(DEFAULT_STEP);
   const [verifyData, setVerifyData] = useState<{
     email: string;
+    password: string;
     verifyResponse: VerifyResponse;
   }>({
     email: "",
+    password: "",
     verifyResponse: { code: "", method: "", token: "" },
   });
 
@@ -48,8 +50,8 @@ export default function LoginPage() {
           {step === "login" && (
             <LoginUserPassword
               onSuccess={() => router.push(DEFAULT_ROUTE)}
-              onVerify={({ email, verifyResponse }) => {
-                setVerifyData({ email, verifyResponse });
+              onVerify={(data) => {
+                setVerifyData(data);
                 setStep("verify");
               }}
             />

@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  console.log(response);
   if (!response.ok) {
     return NextResponse.json(
       { error: "Verification data fetch failed" },
