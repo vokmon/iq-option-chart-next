@@ -37,7 +37,7 @@ export default function SmallSignalIndicatorLabel({
             </div>
           </div>
 
-          <Text size="xs" fw={700} className="tracking-wide">
+          <Text size="xs" fw={700} className="tracking-wide animate-pulse">
             {config.text}
           </Text>
         </Group>

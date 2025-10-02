@@ -1,13 +1,11 @@
 import { useAssetStore } from "@/stores/assetStore";
 import { useSignalStore } from "@/stores/signalStore";
 import { SignalType } from "@/types/signal/Signal";
-import { useEffect, useTransition } from "react";
+import { useEffect } from "react";
 
 export function useCalculateSignal() {
   const { assets } = useAssetStore();
   const { setSignal, clearAllSignals } = useSignalStore();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, startTransition] = useTransition();
 
   useEffect(() => {
     const signalTypes = [SignalType.CALL, SignalType.PUT, SignalType.HOLD];
@@ -23,17 +21,12 @@ export function useCalculateSignal() {
       });
     };
 
-    // Calculate signals immediately
-    startTransition(() => {
-      calculateSignals();
-    });
+    calculateSignals();
 
     // Set up interval to recalculate signals every 10 seconds
     const interval = setInterval(() => {
-      startTransition(() => {
-        calculateSignals();
-      });
-    }, 10000);
+      calculateSignals();
+    }, 3000);
 
     return () => {
       clearInterval(interval);
