@@ -22,28 +22,28 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
       `${firstName || ""} ${lastName || ""}`.trim() || `${t("User")} ${userId}`;
 
     return (
-      <Indicator
-        inline
-        size={16}
-        offset={9}
-        position="top-end"
-        color="green"
-        processing
-        withBorder
-      >
-        <Button
-          ref={ref}
-          variant="subtle"
-          rightSection={
-            <Text
-              c="white"
-              fw={600}
-              style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }}
-            >
-              ▼
-            </Text>
-          }
-          leftSection={
+      <Button
+        ref={ref}
+        variant="subtle"
+        rightSection={
+          <Text
+            c="white"
+            fw={600}
+            style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }}
+          >
+            ▼
+          </Text>
+        }
+        leftSection={
+          <Indicator
+            inline
+            size={10}
+            offset={5}
+            position="bottom-end"
+            color="green"
+            processing
+            withBorder
+          >
             <Avatar
               size="sm"
               radius="xl"
@@ -59,32 +59,32 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
             >
               {getInitials(firstName || "", lastName || "")}
             </Avatar>
-          }
+          </Indicator>
+        }
+        style={{
+          height: "44px",
+          padding: "0 16px",
+          borderRadius: "22px",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          background: "rgba(255, 255, 255, 0.15)",
+          backdropFilter: "blur(10px)",
+          transition: "all 0.2s ease",
+        }}
+        {...props}
+      >
+        <Text
+          size="sm"
+          fw={600}
+          c="white"
+          truncate
           style={{
-            height: "44px",
-            padding: "0 16px",
-            borderRadius: "22px",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            background: "rgba(255, 255, 255, 0.15)",
-            backdropFilter: "blur(10px)",
-            transition: "all 0.2s ease",
+            maxWidth: "120px",
+            textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
           }}
-          {...props}
         >
-          <Text
-            size="sm"
-            fw={600}
-            c="white"
-            truncate
-            style={{
-              maxWidth: "120px",
-              textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            {fullName}
-          </Text>
-        </Button>
-      </Indicator>
+          {fullName}
+        </Text>
+      </Button>
     );
   }
 );

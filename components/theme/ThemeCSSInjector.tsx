@@ -148,6 +148,90 @@ export function ThemeCSSInjector() {
       theme.colors.stochasticSecondary[900]
     );
 
+    // Update Support & Resistance colors (Resistance - Green)
+    root.style.setProperty(
+      "--color-supportResistance-50",
+      theme.colors.supportResistance[50]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-100",
+      theme.colors.supportResistance[100]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-200",
+      theme.colors.supportResistance[200]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-300",
+      theme.colors.supportResistance[300]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-400",
+      theme.colors.supportResistance[400]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-500",
+      theme.colors.supportResistance[500]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-600",
+      theme.colors.supportResistance[600]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-700",
+      theme.colors.supportResistance[700]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-800",
+      theme.colors.supportResistance[800]
+    );
+    root.style.setProperty(
+      "--color-supportResistance-900",
+      theme.colors.supportResistance[900]
+    );
+
+    // Update Support & Resistance Support colors (Support - Red)
+    root.style.setProperty(
+      "--color-supportResistanceSupport-50",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][50]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-100",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][100]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-200",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][200]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-300",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][300]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-400",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][400]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-500",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][500]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-600",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][600]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-700",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][700]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-800",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][800]
+    );
+    root.style.setProperty(
+      "--color-supportResistanceSupport-900",
+      theme.colors["supportResistanceSupport" as keyof typeof theme.colors][900]
+    );
+
     // Update other theme colors
     root.style.setProperty("--color-primary-50", theme.colors.primary[50]);
     root.style.setProperty("--color-primary-100", theme.colors.primary[100]);

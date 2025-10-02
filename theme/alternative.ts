@@ -92,6 +92,32 @@ const stochasticSecondaryColor: MantineColorsTuple = [
   "#14532d", // 9 - darkest
 ];
 
+const supportResistanceColor: MantineColorsTuple = [
+  "#f0fdf4", // 0 - lightest (light green)
+  "#dcfce7", // 1
+  "#bbf7d0", // 2
+  "#86efac", // 3
+  "#10b981", // 4 - primary (resistance - green)
+  "#059669", // 5
+  "#047857", // 6
+  "#065f46", // 7
+  "#064e3b", // 8
+  "#022c22", // 9 - darkest (dark green)
+];
+
+const supportResistanceSupportColor: MantineColorsTuple = [
+  "#fef2f2", // 0 - lightest (light red)
+  "#fee2e2", // 1
+  "#fecaca", // 2
+  "#fca5a5", // 3
+  "#ef4444", // 4 - primary (support - red)
+  "#dc2626", // 5
+  "#b91c1c", // 6
+  "#991b1b", // 7
+  "#7f1d1d", // 8
+  "#450a0a", // 9 - darkest (dark red)
+];
+
 // Candle size colors - modern professional theme
 const candleSize1MinColor: MantineColorsTuple = [
   "#fef3c7", // 0 - lightest
@@ -181,6 +207,8 @@ export const alternativeTheme = createTheme({
     donchian: donchianColor,
     stochastic: stochasticColor,
     stochasticSecondary: stochasticSecondaryColor,
+    supportResistance: supportResistanceColor,
+    supportResistanceSupport: supportResistanceSupportColor,
     candleSize1Min: candleSize1MinColor,
     candleSize5Min: candleSize5MinColor,
     candleSize15Min: candleSize15MinColor,
@@ -349,6 +377,19 @@ export const alternativeThemeColors = {
     800: "#166534",
     900: "#14532d",
   },
+  // Support & Resistance colors (Amber)
+  supportResistance: {
+    50: "#fef3c7",
+    100: "#fde68a",
+    200: "#fcd34d", // secondary (support)
+    300: "#fbbf24",
+    400: "#f59e0b", // primary (resistance)
+    500: "#d97706",
+    600: "#b45309",
+    700: "#92400e",
+    800: "#78350f",
+    900: "#451a03",
+  },
 
   // Semantic colors
   success: "#22c55e",
@@ -395,6 +436,66 @@ export const alternativeCssVariables = `
     --color-accent-700: ${alternativeThemeColors.accent[700]};
     --color-accent-800: ${alternativeThemeColors.accent[800]};
     --color-accent-900: ${alternativeThemeColors.accent[900]};
+    
+    /* Bollinger Bands colors (Amber) */
+    --color-bollinger-50: ${alternativeThemeColors.bollinger[50]};
+    --color-bollinger-100: ${alternativeThemeColors.bollinger[100]};
+    --color-bollinger-200: ${alternativeThemeColors.bollinger[200]};
+    --color-bollinger-300: ${alternativeThemeColors.bollinger[300]};
+    --color-bollinger-400: ${alternativeThemeColors.bollinger[400]};
+    --color-bollinger-500: ${alternativeThemeColors.bollinger[500]};
+    --color-bollinger-600: ${alternativeThemeColors.bollinger[600]};
+    --color-bollinger-700: ${alternativeThemeColors.bollinger[700]};
+    --color-bollinger-800: ${alternativeThemeColors.bollinger[800]};
+    --color-bollinger-900: ${alternativeThemeColors.bollinger[900]};
+    
+    /* Donchian Channels colors (Pink) */
+    --color-donchian-50: ${alternativeThemeColors.donchian[50]};
+    --color-donchian-100: ${alternativeThemeColors.donchian[100]};
+    --color-donchian-200: ${alternativeThemeColors.donchian[200]};
+    --color-donchian-300: ${alternativeThemeColors.donchian[300]};
+    --color-donchian-400: ${alternativeThemeColors.donchian[400]};
+    --color-donchian-500: ${alternativeThemeColors.donchian[500]};
+    --color-donchian-600: ${alternativeThemeColors.donchian[600]};
+    --color-donchian-700: ${alternativeThemeColors.donchian[700]};
+    --color-donchian-800: ${alternativeThemeColors.donchian[800]};
+    --color-donchian-900: ${alternativeThemeColors.donchian[900]};
+    
+    /* Stochastic colors (Bright Blue) */
+    --color-stochastic-50: ${alternativeThemeColors.stochastic[50]};
+    --color-stochastic-100: ${alternativeThemeColors.stochastic[100]};
+    --color-stochastic-200: ${alternativeThemeColors.stochastic[200]};
+    --color-stochastic-300: ${alternativeThemeColors.stochastic[300]};
+    --color-stochastic-400: ${alternativeThemeColors.stochastic[400]};
+    --color-stochastic-500: ${alternativeThemeColors.stochastic[500]};
+    --color-stochastic-600: ${alternativeThemeColors.stochastic[600]};
+    --color-stochastic-700: ${alternativeThemeColors.stochastic[700]};
+    --color-stochastic-800: ${alternativeThemeColors.stochastic[800]};
+    --color-stochastic-900: ${alternativeThemeColors.stochastic[900]};
+    
+    /* Stochastic secondary colors (Emerald Green) */
+    --color-stochastic-secondary-50: ${alternativeThemeColors.stochasticSecondary[50]};
+    --color-stochastic-secondary-100: ${alternativeThemeColors.stochasticSecondary[100]};
+    --color-stochastic-secondary-200: ${alternativeThemeColors.stochasticSecondary[200]};
+    --color-stochastic-secondary-300: ${alternativeThemeColors.stochasticSecondary[300]};
+    --color-stochastic-secondary-400: ${alternativeThemeColors.stochasticSecondary[400]};
+    --color-stochastic-secondary-500: ${alternativeThemeColors.stochasticSecondary[500]};
+    --color-stochastic-secondary-600: ${alternativeThemeColors.stochasticSecondary[600]};
+    --color-stochastic-secondary-700: ${alternativeThemeColors.stochasticSecondary[700]};
+    --color-stochastic-secondary-800: ${alternativeThemeColors.stochasticSecondary[800]};
+    --color-stochastic-secondary-900: ${alternativeThemeColors.stochasticSecondary[900]};
+    
+    /* Support & Resistance colors (Amber) */
+    --color-supportResistance-50: ${alternativeThemeColors.supportResistance[50]};
+    --color-supportResistance-100: ${alternativeThemeColors.supportResistance[100]};
+    --color-supportResistance-200: ${alternativeThemeColors.supportResistance[200]};
+    --color-supportResistance-300: ${alternativeThemeColors.supportResistance[300]};
+    --color-supportResistance-400: ${alternativeThemeColors.supportResistance[400]};
+    --color-supportResistance-500: ${alternativeThemeColors.supportResistance[500]};
+    --color-supportResistance-600: ${alternativeThemeColors.supportResistance[600]};
+    --color-supportResistance-700: ${alternativeThemeColors.supportResistance[700]};
+    --color-supportResistance-800: ${alternativeThemeColors.supportResistance[800]};
+    --color-supportResistance-900: ${alternativeThemeColors.supportResistance[900]};
     
     /* Semantic colors */
     --color-success: ${alternativeThemeColors.success};

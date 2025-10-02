@@ -34,16 +34,16 @@ export default function LoginIqOptionOAuth() {
 
     try {
       const oauth = new OAuthMethod(
-        "/auth/oauth.v5/authorize",
-        Number(CLIENT_ID!), // your client ID (you can request CLIENT_ID and CLIENT_SECRET by creating an issue on GitHub)
-        "/auth/iqoption/callback", // redirect URI
-        "full" // scope (e.g. 'full' or 'full offline_access')
+        "https://api.iqoption.com",
+        Number(CLIENT_ID!),
+        `${window.location.origin}/auth/iqoption/callback`,
+        "full"
       );
 
       const { url, codeVerifier } = await oauth.createAuthorizationUrl();
-      // sessionStorage.setItem("pkce_verifier", codeVerifier);
-      // window.location.href = url;
-      console.log(url);
+      sessionStorage.setItem("pkce_verifier", codeVerifier);
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+      window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {

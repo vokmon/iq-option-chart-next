@@ -77,3 +77,27 @@ export function getStochasticColors() {
     lower: "#ff4444", // Red for oversold (20)
   };
 }
+
+/**
+ * Get Support & Resistance colors
+ */
+export function getSupportResistanceColors() {
+  if (typeof window === "undefined") {
+    // Fallback colors for SSR
+    return {
+      resistance: "#10b981", // Green for resistance (upper)
+      support: "#ef4444", // Red for support (lower)
+    };
+  }
+
+  const computedStyle = getComputedStyle(document.documentElement);
+  return {
+    resistance:
+      computedStyle.getPropertyValue("--color-supportResistance-400").trim() ||
+      "#10b981", // Green for resistance (upper)
+    support:
+      computedStyle
+        .getPropertyValue("--color-supportResistanceSupport-400")
+        .trim() || "#ef4444", // Red for support (lower)
+  };
+}

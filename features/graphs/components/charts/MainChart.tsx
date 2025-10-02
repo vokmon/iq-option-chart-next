@@ -9,8 +9,10 @@ import { useWindowHeight } from "@/features/graphs/hooks/chart/useWindowHeight";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useBollingerBandsChart } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsChart";
 import { useDonchianChart } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianChart";
+import { useSupportResistanceChart } from "@/features/graphs/hooks/indicators/support-resistance/useSupportResistanceChart";
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
+import { useSupportResistanceTabQuery } from "@/features/graphs/hooks/indicators/support-resistance/useSupportResistanceTabQuery";
 import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePositionReferenceLines";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
@@ -18,6 +20,7 @@ import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
 import { Text } from "@mantine/core";
+import { SupportResistanceComponent } from "../indicators/support-resistance/SupportResistanceComponent";
 
 interface MainChartProps {
   activeId: number;
@@ -39,6 +42,8 @@ export function MainChart({
   // Query parameter hooks for indicators
   const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery();
   const { showDonchian, donchianConfig } = useDonchianTabQuery();
+  const { showSupportResistance, supportResistanceConfig } =
+    useSupportResistanceTabQuery();
 
   // Order reference lines hook
 
@@ -62,6 +67,17 @@ export function MainChart({
   } = useDonchianChart({
     showDonchian,
     donchianConfig,
+  });
+
+  // Support & Resistance hook
+  const {
+    createSupportResistanceSeries,
+    updateSupportResistanceData,
+    destroySupportResistanceSeries,
+    recreateSupportResistanceSeries,
+  } = useSupportResistanceChart({
+    showSupportResistance,
+    supportResistanceConfig,
   });
 
   // Position reference lines hook
@@ -94,8 +110,8 @@ export function MainChart({
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        barSpacing: 60, // Extremely thin bars
-        minBarSpacing: 30, // Minimum bar spacing
+        barSpacing: 70, // Extremely thin bars
+        minBarSpacing: 40, // Minimum bar spacing
         rightOffset: 2, // Add space at the end of the chart
         tickMarkFormatter: (time: number) => {
           const date = new Date(time * 1000);
@@ -133,6 +149,9 @@ export function MainChart({
     // Create Donchian Channels series
     let donchianSeries = createDonchianSeries(chart);
 
+    // Create Support & Resistance series
+    let supportResistanceSeries = createSupportResistanceSeries(chart);
+
     // Create Position reference lines
     let positionReferenceLines = createPositionReferenceLines(chart);
 
@@ -163,6 +182,18 @@ export function MainChart({
           // Re-update data with current candles
           if (chartLayer) {
             updateDonchianData(donchianSeries, allCandles);
+          }
+        }
+
+        // Recreate Support & Resistance series
+        if (showSupportResistance) {
+          supportResistanceSeries = recreateSupportResistanceSeries(
+            chart,
+            supportResistanceSeries
+          );
+          // Re-update data with current candles
+          if (chartLayer) {
+            updateSupportResistanceData(supportResistanceSeries, allCandles);
           }
         }
 
@@ -203,6 +234,9 @@ export function MainChart({
       // Update Donchian Channels data
       updateDonchianData(donchianSeries, candles);
 
+      // Update Support & Resistance data
+      updateSupportResistanceData(supportResistanceSeries, candles);
+
       // Update Position reference lines
       updatePositionReferenceLines(positionReferenceLines, chart);
 
@@ -229,6 +263,13 @@ export function MainChart({
 
           // Update Donchian Channels with the latest data
           updateDonchianData(donchianSeries, allCandles, true);
+
+          // Update Support & Resistance with the latest data
+          updateSupportResistanceData(
+            supportResistanceSeries,
+            allCandles,
+            true
+          );
         } catch (error) {
           console.warn("Error updating candle data:", error);
         }
@@ -251,6 +292,9 @@ export function MainChart({
 
           // Recalculate Donchian Channels after consistency recovery
           updateDonchianData(donchianSeries, all);
+
+          // Recalculate Support & Resistance after consistency recovery
+          updateSupportResistanceData(supportResistanceSeries, all);
         } catch (error) {
           console.warn("Error handling consistency recovery:", error);
         }
@@ -291,6 +335,9 @@ export function MainChart({
 
                 // Update Donchian Channels with new historical data
                 updateDonchianData(donchianSeries, moreData);
+
+                // Update Support & Resistance with new historical data
+                updateSupportResistanceData(supportResistanceSeries, moreData);
               } catch (error) {
                 console.warn("Error fetching historical data:", error);
               }
@@ -342,6 +389,13 @@ export function MainChart({
         console.warn("Error destroying Donchian Channels series:", error);
       }
 
+      // Clean up Support & Resistance series
+      try {
+        destroySupportResistanceSeries(chart, supportResistanceSeries);
+      } catch (error) {
+        console.warn("Error destroying Support & Resistance series:", error);
+      }
+
       // Clean up Position reference lines
       try {
         destroyPositionReferenceLines(chart, positionReferenceLines);
@@ -373,9 +427,15 @@ export function MainChart({
     createDonchianSeries,
     updateDonchianData,
     destroyDonchianSeries,
+    showSupportResistance,
+    supportResistanceConfig,
+    createSupportResistanceSeries,
+    updateSupportResistanceData,
+    destroySupportResistanceSeries,
     onThemeChange,
     recreateBollingerBandsSeries,
     recreateDonchianSeries,
+    recreateSupportResistanceSeries,
     createPositionReferenceLines,
     updatePositionReferenceLines,
     destroyPositionReferenceLines,
@@ -430,6 +490,7 @@ const GraphHeader = ({ activeId }: { activeId: number }) => {
         <div className="flex flex-col gap-0">
           <BollingerBandsComponent />
           <DonchianComponent />
+          <SupportResistanceComponent />
         </div>
       </div>
     </div>

@@ -92,6 +92,32 @@ const stochasticSecondaryColor: MantineColorsTuple = [
   "#004d40", // 9 - darkest
 ];
 
+const supportResistanceColor: MantineColorsTuple = [
+  "#f0fdf4", // 0 - lightest (light green)
+  "#dcfce7", // 1
+  "#bbf7d0", // 2
+  "#86efac", // 3
+  "#10b981", // 4 - primary (resistance - green)
+  "#059669", // 5
+  "#047857", // 6
+  "#065f46", // 7
+  "#064e3b", // 8
+  "#022c22", // 9 - darkest (dark green)
+];
+
+const supportResistanceSupportColor: MantineColorsTuple = [
+  "#fef2f2", // 0 - lightest (light red)
+  "#fee2e2", // 1
+  "#fecaca", // 2
+  "#fca5a5", // 3
+  "#ef4444", // 4 - primary (support - red)
+  "#dc2626", // 5
+  "#b91c1c", // 6
+  "#991b1b", // 7
+  "#7f1d1d", // 8
+  "#450a0a", // 9 - darkest (dark red)
+];
+
 // Candle size colors - different colors for different timeframes
 const candleSize1MinColor: MantineColorsTuple = [
   "#fef2f2", // 0 - lightest
@@ -181,6 +207,8 @@ export const theme = createTheme({
     donchian: donchianColor,
     stochastic: stochasticColor,
     stochasticSecondary: stochasticSecondaryColor,
+    supportResistance: supportResistanceColor,
+    supportResistanceSupport: supportResistanceSupportColor,
     candleSize1Min: candleSize1MinColor,
     candleSize5Min: candleSize5MinColor,
     candleSize15Min: candleSize15MinColor,
@@ -332,6 +360,32 @@ export const themeColors = {
     800: "#00695c",
     900: "#004d40",
   },
+  // Support & Resistance colors (Resistance - Orange)
+  supportResistance: {
+    50: "#f0fdf4",
+    100: "#dcfce7",
+    200: "#bbf7d0", // secondary (resistance - light green)
+    300: "#86efac",
+    400: "#10b981", // primary (resistance - green)
+    500: "#059669",
+    600: "#047857",
+    700: "#065f46",
+    800: "#064e3b",
+    900: "#022c22",
+  },
+  // Support & Resistance Support colors (Support - Red)
+  supportResistanceSupport: {
+    50: "#fef2f2",
+    100: "#fee2e2",
+    200: "#fecaca", // secondary (support - light red)
+    300: "#fca5a5",
+    400: "#ef4444", // primary (support - red)
+    500: "#dc2626",
+    600: "#b91c1c",
+    700: "#991b1b",
+    800: "#7f1d1d",
+    900: "#450a0a",
+  },
 
   // Semantic colors
   success: "#10b981",
@@ -378,6 +432,78 @@ export const cssVariables = `
     --color-accent-700: ${themeColors.accent[700]};
     --color-accent-800: ${themeColors.accent[800]};
     --color-accent-900: ${themeColors.accent[900]};
+    
+    /* Bollinger Bands colors */
+    --color-bollinger-50: ${themeColors.bollinger[50]};
+    --color-bollinger-100: ${themeColors.bollinger[100]};
+    --color-bollinger-200: ${themeColors.bollinger[200]};
+    --color-bollinger-300: ${themeColors.bollinger[300]};
+    --color-bollinger-400: ${themeColors.bollinger[400]};
+    --color-bollinger-500: ${themeColors.bollinger[500]};
+    --color-bollinger-600: ${themeColors.bollinger[600]};
+    --color-bollinger-700: ${themeColors.bollinger[700]};
+    --color-bollinger-800: ${themeColors.bollinger[800]};
+    --color-bollinger-900: ${themeColors.bollinger[900]};
+    
+    /* Donchian Channels colors */
+    --color-donchian-50: ${themeColors.donchian[50]};
+    --color-donchian-100: ${themeColors.donchian[100]};
+    --color-donchian-200: ${themeColors.donchian[200]};
+    --color-donchian-300: ${themeColors.donchian[300]};
+    --color-donchian-400: ${themeColors.donchian[400]};
+    --color-donchian-500: ${themeColors.donchian[500]};
+    --color-donchian-600: ${themeColors.donchian[600]};
+    --color-donchian-700: ${themeColors.donchian[700]};
+    --color-donchian-800: ${themeColors.donchian[800]};
+    --color-donchian-900: ${themeColors.donchian[900]};
+    
+    /* Stochastic colors */
+    --color-stochastic-50: ${themeColors.stochastic[50]};
+    --color-stochastic-100: ${themeColors.stochastic[100]};
+    --color-stochastic-200: ${themeColors.stochastic[200]};
+    --color-stochastic-300: ${themeColors.stochastic[300]};
+    --color-stochastic-400: ${themeColors.stochastic[400]};
+    --color-stochastic-500: ${themeColors.stochastic[500]};
+    --color-stochastic-600: ${themeColors.stochastic[600]};
+    --color-stochastic-700: ${themeColors.stochastic[700]};
+    --color-stochastic-800: ${themeColors.stochastic[800]};
+    --color-stochastic-900: ${themeColors.stochastic[900]};
+    
+    /* Stochastic secondary colors */
+    --color-stochastic-secondary-50: ${themeColors.stochasticSecondary[50]};
+    --color-stochastic-secondary-100: ${themeColors.stochasticSecondary[100]};
+    --color-stochastic-secondary-200: ${themeColors.stochasticSecondary[200]};
+    --color-stochastic-secondary-300: ${themeColors.stochasticSecondary[300]};
+    --color-stochastic-secondary-400: ${themeColors.stochasticSecondary[400]};
+    --color-stochastic-secondary-500: ${themeColors.stochasticSecondary[500]};
+    --color-stochastic-secondary-600: ${themeColors.stochasticSecondary[600]};
+    --color-stochastic-secondary-700: ${themeColors.stochasticSecondary[700]};
+    --color-stochastic-secondary-800: ${themeColors.stochasticSecondary[800]};
+    --color-stochastic-secondary-900: ${themeColors.stochasticSecondary[900]};
+    
+    /* Support & Resistance colors (Resistance - Orange) */
+    --color-supportResistance-50: ${themeColors.supportResistance[50]};
+    --color-supportResistance-100: ${themeColors.supportResistance[100]};
+    --color-supportResistance-200: ${themeColors.supportResistance[200]};
+    --color-supportResistance-300: ${themeColors.supportResistance[300]};
+    --color-supportResistance-400: ${themeColors.supportResistance[400]};
+    --color-supportResistance-500: ${themeColors.supportResistance[500]};
+    --color-supportResistance-600: ${themeColors.supportResistance[600]};
+    --color-supportResistance-700: ${themeColors.supportResistance[700]};
+    --color-supportResistance-800: ${themeColors.supportResistance[800]};
+    --color-supportResistance-900: ${themeColors.supportResistance[900]};
+    
+    /* Support & Resistance Support colors (Support - Blue) */
+    --color-supportResistanceSupport-50: ${themeColors.supportResistanceSupport[50]};
+    --color-supportResistanceSupport-100: ${themeColors.supportResistanceSupport[100]};
+    --color-supportResistanceSupport-200: ${themeColors.supportResistanceSupport[200]};
+    --color-supportResistanceSupport-300: ${themeColors.supportResistanceSupport[300]};
+    --color-supportResistanceSupport-400: ${themeColors.supportResistanceSupport[400]};
+    --color-supportResistanceSupport-500: ${themeColors.supportResistanceSupport[500]};
+    --color-supportResistanceSupport-600: ${themeColors.supportResistanceSupport[600]};
+    --color-supportResistanceSupport-700: ${themeColors.supportResistanceSupport[700]};
+    --color-supportResistanceSupport-800: ${themeColors.supportResistanceSupport[800]};
+    --color-supportResistanceSupport-900: ${themeColors.supportResistanceSupport[900]};
     
     /* Semantic colors */
     --color-success: ${themeColors.success};

@@ -6,6 +6,7 @@ import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 import { type DonchianConfig } from "@/types/indicators/donchian";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
+import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
 
 export const MAX_ASSETS = 7;
 
@@ -21,6 +22,10 @@ export interface AssetIndicatorSettings {
   stochastic: {
     enabled: boolean;
     config: StochasticConfig;
+  };
+  supportResistance: {
+    enabled: boolean;
+    config: SupportResistanceConfig;
   };
 }
 
@@ -71,6 +76,10 @@ const defaultIndicators: AssetIndicatorSettings = {
   stochastic: {
     enabled: true,
     config: { kPeriod: 13, dPeriod: 3, smoothing: 3 },
+  },
+  supportResistance: {
+    enabled: true,
+    config: { boxPeriod: 25 },
   },
 };
 
@@ -241,6 +250,12 @@ export const useAssetStore = create<AssetStore>()(
                       stochastic: {
                         ...assetState.indicators.stochastic,
                         ...indicators.stochastic,
+                      },
+                    }),
+                    ...(indicators.supportResistance && {
+                      supportResistance: {
+                        ...assetState.indicators.supportResistance,
+                        ...indicators.supportResistance,
                       },
                     }),
                   },
