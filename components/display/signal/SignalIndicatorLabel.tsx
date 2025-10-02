@@ -1,4 +1,4 @@
-import { Text, Indicator, Group } from "@mantine/core";
+import { Text, Indicator } from "@mantine/core";
 import { SignalType } from "@/types/signal/Signal";
 import { useTranslations } from "next-intl";
 import { useGetSignalConfig } from "./utils/signal-utils";
