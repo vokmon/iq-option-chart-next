@@ -31,7 +31,7 @@ export default function SmallSignalIndicatorLabel({
         <Group gap="xs" justify="center" align="center">
           <div className="relative">
             <div
-              className={`w-3 h-3 rounded-full ${config.iconGradient} shadow-lg flex items-center justify-center`}
+              className={`w-4 h-4 rounded-full ${config.iconGradient} shadow-lg flex items-center justify-center`}
             >
               <IconComponent size={12} className="text-white" />
             </div>

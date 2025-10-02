@@ -37,24 +37,24 @@ export default function SignalIndicatorLabel({
         <div
           className={`w-full h-full flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-default select-none px-4 py-2 text-base rounded-lg border shadow-sm ${config.classes}`}
         >
-          <Group gap="md" justify="center" align="center">
+          <div className="flex flex-row no-wrap gap-3 items-center">
             <div className="relative">
               <div
-                className={`w-10 h-10 rounded-full ${config.iconGradient} shadow-lg flex items-center justify-center`}
+                className={`w-7 h-7 rounded-full ${config.iconGradient} shadow-lg flex items-center justify-center`}
               >
-                <IconComponent size={24} className="text-white" />
+                <IconComponent size={18} className="text-white" />
               </div>
             </div>
 
-            <Text size="md" fw={700} className="uppercase tracking-wide">
+            <Text size="sm" fw={700} className="uppercase tracking-wide">
               {config.text}
               {(signal === SignalType.CALL || signal === SignalType.PUT) && (
-                <span className="normal-case font-medium ml-2 opacity-80">
+                <span className="normal-case font-medium ml-2 opacity-80 text-md">
                   {t("Resistance zone")}
                 </span>
               )}
             </Text>
-          </Group>
+          </div>
         </div>
       </div>
     </Indicator>
