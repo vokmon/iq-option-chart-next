@@ -4,10 +4,13 @@ import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
 import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
+import { useRSIChart } from "@/features/graphs/hooks/indicators/rsi/useRSIChart";
+import { useRSITabQuery } from "@/features/graphs/hooks/indicators/rsi/useRSITabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
+import { RSIComponent } from "../indicators/rsi/RSIComponent";
 
-interface StochasticChartProps {
+interface SecondaryChartProps {
   activeId: number;
   candleSize: number;
   chartHeight?: number;
@@ -16,11 +19,11 @@ interface StochasticChartProps {
 
 const chartHeight = 120;
 
-export function StochasticChart({
+export function SecondaryChart({
   activeId,
   candleSize,
   chartMinutesBack = 60,
-}: StochasticChartProps) {
+}: SecondaryChartProps) {
   const { sdk } = useSdk();
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
@@ -28,6 +31,9 @@ export function StochasticChart({
 
   // Query parameter hooks for stochastic oscillator
   const { showStochastic, stochasticConfig } = useStochasticTabQuery();
+
+  // Query parameter hooks for RSI
+  const { showRSI, rsiConfig } = useRSITabQuery();
 
   // Stochastic Oscillator hook
   const {
@@ -40,11 +46,22 @@ export function StochasticChart({
     stochasticConfig,
   });
 
+  // RSI hook
+  const {
+    createRSISeries,
+    updateRSIData,
+    destroyRSISeries,
+    recreateRSISeries,
+  } = useRSIChart({
+    showRSI,
+    rsiConfig,
+  });
+
   // Theme change detection
   const { onThemeChange } = useThemeChange();
 
   useEffect(() => {
-    if (!sdk || !containerRef.current || !showStochastic) return;
+    if (!sdk || !containerRef.current || (!showStochastic && !showRSI)) return;
 
     let isDisposed = false;
     let chartLayer: RealTimeChartDataLayer;
@@ -88,22 +105,36 @@ export function StochasticChart({
     // Create Stochastic Oscillator series
     let stochasticSeries = createStochasticSeries(chart);
 
+    // Create RSI series
+    let rsiSeries = createRSISeries(chart);
+
     // Handle theme changes by recreating series
     const cleanupThemeChange = onThemeChange(() => {
       if (isDisposed) return;
 
-      // Recreate Stochastic series with a small delay to ensure CSS variables are updated
-      if (showStochastic) {
-        setTimeout(() => {
-          if (isDisposed) return;
+      // Recreate series with a small delay to ensure CSS variables are updated
+      setTimeout(() => {
+        if (isDisposed) return;
+
+        if (showStochastic) {
           stochasticSeries = recreateStochasticSeries(chart, stochasticSeries);
-          // Re-update data with current candles
-          if (chartLayer) {
-            const allCandles = chartLayer.getAllCandles();
+        }
+
+        if (showRSI) {
+          rsiSeries = recreateRSISeries(chart, rsiSeries);
+        }
+
+        // Re-update data with current candles
+        if (chartLayer) {
+          const allCandles = chartLayer.getAllCandles();
+          if (showStochastic) {
             updateStochasticData(stochasticSeries, allCandles);
           }
-        }, 100); // 100ms delay to ensure CSS variables are updated
-      }
+          if (showRSI) {
+            updateRSIData(rsiSeries, allCandles);
+          }
+        }
+      }, 100); // 100ms delay to ensure CSS variables are updated
     });
 
     const initChart = async () => {
@@ -117,7 +148,14 @@ export function StochasticChart({
       if (isDisposed) return;
 
       // Update Stochastic Oscillator data
-      updateStochasticData(stochasticSeries, candles);
+      if (showStochastic) {
+        updateStochasticData(stochasticSeries, candles);
+      }
+
+      // Update RSI data
+      if (showRSI) {
+        updateRSIData(rsiSeries, candles);
+      }
 
       // Auto-fit the chart to show the data better
       setTimeout(() => {
@@ -135,11 +173,16 @@ export function StochasticChart({
         if (isDisposed) return;
 
         try {
-          // Update Stochastic Oscillator with the latest data
+          // Update indicators with the latest data
           const allCandles = chartLayer.getAllCandles();
-          updateStochasticData(stochasticSeries, allCandles, true);
+          if (showStochastic) {
+            updateStochasticData(stochasticSeries, allCandles, true);
+          }
+          if (showRSI) {
+            updateRSIData(rsiSeries, allCandles, true);
+          }
         } catch (error) {
-          console.warn("Error updating stochastic data:", error);
+          console.warn("Error updating indicator data:", error);
         }
       });
       unsubscribeFunctions.push(() => {
@@ -152,13 +195,15 @@ export function StochasticChart({
 
         try {
           const all = chartLayer.getAllCandles();
-          // Recalculate Stochastic Oscillator after consistency recovery
-          updateStochasticData(stochasticSeries, all);
+          // Recalculate indicators after consistency recovery
+          if (showStochastic) {
+            updateStochasticData(stochasticSeries, all);
+          }
+          if (showRSI) {
+            updateRSIData(rsiSeries, all);
+          }
         } catch (error) {
-          console.warn(
-            "Error handling stochastic consistency recovery:",
-            error
-          );
+          console.warn("Error handling indicator consistency recovery:", error);
         }
       });
       unsubscribeFunctions.push(() => {
@@ -189,17 +234,22 @@ export function StochasticChart({
                   earliestLoadedRef.current = moreData[0].from as number;
                 }
 
-                // Update Stochastic Oscillator with new historical data
-                updateStochasticData(stochasticSeries, moreData);
+                // Update indicators with new historical data
+                if (showStochastic) {
+                  updateStochasticData(stochasticSeries, moreData);
+                }
+                if (showRSI) {
+                  updateRSIData(rsiSeries, moreData);
+                }
               } catch (error) {
                 console.warn(
-                  "Error fetching stochastic historical data:",
+                  "Error fetching indicator historical data:",
                   error
                 );
               }
             })
             .catch((error: Error) => {
-              console.warn("Error fetching stochastic historical data:", error);
+              console.warn("Error fetching indicator historical data:", error);
             })
             .finally(() => {
               fetchingRef.current = false;
@@ -213,7 +263,7 @@ export function StochasticChart({
     });
 
     initChart().catch((error) => {
-      console.warn("Error initializing stochastic chart:", error);
+      console.warn("Error initializing secondary chart:", error);
     });
 
     return () => {
@@ -227,22 +277,27 @@ export function StochasticChart({
         try {
           unsubscribe();
         } catch (error) {
-          console.warn("Error unsubscribing from stochastic chart:", error);
+          console.warn("Error unsubscribing from secondary chart:", error);
         }
       });
 
-      // Clean up Stochastic Oscillator series
+      // Clean up indicator series
       try {
-        destroyStochasticSeries(chart, stochasticSeries);
+        if (showStochastic) {
+          destroyStochasticSeries(chart, stochasticSeries);
+        }
+        if (showRSI) {
+          destroyRSISeries(chart, rsiSeries);
+        }
       } catch (error) {
-        console.warn("Error destroying stochastic series:", error);
+        console.warn("Error destroying indicator series:", error);
       }
 
       // Remove the chart
       try {
         chart.remove();
       } catch (error) {
-        console.warn("Error removing stochastic chart:", error);
+        console.warn("Error removing secondary chart:", error);
       }
     };
   }, [
@@ -253,14 +308,20 @@ export function StochasticChart({
     chartMinutesBack,
     showStochastic,
     stochasticConfig,
+    showRSI,
+    rsiConfig,
     createStochasticSeries,
     updateStochasticData,
     destroyStochasticSeries,
-    onThemeChange,
     recreateStochasticSeries,
+    createRSISeries,
+    updateRSIData,
+    destroyRSISeries,
+    recreateRSISeries,
+    onThemeChange,
   ]);
 
-  if (!showStochastic) {
+  if (!showStochastic && !showRSI) {
     return null;
   }
 
@@ -272,7 +333,7 @@ export function StochasticChart({
     >
       <div className="absolute top-[-20px] left-0 z-100">
         <div
-          className="px-3"
+          className="px-3 flex flex-row gap-2"
           style={{
             background: "var(--glass-bg)",
             backdropFilter: "blur(2px)",
@@ -282,6 +343,7 @@ export function StochasticChart({
           }}
         >
           <StochasticComponent />
+          <RSIComponent />
         </div>
       </div>
     </div>

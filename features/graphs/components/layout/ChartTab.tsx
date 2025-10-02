@@ -1,7 +1,7 @@
 import { Flex, Text, Center, Stack } from "@mantine/core";
 import { IconChartLine } from "@tabler/icons-react";
 import { MainChart } from "../charts/MainChart";
-import { StochasticChart } from "../charts/StochasticChart";
+import { SecondaryChart } from "../charts/SecondaryChart";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTranslations } from "next-intl";
 
@@ -36,7 +36,7 @@ export function ChartTab() {
             chartMinutesBack={60}
           />
           <div className="my-4" />
-          <StochasticChart
+          <SecondaryChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
             chartMinutesBack={60}

@@ -118,6 +118,19 @@ const supportResistanceSupportColor: MantineColorsTuple = [
   "#450a0a", // 9 - darkest (dark red)
 ];
 
+const rsiColor: MantineColorsTuple = [
+  "#faf5ff", // 0 - lightest
+  "#f3e8ff", // 1
+  "#e9d5ff", // 2
+  "#ddd6fe", // 3
+  "#c4b5fd", // 4 - primary (RSI line)
+  "#a78bfa", // 5
+  "#8b5cf6", // 6
+  "#7c3aed", // 7
+  "#6d28d9", // 8
+  "#5b21b6", // 9 - darkest
+];
+
 // Candle size colors - different colors for different timeframes
 const candleSize1MinColor: MantineColorsTuple = [
   "#fef2f2", // 0 - lightest
@@ -209,6 +222,7 @@ export const theme = createTheme({
     stochasticSecondary: stochasticSecondaryColor,
     supportResistance: supportResistanceColor,
     supportResistanceSupport: supportResistanceSupportColor,
+    rsi: rsiColor,
     candleSize1Min: candleSize1MinColor,
     candleSize5Min: candleSize5MinColor,
     candleSize15Min: candleSize15MinColor,
@@ -386,6 +400,19 @@ export const themeColors = {
     800: "#7f1d1d",
     900: "#450a0a",
   },
+  // RSI colors
+  rsi: {
+    50: "#faf5ff",
+    100: "#f3e8ff",
+    200: "#e9d5ff",
+    300: "#ddd6fe",
+    400: "#c4b5fd", // primary (RSI line)
+    500: "#a78bfa",
+    600: "#8b5cf6",
+    700: "#7c3aed",
+    800: "#6d28d9",
+    900: "#5b21b6",
+  },
 
   // Semantic colors
   success: "#10b981",
@@ -504,6 +531,18 @@ export const cssVariables = `
     --color-supportResistanceSupport-700: ${themeColors.supportResistanceSupport[700]};
     --color-supportResistanceSupport-800: ${themeColors.supportResistanceSupport[800]};
     --color-supportResistanceSupport-900: ${themeColors.supportResistanceSupport[900]};
+    
+    /* RSI colors */
+    --color-rsi-50: ${themeColors.rsi[50]};
+    --color-rsi-100: ${themeColors.rsi[100]};
+    --color-rsi-200: ${themeColors.rsi[200]};
+    --color-rsi-300: ${themeColors.rsi[300]};
+    --color-rsi-400: ${themeColors.rsi[400]};
+    --color-rsi-500: ${themeColors.rsi[500]};
+    --color-rsi-600: ${themeColors.rsi[600]};
+    --color-rsi-700: ${themeColors.rsi[700]};
+    --color-rsi-800: ${themeColors.rsi[800]};
+    --color-rsi-900: ${themeColors.rsi[900]};
     
     /* Semantic colors */
     --color-success: ${themeColors.success};

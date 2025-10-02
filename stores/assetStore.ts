@@ -7,6 +7,7 @@ import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 import { type DonchianConfig } from "@/types/indicators/donchian";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
 import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
+import { type RSIConfig } from "@/types/indicators/rsi";
 
 export const MAX_ASSETS = 7;
 
@@ -26,6 +27,10 @@ export interface AssetIndicatorSettings {
   supportResistance: {
     enabled: boolean;
     config: SupportResistanceConfig;
+  };
+  rsi: {
+    enabled: boolean;
+    config: RSIConfig;
   };
 }
 
@@ -80,6 +85,10 @@ const defaultIndicators: AssetIndicatorSettings = {
   supportResistance: {
     enabled: true,
     config: { boxPeriod: 25 },
+  },
+  rsi: {
+    enabled: true,
+    config: { period: 14 },
   },
 };
 
@@ -256,6 +265,12 @@ export const useAssetStore = create<AssetStore>()(
                       supportResistance: {
                         ...assetState.indicators.supportResistance,
                         ...indicators.supportResistance,
+                      },
+                    }),
+                    ...(indicators.rsi && {
+                      rsi: {
+                        ...assetState.indicators.rsi,
+                        ...indicators.rsi,
                       },
                     }),
                   },

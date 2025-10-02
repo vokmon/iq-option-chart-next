@@ -101,3 +101,25 @@ export function getSupportResistanceColors() {
         .trim() || "#ef4444", // Red for support (lower)
   };
 }
+
+/**
+ * Get RSI colors
+ */
+export function getRSIColors() {
+  if (typeof window === "undefined") {
+    // Fallback colors for SSR
+    return {
+      primary: "#9c27b0",
+      overbought: "#ff4444", // Red for overbought (70+)
+      oversold: "#00c851", // Green for oversold (30-)
+    };
+  }
+
+  const computedStyle = getComputedStyle(document.documentElement);
+  return {
+    primary:
+      computedStyle.getPropertyValue("--color-rsi-400").trim() || "#9c27b0",
+    overbought: "#ff4444", // Red for overbought (70+)
+    oversold: "#00c851", // Green for oversold (30-)
+  };
+}
