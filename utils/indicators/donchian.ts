@@ -1,4 +1,5 @@
 import type { DonchianData, DonchianConfig } from "@/types/indicators/donchian";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate Donchian Channels for a series of price data
@@ -43,19 +44,19 @@ export function calculateDonchian(
  * @returns Array of Donchian data with time
  */
 export function calculateDonchianForCandles(
-  candles: Array<{ time: number; high: number; low: number }>,
+  candles: Candle[],
   config: DonchianConfig = { period: 20 }
 ): DonchianData[] {
-  const highPrices = candles.map((candle) => candle.high);
-  const lowPrices = candles.map((candle) => candle.low);
+  const highPrices = candles.map((candle) => candle.max);
+  const lowPrices = candles.map((candle) => candle.min);
   const donchianData = calculateDonchian(highPrices, lowPrices, config);
 
   // Map the time from the original candles
   return donchianData.map((data, index) => ({
     ...data,
     time:
-      candles[index + config.period - 1]?.time ||
-      candles[candles.length - 1]?.time ||
+      (candles[index + config.period - 1]?.from as number) ||
+      (candles[candles.length - 1]?.from as number) ||
       0,
   }));
 }

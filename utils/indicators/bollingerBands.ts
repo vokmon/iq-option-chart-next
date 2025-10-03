@@ -2,6 +2,7 @@ import type {
   BollingerBandsData,
   BollingerBandsConfig,
 } from "@/types/indicators/bollingerBands";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate Bollinger Bands for a series of price data
@@ -50,7 +51,7 @@ export function calculateBollingerBands(
  * @returns Array of Bollinger Bands data with time
  */
 export function calculateBollingerBandsForCandles(
-  candles: Array<{ time: number; close: number }>,
+  candles: Candle[],
   config: BollingerBandsConfig = { period: 20, stdDev: 2 }
 ): BollingerBandsData[] {
   const prices = candles.map((candle) => candle.close);
@@ -59,6 +60,6 @@ export function calculateBollingerBandsForCandles(
   // Map the time from the original candles
   return bollingerData.map((data, index) => ({
     ...data,
-    time: candles[index + config.period - 1]?.time || 0,
+    time: candles[index + config.period - 1]?.from || 0,
   }));
 }

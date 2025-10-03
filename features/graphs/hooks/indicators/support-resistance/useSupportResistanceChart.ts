@@ -93,14 +93,6 @@ export function useSupportResistanceChart({
     [showSupportResistance]
   );
 
-  const formatCandlesForSR = useCallback((cs: Candle[]) => {
-    return cs.map((c) => ({
-      time: c.from,
-      high: c.max,
-      low: c.min,
-    }));
-  }, []);
-
   const formatSRDataForChart = useCallback(
     (srData: SupportResistanceData[]) => {
       const resistanceData = srData
@@ -132,7 +124,7 @@ export function useSupportResistanceChart({
       }
 
       const srData = calculateSupportResistanceForCandles(
-        formatCandlesForSR(candles),
+        candles,
         supportResistanceConfig
       );
 
@@ -161,12 +153,7 @@ export function useSupportResistanceChart({
         series.support?.setData(supportData);
       }
     },
-    [
-      showSupportResistance,
-      supportResistanceConfig,
-      formatCandlesForSR,
-      formatSRDataForChart,
-    ]
+    [showSupportResistance, supportResistanceConfig, formatSRDataForChart]
   );
 
   const clearSupportResistanceData = useCallback(

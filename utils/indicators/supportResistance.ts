@@ -3,6 +3,7 @@ import type {
   SupportResistanceConfig,
   CandlestickData,
 } from "@/types/indicators/supportResistance";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate Support and Resistance levels following the Python signal-generator logic
@@ -12,7 +13,7 @@ import type {
  * @returns Array of Support and Resistance data
  */
 export function calculateSupportResistance(
-  candles: CandlestickData[],
+  candles: Candle[],
   config: SupportResistanceConfig = { boxPeriod: 25 }
 ): SupportResistanceData[] {
   const { boxPeriod } = config;
@@ -21,7 +22,7 @@ export function calculateSupportResistance(
   if (candles.length < boxPeriod) {
     // Not enough data, return empty levels
     return candles.map((candle) => ({
-      time: candle.time,
+      time: candle.from as number,
       resistance: null,
       support: null,
     }));
@@ -84,7 +85,7 @@ export function calculateSupportResistance(
     }
 
     result.push({
-      time: candles[i].time,
+      time: candles[i].from as number,
       resistance: lastResistance,
       support: lastSupport,
     });
@@ -100,15 +101,10 @@ export function calculateSupportResistance(
  * @returns Array of Support and Resistance data
  */
 export function calculateSupportResistanceForCandles(
-  candles: Array<{ time: number; high: number; low: number }>,
+  candles: Candle[],
   config: SupportResistanceConfig = { boxPeriod: 25 }
 ): SupportResistanceData[] {
   // Convert high/low to max/min format
-  const convertedCandles: CandlestickData[] = candles.map((candle) => ({
-    time: candle.time,
-    max: candle.high,
-    min: candle.low,
-  }));
 
-  return calculateSupportResistance(convertedCandles, config);
+  return calculateSupportResistance(candles, config);
 }

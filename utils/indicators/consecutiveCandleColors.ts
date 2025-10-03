@@ -1,4 +1,5 @@
 import type { ConsecutiveCandleColorsData } from "@/types/indicators/consecutiveCandleColors";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate consecutive candle colors for a series of candlestick data
@@ -6,7 +7,7 @@ import type { ConsecutiveCandleColorsData } from "@/types/indicators/consecutive
  * @returns Array of consecutive candle colors data
  */
 export function calculateConsecutiveCandleColors(
-  candles: Array<{ time: number; open: number; close: number }>
+  candles: Candle[]
 ): ConsecutiveCandleColorsData[] {
   const result: ConsecutiveCandleColorsData[] = [];
   const consecutiveCounts: number[] = [];
@@ -58,7 +59,7 @@ export function calculateConsecutiveCandleColors(
   // Convert to result format
   for (let i = 0; i < candles.length; i++) {
     result.push({
-      time: candles[i].time,
+      time: candles[i].from as number,
       consecutiveColors: consecutiveCounts[i],
     });
   }
@@ -72,7 +73,7 @@ export function calculateConsecutiveCandleColors(
  * @returns Array of consecutive candle colors data with time
  */
 export function calculateConsecutiveCandleColorsForCandles(
-  candles: Array<{ time: number; open: number; close: number }>
+  candles: Candle[]
 ): ConsecutiveCandleColorsData[] {
   return calculateConsecutiveCandleColors(candles);
 }

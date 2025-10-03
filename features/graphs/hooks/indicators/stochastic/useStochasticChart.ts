@@ -117,15 +117,6 @@ export function useStochasticChart({
     [showStochastic]
   );
 
-  const formatCandlesForStochastic = useCallback((cs: Candle[]) => {
-    return cs.map((c) => ({
-      time: c.from as number,
-      high: c.max,
-      low: c.min,
-      close: c.close,
-    }));
-  }, []);
-
   const formatStochasticDataForChart = useCallback(
     (stochasticData: StochasticData[]) => {
       const kData = stochasticData.map((d) => ({
@@ -152,7 +143,7 @@ export function useStochasticChart({
       }
 
       const stochasticData = calculateStochasticForCandles(
-        formatCandlesForStochastic(candles),
+        candles,
         stochasticConfig
       );
 
@@ -197,12 +188,7 @@ export function useStochasticChart({
         series.lower?.setData(lowerData);
       }
     },
-    [
-      showStochastic,
-      stochasticConfig,
-      formatCandlesForStochastic,
-      formatStochasticDataForChart,
-    ]
+    [showStochastic, stochasticConfig, formatStochasticDataForChart]
   );
 
   const clearStochasticData = useCallback((series: StochasticSeries) => {

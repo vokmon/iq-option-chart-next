@@ -67,13 +67,6 @@ export function useRSIChart({
     [showRSI]
   );
 
-  const formatCandlesForRSI = useCallback((cs: Candle[]) => {
-    return cs.map((c) => ({
-      time: c.from as number,
-      close: c.close,
-    }));
-  }, []);
-
   const formatRSIDataForChart = useCallback((rsiData: RSIData[]) => {
     const rsiDataPoints = rsiData.map((d) => ({
       time: d.time as UTCTimestamp,
@@ -89,10 +82,7 @@ export function useRSIChart({
         return;
       }
 
-      const rsiData = calculateRSIForCandles(
-        formatCandlesForRSI(candles),
-        rsiConfig
-      );
+      const rsiData = calculateRSIForCandles(candles, rsiConfig);
 
       if (rsiData.length === 0) return;
 
@@ -110,7 +100,7 @@ export function useRSIChart({
         series.rsi?.setData(rsiDataPoints);
       }
     },
-    [showRSI, rsiConfig, formatCandlesForRSI, formatRSIDataForChart]
+    [showRSI, rsiConfig, , formatRSIDataForChart]
   );
 
   const clearRSIData = useCallback((series: RSISeries) => {

@@ -2,6 +2,7 @@ import type {
   StochasticData,
   StochasticConfig,
 } from "@/types/indicators/stochastic";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate Stochastic Oscillator for a series of price data
@@ -63,12 +64,12 @@ export function calculateStochastic(
  * @returns Array of Stochastic data with time
  */
 export function calculateStochasticForCandles(
-  candles: Array<{ time: number; high: number; low: number; close: number }>,
+  candles: Candle[],
   config: StochasticConfig = { kPeriod: 13, dPeriod: 3, smoothing: 3 }
 ): StochasticData[] {
   const prices = candles.map((candle) => ({
-    high: candle.high,
-    low: candle.low,
+    high: candle.max,
+    low: candle.min,
     close: candle.close,
   }));
 
@@ -77,6 +78,8 @@ export function calculateStochasticForCandles(
   // Map the time from the original candles
   return stochasticData.map((data, index) => ({
     ...data,
-    time: candles[index + config.kPeriod + config.dPeriod - 2]?.time || 0,
+    time:
+      (candles[index + config.kPeriod + config.dPeriod - 2]?.from as number) ||
+      0,
   }));
 }

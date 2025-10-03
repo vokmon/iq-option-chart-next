@@ -8,7 +8,7 @@ interface SignalStore {
   signals: Record<number, SignalType>;
 
   // Actions
-  setSignal: (activeId: number, signal: SignalType) => void;
+  setSignalIfChanged: (activeId: number, signal: SignalType) => void;
   getSignal: (activeId: number) => SignalType | undefined;
   removeSignal: (activeId: number) => void;
   clearAllSignals: () => void;
@@ -21,13 +21,20 @@ export const useSignalStore = create<SignalStore>((set, get) => ({
   signals: {},
 
   // Actions
-  setSignal: (activeId: number, signal: SignalType) => {
-    set((state) => ({
-      signals: {
-        ...state.signals,
-        [activeId]: signal,
-      },
-    }));
+  setSignalIfChanged: (activeId: number, signal: SignalType) => {
+    set((state) => {
+      // If signal is the same, do nothing
+      if (state.signals[activeId] === signal) {
+        return state;
+      }
+
+      return {
+        signals: {
+          ...state.signals,
+          [activeId]: signal,
+        },
+      };
+    });
   },
 
   getSignal: (activeId: number) => {

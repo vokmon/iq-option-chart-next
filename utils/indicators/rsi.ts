@@ -1,4 +1,5 @@
 import type { RSIData, RSIConfig } from "@/types/indicators/rsi";
+import { Candle } from "@quadcode-tech/client-sdk-js";
 
 /**
  * Calculate Exponential Moving Average (EMA)
@@ -86,7 +87,7 @@ export function calculateRSI(
  * @returns Array of RSI data with time
  */
 export function calculateRSIForCandles(
-  candles: Array<{ time: number; close: number }>,
+  candles: Candle[],
   config: RSIConfig = { period: 14 }
 ): RSIData[] {
   const prices = candles.map((candle) => candle.close);
@@ -95,6 +96,6 @@ export function calculateRSIForCandles(
   // Map the time from the original candles
   return rsiData.map((data, index) => ({
     ...data,
-    time: candles[index + config.period]?.time || 0,
+    time: (candles[index + config.period]?.from as number) || 0,
   }));
 }

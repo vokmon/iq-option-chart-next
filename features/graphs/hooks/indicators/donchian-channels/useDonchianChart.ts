@@ -121,14 +121,6 @@ export function useDonchianChart({
     [showDonchian]
   );
 
-  const formatCandlesForDonchian = useCallback((cs: Candle[]) => {
-    return cs.map((c) => ({
-      time: c.from as number,
-      high: c.max,
-      low: c.min,
-    }));
-  }, []);
-
   const formatDonchianDataForChart = useCallback(
     (donchianData: DonchianData[]) => {
       const upperData = donchianData.map((d) => ({
@@ -162,10 +154,7 @@ export function useDonchianChart({
         return;
       }
 
-      const donchianData = calculateDonchianForCandles(
-        formatCandlesForDonchian(candles),
-        donchianConfig
-      );
+      const donchianData = calculateDonchianForCandles(candles, donchianConfig);
 
       if (donchianData.length === 0) return;
 
@@ -200,12 +189,7 @@ export function useDonchianChart({
         series.area?.setData(areaData);
       }
     },
-    [
-      showDonchian,
-      donchianConfig,
-      formatCandlesForDonchian,
-      formatDonchianDataForChart,
-    ]
+    [showDonchian, donchianConfig, formatDonchianDataForChart]
   );
 
   const clearDonchianData = useCallback((series: DonchianSeries) => {

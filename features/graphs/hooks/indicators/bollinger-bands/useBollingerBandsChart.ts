@@ -107,13 +107,6 @@ export function useBollingerBandsChart({
     [showBollingerBands]
   );
 
-  const formatCandlesForBB = useCallback((cs: Candle[]) => {
-    return cs.map((c) => ({
-      time: c.from as number,
-      close: c.close,
-    }));
-  }, []);
-
   const formatBBDataForChart = useCallback((bbData: BollingerBandsData[]) => {
     const upperData = bbData.map((d) => ({
       time: d.time as UTCTimestamp,
@@ -138,7 +131,7 @@ export function useBollingerBandsChart({
       }
 
       const bbData = calculateBollingerBandsForCandles(
-        formatCandlesForBB(candles),
+        candles,
         bollingerBandsConfig
       );
 
@@ -168,12 +161,7 @@ export function useBollingerBandsChart({
         series.lower?.setData(lowerData);
       }
     },
-    [
-      showBollingerBands,
-      bollingerBandsConfig,
-      formatCandlesForBB,
-      formatBBDataForChart,
-    ]
+    [showBollingerBands, bollingerBandsConfig, formatBBDataForChart]
   );
 
   const clearBollingerBandsData = useCallback(
