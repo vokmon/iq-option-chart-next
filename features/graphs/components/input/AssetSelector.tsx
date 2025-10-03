@@ -74,10 +74,13 @@ export function AssetSelector({
       data={selectData}
       searchable
       className={className}
+      disabled={selectedActiveId !== "none"}
       maxDropdownHeight={600}
       styles={{
         input: {
           fontWeight: 700,
+          color: "var(--mantine-color-text) !important",
+          opacity: "1 !important",
         },
       }}
       leftSectionWidth={40}

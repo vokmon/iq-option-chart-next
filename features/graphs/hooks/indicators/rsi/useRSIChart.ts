@@ -50,7 +50,7 @@ export function useRSIChart({
         color: colors.primary,
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
-        lastValueVisible: false,
+        lastValueVisible: true,
         priceFormat: {
           type: "price",
           precision: 2,

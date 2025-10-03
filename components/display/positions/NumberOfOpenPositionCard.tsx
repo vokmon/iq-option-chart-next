@@ -19,12 +19,12 @@ export default function NumberOfOpenPositionCard({
       }`}
     >
       <div
-        className={`flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-default select-none px-2 py-0 text-base rounded-lg border shadow-sm bg-orange-50 border-orange-300 text-orange-800`}
+        className={`flex items-center justify-center gap-2 font-semibold transition-all duration-200 cursor-default select-none px-2 py-0 text-base rounded-lg border shadow-sm bg-purple-50 border-purple-300 text-purple-800`}
       >
         <Group gap="xs" justify="center" align="center">
           <div className="relative">
             <div
-              className={`w-6 h-4 rounded-full  shadow-lg flex items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 `}
+              className={`w-6 h-4 rounded-full  shadow-lg flex items-center justify-center bg-gradient-to-br from-purple-400 to-purple-600 `}
             >
               <IconCashBanknote size={13} className="text-white" />
             </div>

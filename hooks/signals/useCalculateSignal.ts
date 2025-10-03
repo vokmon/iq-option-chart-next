@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useSdk } from "../useSdk";
 import { calculateSignal } from "@/utils/indicators/signalCalculator";
 
-const CANDLE_NUMBER = 25;
+const CANDLE_NUMBER = 100;
 const SIGNAL_INTERVAL_SECONDS = 3;
 
 export function useCalculateSignal() {
