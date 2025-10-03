@@ -65,16 +65,17 @@ export function useCalculateSignal() {
           //     Math.floor(Math.random() * 3)
           //   ]
           // );
-          const endTime = new Date().getTime() - time.getTime();
+          // const endTime = new Date().getTime() - time.getTime();
 
-          if (signal.signal !== SignalType.HOLD) {
-            console.log(
-              activeId,
-              `Signal calculation triggered at ${time.getTime()}`,
-              `difference: ${endTime} ms`,
-              signal
-            );
-          }
+          // if (signal.signal !== SignalType.HOLD) {
+          //   console.log(
+          //     activeId,
+          //     asset.asset?.name,
+          //     `Signal calculation triggered at ${time.getTime()}`,
+          //     `difference: ${endTime} ms`,
+          //     signal
+          //   );
+          // }
         }, SIGNAL_INTERVAL_SECONDS * 1000);
 
         chartLayer.subscribeOnLastCandleChanged(async () => {
