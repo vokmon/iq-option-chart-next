@@ -42,7 +42,6 @@ export default function LoginIqOptionOAuth() {
 
       const { url, codeVerifier } = await oauth.createAuthorizationUrl();
       sessionStorage.setItem("pkce_verifier", codeVerifier);
-      await new Promise((resolve) => setTimeout(resolve, 10000));
       window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
