@@ -4,7 +4,6 @@ import { SignalType } from "@/types/signal/Signal";
 import { useEffect } from "react";
 import { useSdk } from "../useSdk";
 import { calculateSignal } from "@/utils/indicators/signalCalculator";
-import { Candle } from "@quadcode-tech/client-sdk-js";
 
 const CANDLE_NUMBER = 25;
 const SIGNAL_INTERVAL_SECONDS = 3;
@@ -25,7 +24,7 @@ export function useCalculateSignal() {
           activeId!,
           asset.candleSize
         );
-        const candles: Candle[] = await chartLayer.fetchAllCandles(
+        await chartLayer.fetchAllCandles(
           Math.floor(Date.now() / 1000) - asset.candleSize * CANDLE_NUMBER
         );
 
