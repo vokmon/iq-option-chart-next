@@ -57,6 +57,14 @@ export function useCalculateSignal() {
           // );
           const signal = calculateSignal(candlesToAnalyze, {});
           setSignalIfChanged(activeId!, signal.signal);
+
+          // For Testing
+          // setSignalIfChanged(
+          //   activeId!,
+          //   [SignalType.HOLD, SignalType.CALL, SignalType.PUT][
+          //     Math.floor(Math.random() * 3)
+          //   ]
+          // );
           const endTime = new Date().getTime() - time.getTime();
 
           if (signal.signal !== SignalType.HOLD) {

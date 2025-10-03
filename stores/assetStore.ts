@@ -52,6 +52,7 @@ interface AssetStore {
   addAsset: (asset?: DigitalOptionsUnderlying) => string;
   removeAsset: (assetId: string) => void;
   setActiveAsset: (assetId: string) => void;
+  reorderAssets: (fromIndex: number, toIndex: number) => void;
   updateAsset: (
     assetId: string,
     asset: DigitalOptionsUnderlying | null
@@ -195,6 +196,16 @@ export const useAssetStore = create<AssetStore>()(
         if (assetExists) {
           set({ activeAssetId: assetId });
         }
+      },
+
+      reorderAssets: (fromIndex: number, toIndex: number) => {
+        set((state) => {
+          const newAssets = [...state.assets];
+          const [movedAsset] = newAssets.splice(fromIndex, 1);
+          newAssets.splice(toIndex, 0, movedAsset);
+
+          return { assets: newAssets };
+        });
       },
 
       updateAsset: (

@@ -14,6 +14,7 @@ import {
   IconX,
   IconChevronLeft,
   IconChevronRight,
+  IconGripVertical,
 } from "@tabler/icons-react";
 import { useAssetStore, MAX_ASSETS } from "@/stores/assetStore";
 import { getCandleSizeLabel, getCandleColor } from "@/utils/candleColors";
@@ -27,6 +28,7 @@ import { useFilteredPositions } from "../../hooks/positions/useFilteredPositions
 import { useSignalStore } from "@/stores/signalStore";
 import SmallSignalIndicatorLabel from "@/components/display/signal/SmallSignalIndicatorLabel";
 import NumberOfOpenPositionCard from "@/components/display/positions/NumberOfOpenPositionCard";
+import { useTabDragDrop } from "../../hooks/chart/useTabDragDrop";
 
 export function TabBar() {
   const t = useTranslations();
@@ -35,6 +37,16 @@ export function TabBar() {
   const { assets } = useAssetStore();
   const { getSignal } = useSignalStore();
   const { activeInformation } = useDigitalOptionsStore();
+
+  // Use drag and drop hook
+  const {
+    handleDragStart,
+    handleDragEnd,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    getDragState,
+  } = useTabDragDrop();
   // Use custom hooks for scroll functionality
   const {
     scrollAreaRef,
@@ -159,54 +171,90 @@ export function TabBar() {
                 boxSizing: "border-box",
               }}
             >
-              {assets.map((asset) => {
+              {assets.map((asset, index) => {
                 const activeData =
                   activeInformation[asset.asset?.activeId || 0];
 
                 const openPositionsForActive =
                   openPositionsForSelectedBalance.filter(
                     (position) => position.activeId === asset?.asset?.activeId
-                  );
+                  ).length;
+
                 const signal = getSignal(asset.asset?.activeId || 0);
+
+                const { isDragging, isDragOver } = getDragState(index);
 
                 return (
                   <Tabs.Tab
                     key={asset.id}
                     value={asset.id}
                     data-tab-id={asset.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
                     rightSection={
-                      canRemoveAsset(asset.id) ? (
+                      <Group gap={4}>
+                        {/* Drag handle */}
                         <div
-                          onClick={(e) => handleRemoveAsset(asset.id, e)}
                           style={{
-                            marginLeft: 8,
                             padding: 2,
                             borderRadius: 4,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            color: "var(--mantine-color-gray-6)",
+                            color: "var(--mantine-color-gray-5)",
+                            cursor: "grab",
                             transition: "all 0.1s ease",
                             minWidth: 16,
                             minHeight: 16,
-                            cursor: "pointer",
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor =
-                              "var(--mantine-color-gray-1)";
                             e.currentTarget.style.color =
-                              "var(--mantine-color-gray-8)";
+                              "var(--mantine-color-gray-7)";
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor =
-                              "transparent";
                             e.currentTarget.style.color =
-                              "var(--mantine-color-gray-6)";
+                              "var(--mantine-color-gray-5)";
                           }}
                         >
-                          <IconX size={12} />
+                          <IconGripVertical size={12} />
                         </div>
-                      ) : null
+                        {/* Remove button */}
+                        {canRemoveAsset(asset.id) && (
+                          <div
+                            onClick={(e) => handleRemoveAsset(asset.id, e)}
+                            style={{
+                              padding: 2,
+                              borderRadius: 4,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "var(--mantine-color-gray-6)",
+                              transition: "all 0.1s ease",
+                              minWidth: 16,
+                              minHeight: 16,
+                              cursor: "pointer",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "var(--mantine-color-gray-1)";
+                              e.currentTarget.style.color =
+                                "var(--mantine-color-gray-8)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "transparent";
+                              e.currentTarget.style.color =
+                                "var(--mantine-color-gray-6)";
+                            }}
+                          >
+                            <IconX size={12} />
+                          </div>
+                        )}
+                      </Group>
                     }
                     style={{
                       minWidth: 150,
@@ -218,13 +266,25 @@ export function TabBar() {
                           ? colorScheme === "dark"
                             ? "var(--mantine-color-blue-9)"
                             : "var(--mantine-color-blue-1)"
+                          : isDragOver
+                          ? colorScheme === "dark"
+                            ? "var(--mantine-color-blue-8)"
+                            : "var(--mantine-color-blue-0)"
                           : "transparent",
                       borderColor:
                         activeAssetId === asset.id
                           ? "var(--mantine-color-blue-6)"
+                          : isDragOver
+                          ? "var(--mantine-color-blue-4)"
                           : "var(--mantine-color-gray-3)",
                       borderWidth: "1px",
+                      borderStyle: isDragOver ? "dashed" : "solid",
                       transition: "all 0.2s ease",
+                      opacity: isDragging ? 0.5 : 1,
+                      transform: isDragging ? "rotate(2deg)" : "none",
+                      boxShadow: isDragOver
+                        ? "0 0 0 2px var(--mantine-color-blue-3)"
+                        : "none",
                     }}
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
@@ -232,9 +292,9 @@ export function TabBar() {
                         {signal && (
                           <SmallSignalIndicatorLabel signal={signal} />
                         )}
-                        {openPositionsForActive.length > 0 && (
+                        {openPositionsForActive > 0 && (
                           <NumberOfOpenPositionCard
-                            number={openPositionsForActive.length}
+                            number={openPositionsForActive}
                           />
                         )}
                       </div>
