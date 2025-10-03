@@ -1,6 +1,5 @@
 import { AssetState, useAssetStore } from "@/stores/assetStore";
 import { useSignalStore } from "@/stores/signalStore";
-import { SignalType } from "@/types/signal/Signal";
 import { useEffect } from "react";
 import { useSdk } from "../useSdk";
 import { calculateSignal } from "@/utils/indicators/signalCalculator";
