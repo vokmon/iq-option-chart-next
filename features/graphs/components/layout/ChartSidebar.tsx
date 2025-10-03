@@ -48,7 +48,7 @@ export default function ChartSidebar() {
       </Flex>
       <Divider />
       <TradingPanelController />
-      <Flex className="h-15">
+      <Flex className="h-12">
         <SignalPanelController />
       </Flex>
       <Flex className="flex-1 w-full relative">
