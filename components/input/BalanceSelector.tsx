@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
-  Select,
   Group,
   Text,
   Paper,
@@ -10,8 +9,15 @@ import {
   Divider,
   Badge,
   Tooltip,
+  Modal,
+  Button,
+  ActionIcon,
 } from "@mantine/core";
-import { IconChevronDown, IconAlertTriangle } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconAlertTriangle,
+  IconCheck,
+} from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useSdk } from "@/hooks/useSdk";
 import { formatAmount } from "@/utils/currency";
@@ -31,6 +37,7 @@ export default function BalanceSelector({
   const [balances, setBalances] = useState<Balance[]>([]);
   const [selectedBalance, setSelectedBalance] = useState<Balance | null>(null);
   const [loading, setLoading] = useState(true);
+  const [modalOpened, setModalOpened] = useState(false);
   const onBalanceChangeRef = useRef(onBalanceChange);
 
   // Update ref when callback changes
@@ -147,14 +154,10 @@ export default function BalanceSelector({
   }, [selectedBalanceId, balances, selectedBalance?.id]);
 
   // Handle balance selection
-  const handleBalanceChange = (value: string | null) => {
-    if (!value) return;
-
-    const balance = balances.find((b) => b.id === parseInt(value));
-    if (balance) {
-      setSelectedBalance(balance);
-      onBalanceChangeRef.current?.(balance);
-    }
+  const handleBalanceChange = (balance: Balance) => {
+    setSelectedBalance(balance);
+    onBalanceChangeRef.current?.(balance);
+    setModalOpened(false);
   };
 
   if (loading) {
@@ -201,69 +204,103 @@ export default function BalanceSelector({
   ) : null;
 
   return (
-    <Paper p="sm" withBorder>
-      <Stack gap="sm">
-        {/* Compact Balance Display */}
-        {selectedBalance && (
-          <Tooltip label={balanceInfo} position="bottom" withArrow multiline>
-            <Group justify="space-between" align="center">
-              <Badge
-                color={getBalanceTypeColor(selectedBalance.type)}
-                variant="light"
-                size="sm"
-              >
-                {getBalanceTypeDisplay(selectedBalance.type)}
-              </Badge>
-              <Group gap="xs" align="center">
-                {selectedBalance.amount === 0 && (
-                  <IconAlertTriangle
-                    size={16}
-                    color="orange"
-                    style={{ flexShrink: 0 }}
-                  />
-                )}
-                <Text
-                  size="md"
-                  fw={600}
-                  c={
-                    selectedBalance.amount === 0
-                      ? "orange"
-                      : getBalanceTypeColor(selectedBalance.type)
-                  }
+    <>
+      <Paper p="sm" withBorder>
+        <Stack gap="sm">
+          {/* Balance Display with Clickable Account Selector */}
+          {selectedBalance && (
+            <Tooltip label={balanceInfo} position="bottom" withArrow multiline>
+              <Group justify="space-between" align="center">
+                {/* Clickable Account Type Badge */}
+                <Badge
+                  color={getBalanceTypeColor(selectedBalance.type)}
+                  variant="filled"
+                  size="lg"
                   style={{ cursor: "pointer" }}
+                  onClick={() => setModalOpened(true)}
+                  rightSection={
+                    <ActionIcon
+                      size="xs"
+                      color="white"
+                      variant="transparent"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setModalOpened(true);
+                      }}
+                    >
+                      <IconChevronDown size={12} />
+                    </ActionIcon>
+                  }
                 >
-                  {formatAmount(
-                    selectedBalance.amount,
-                    selectedBalance.currency
-                  )}
-                </Text>
-              </Group>
-            </Group>
-          </Tooltip>
-        )}
+                  {getBalanceTypeDisplay(selectedBalance.type)}
+                </Badge>
 
-        {/* Balance Selector Dropdown */}
-        <Select
-          placeholder={t("Select balance")}
-          value={selectedBalance?.id.toString()}
-          onChange={handleBalanceChange}
-          data={balances.map((balance) => ({
-            value: balance.id.toString(),
-            label: `${getBalanceTypeDisplay(balance.type)} - ${formatAmount(
-              balance.amount,
-              balance.currency
-            )}`,
-          }))}
-          rightSection={<IconChevronDown size={16} />}
-          size="xs"
-          styles={{
-            option: {
-              fontSize: "0.875rem", // text-sm equivalent
-              padding: "8px 12px",
-            },
-          }}
-        />
-      </Stack>
-    </Paper>
+                {/* Balance Amount */}
+                <Group gap="xs" align="center">
+                  {selectedBalance.amount === 0 && (
+                    <IconAlertTriangle
+                      size={16}
+                      color="orange"
+                      style={{ flexShrink: 0 }}
+                    />
+                  )}
+                  <Text
+                    size="lg"
+                    fw={700}
+                    c={
+                      selectedBalance.amount === 0
+                        ? "orange"
+                        : getBalanceTypeColor(selectedBalance.type)
+                    }
+                  >
+                    {formatAmount(
+                      selectedBalance.amount,
+                      selectedBalance.currency
+                    )}
+                  </Text>
+                </Group>
+              </Group>
+            </Tooltip>
+          )}
+        </Stack>
+      </Paper>
+
+      {/* Account Selection Modal */}
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title={t("Select Account")}
+        size="sm"
+        centered
+      >
+        <Stack gap="sm">
+          {balances.map((balance) => (
+            <Button
+              key={balance.id}
+              variant={selectedBalance?.id === balance.id ? "filled" : "light"}
+              color={getBalanceTypeColor(balance.type)}
+              justify="space-between"
+              leftSection={
+                selectedBalance?.id === balance.id ? (
+                  <IconCheck size={16} />
+                ) : (
+                  <div style={{ width: 16 }} />
+                )
+              }
+              rightSection={
+                <Text size="sm" fw={500}>
+                  {formatAmount(balance.amount, balance.currency)}
+                </Text>
+              }
+              onClick={() => handleBalanceChange(balance)}
+              fullWidth
+              size="md"
+            >
+              {getBalanceTypeDisplay(balance.type)}
+            </Button>
+          ))}
+        </Stack>
+      </Modal>
+    </>
   );
 }
