@@ -1,10 +1,11 @@
 "use client";
 
 import { APP_METADATA } from "@/constants/app";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { CountdownTimer } from "./CountdownTimer";
+import { Button, Card, Text, Group, Stack, Box } from "@mantine/core";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -72,9 +73,9 @@ export function InstallPrompt() {
     };
   }, []);
 
-  const handleCountdownComplete = () => {
+  const handleCountdownComplete = useCallback(() => {
     setShowInstallPrompt(false);
-  };
+  }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -102,60 +103,81 @@ export function InstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:max-w-sm">
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg overflow-hidden">
-              <Image
-                src="/icons/icon.svg"
-                alt={`${APP_METADATA.name} icon`}
-                width={32}
-                height={32}
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-          <div className="ml-3 flex-1">
-            <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+    <Box
+      style={{
+        position: "fixed",
+        bottom: 16,
+        right: 16,
+        zIndex: 50,
+        maxWidth: 384, // max-w-sm equivalent
+      }}
+    >
+      <Card shadow="lg" padding="md" radius="md">
+        <Group align="flex-start" gap="sm">
+          <Box
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              overflow: "hidden",
+              flexShrink: 0,
+            }}
+          >
+            <Image
+              src="/icons/icon.svg"
+              alt={`${APP_METADATA.name} icon`}
+              width={32}
+              height={32}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </Box>
+          <Stack gap="xs" style={{ flex: 1 }}>
+            <Text size="sm" fw={500}>
               {t("Install {appName}", { appName: APP_METADATA.name })}
-            </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              {isIOS
-                ? t("Add this app to your home screen for a better experience")
-                : ""}
-            </p>
+            </Text>
+            {isIOS && (
+              <Text size="sm" c="dimmed">
+                {t("Add this app to your home screen for a better experience")}
+              </Text>
+            )}
             <CountdownTimer
               initialTime={30}
               onComplete={handleCountdownComplete}
+              className="mt-1 text-xs text-gray-400 dark:text-gray-500"
             />
-            <div className="mt-3 flex space-x-2">
+            <Group gap="xs" mt="sm">
               {!isIOS && deferredPrompt && (
-                <button
+                <Button
+                  size="xs"
                   onClick={handleInstallClick}
-                  className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-3 py-1.5 rounded-md transition-colors"
+                  variant="filled"
+                  color="blue"
                 >
                   {t("Install")}
-                </button>
+                </Button>
               )}
               {isIOS && (
-                <button
+                <Button
+                  size="xs"
                   onClick={() => window.open(window.location.href, "_blank")}
-                  className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-3 py-1.5 rounded-md transition-colors"
+                  variant="filled"
+                  color="blue"
                 >
                   {t("Open in Safari")}
-                </button>
+                </Button>
               )}
-              <button
+              <Button
+                size="xs"
                 onClick={handleDismiss}
-                className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium px-3 py-1.5 rounded-md transition-colors"
+                variant="light"
+                color="gray"
               >
                 {t("Dismiss")}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </Button>
+            </Group>
+          </Stack>
+        </Group>
+      </Card>
+    </Box>
   );
 }

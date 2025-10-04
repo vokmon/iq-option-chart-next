@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -8,7 +8,7 @@ import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import { ThemeCSSInjector } from "@/components/theme/ThemeCSSInjector";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
-import { pwaMetadata } from "@/config/pwa";
+import { pwaMetadata, pwaViewport } from "@/config/pwa";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,6 +21,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = pwaMetadata;
+
+export const viewport: Viewport = pwaViewport;
 
 export default async function RootLayout({
   children,

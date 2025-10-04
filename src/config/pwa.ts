@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { APP_METADATA } from "@/constants/app";
 
 export const pwaMetadata: Metadata = {
   title: APP_METADATA.name,
   description: APP_METADATA.description,
   manifest: "/manifest.json",
-  themeColor: "#000000",
-  viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -27,4 +24,12 @@ export const pwaMetadata: Metadata = {
     shortcut: "/icons/icon-192x192.svg",
     apple: "/icons/icon-192x192.svg",
   },
+};
+
+export const pwaViewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#000000",
 };

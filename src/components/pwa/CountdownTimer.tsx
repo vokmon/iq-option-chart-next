@@ -21,18 +21,24 @@ export function CountdownTimer({
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          onComplete();
-          return initialTime;
+          return 0; // Set to 0 instead of calling onComplete here
         }
         return prev - 1;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [initialTime, onComplete]);
+  }, [initialTime]);
+
+  // Separate effect to handle completion when countdown reaches 0
+  useEffect(() => {
+    if (countdown === 0) {
+      onComplete();
+    }
+  }, [countdown, onComplete]);
 
   return (
-    <p className={className}>
+    <p className={className} style={{ minWidth: "200px" }}>
       {t("This prompt will close in {countdown} seconds", { countdown })}
     </p>
   );
