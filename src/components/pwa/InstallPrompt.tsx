@@ -25,7 +25,6 @@ export function InstallPrompt() {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
-  const [resetCountdown, setResetCountdown] = useState(0);
   const t = useTranslations();
 
   useEffect(() => {
@@ -90,7 +89,6 @@ export function InstallPrompt() {
 
   const handleDismiss = () => {
     setShowInstallPrompt(false);
-    setResetCountdown((prev) => prev + 1); // Trigger countdown reset
   };
 
   // Don't show if already installed
