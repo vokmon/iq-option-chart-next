@@ -3,10 +3,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+export interface AutoTrade {
+  enable: boolean;
+  amount: number;
+}
+
 interface TradingStore {
-  // Two separate objects keyed by assetId
+  // Three separate objects keyed by assetId
   selectedBalanceIds: Record<string, number>;
   amounts: Record<string, number>;
+  autoTrade: Record<string, AutoTrade>;
 
   // Actions
   updateSelectedBalance: (assetId: string, selectedBalanceId: number) => void;
@@ -14,6 +20,10 @@ interface TradingStore {
   getSelectedBalanceId: (assetId: string) => number | undefined;
   getAmount: (assetId: string) => number | undefined;
   clearTradingData: (assetId: string) => void;
+
+  // Auto trade actions
+  updateAutoTrade: (assetId: string, autoTrade: AutoTrade) => void;
+  getAutoTrade: (assetId: string) => AutoTrade | undefined;
 
   // Sync with asset store - when assets are added/removed
   syncWithAssets: (assetIds: string[]) => void;
@@ -24,7 +34,7 @@ export const useTradingStore = create<TradingStore>()(
     (set, get) => ({
       selectedBalanceIds: {},
       amounts: {},
-      orders: {},
+      autoTrade: {},
 
       updateSelectedBalance: (assetId: string, selectedBalanceId: number) => {
         set((state) => ({
@@ -58,20 +68,38 @@ export const useTradingStore = create<TradingStore>()(
         set((state) => {
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
+          const newAutoTrade = { ...state.autoTrade };
           delete newSelectedBalanceIds[assetId];
           delete newAmounts[assetId];
+          delete newAutoTrade[assetId];
 
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
+            autoTrade: newAutoTrade,
           };
         });
+      },
+
+      updateAutoTrade: (assetId: string, autoTrade: AutoTrade) => {
+        set((state) => ({
+          autoTrade: {
+            ...state.autoTrade,
+            [assetId]: autoTrade,
+          },
+        }));
+      },
+
+      getAutoTrade: (assetId: string) => {
+        const state = get();
+        return state.autoTrade[assetId];
       },
 
       syncWithAssets: (assetIds: string[]) => {
         set((state) => {
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
+          const newAutoTrade = { ...state.autoTrade };
 
           // Remove trading data for assets that no longer exist
           Object.keys(newSelectedBalanceIds).forEach((tradingAssetId) => {
@@ -86,9 +114,16 @@ export const useTradingStore = create<TradingStore>()(
             }
           });
 
+          Object.keys(newAutoTrade).forEach((tradingAssetId) => {
+            if (!assetIds.includes(tradingAssetId)) {
+              delete newAutoTrade[tradingAssetId];
+            }
+          });
+
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
+            autoTrade: newAutoTrade,
           };
         });
       },
@@ -98,6 +133,7 @@ export const useTradingStore = create<TradingStore>()(
       partialize: (state) => ({
         selectedBalanceIds: state.selectedBalanceIds,
         amounts: state.amounts,
+        autoTrade: state.autoTrade,
       }),
     }
   )

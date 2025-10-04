@@ -9,6 +9,7 @@ import PositionTableController from "../displays/PositionTableController";
 import TodayTradeSummary from "../displays/TodayTradeSummary";
 import AssetSelectorAttentions from "@/components/cta/AssetSelectorAttentions";
 import SignalPanelController from "../displays/SignalPanelController";
+import AutoTradeSelectorController from "../input/AutoTradeSelectorController";
 
 export default function ChartSidebar() {
   // Use custom hooks for asset selection and candle size management
@@ -50,6 +51,9 @@ export default function ChartSidebar() {
       <TradingPanelController />
       <Flex className="h-12">
         <SignalPanelController />
+      </Flex>
+      <Flex className="h-10">
+        <AutoTradeSelectorController />
       </Flex>
       <Flex className="flex-1 w-full relative">
         <PositionTableController />

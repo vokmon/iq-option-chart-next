@@ -11,22 +11,26 @@ import { useTranslations } from "next-intl";
 import { useRefetchOpenPositions } from "./positions/useGetOpenPositions";
 
 interface TradingParams {
+  asset: DigitalOptionsUnderlying;
   balance: Balance;
   amount: number;
   direction: DigitalOptionsDirection;
+  isSystemTrade?: boolean;
 }
 
 export function useTradingActions({
-  asset,
   onSuccess,
 }: {
-  asset: DigitalOptionsUnderlying;
   onSuccess?: ({
+    asset,
     order,
     direction,
+    isSystemTrade,
   }: {
+    asset: DigitalOptionsUnderlying;
     order: DigitalOptionsOrder;
     direction: DigitalOptionsDirection;
+    isSystemTrade?: boolean;
   }) => void;
 }) {
   const t = useTranslations();
@@ -34,9 +38,11 @@ export function useTradingActions({
   const { refetchOpenPositions } = useRefetchOpenPositions();
 
   const executeTrade = async ({
+    asset,
     balance,
     amount,
     direction,
+    isSystemTrade,
   }: TradingParams): Promise<void> => {
     try {
       if (!asset) {
@@ -63,7 +69,12 @@ export function useTradingActions({
       );
 
       if (onSuccess) {
-        await onSuccess({ order, direction });
+        await onSuccess({
+          asset,
+          order,
+          direction,
+          isSystemTrade: isSystemTrade || false,
+        });
       }
 
       // Wait for 0.1 second to ensure the positions are updated
@@ -86,9 +97,11 @@ export function useTradingActions({
 
   const createOrderMutation = useMutation({
     mutationFn: (params: {
+      asset: DigitalOptionsUnderlying;
       balance: Balance;
       amount: number;
       direction: DigitalOptionsDirection;
+      isSystemTrade?: boolean;
     }) => executeTrade({ ...params }),
   });
 

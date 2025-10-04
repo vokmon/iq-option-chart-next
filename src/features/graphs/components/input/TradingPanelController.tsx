@@ -15,12 +15,11 @@ export default function TradingPanelController() {
     useTradingState();
 
   const createOrderMutation = useTradingActions({
-    asset: asset!,
-    onSuccess: ({ direction }) => {
+    onSuccess: ({ asset, direction }) => {
       notifications.show({
         title: "Success",
         message: (
-          <OrderSuccessNotification asset={asset!} direction={direction} />
+          <OrderSuccessNotification asset={asset} direction={direction} />
         ),
         color: "green",
         position: "top-right",
@@ -39,6 +38,7 @@ export default function TradingPanelController() {
       disabled={isPending}
       onCall={async (balance, amount) => {
         createOrder({
+          asset: asset!,
           balance,
           amount,
           direction: DigitalOptionsDirection.Call,
@@ -46,6 +46,7 @@ export default function TradingPanelController() {
       }}
       onPut={async (balance, amount) => {
         createOrder({
+          asset: asset!,
           balance,
           amount,
           direction: DigitalOptionsDirection.Put,

@@ -29,6 +29,8 @@ import { useSignalStore } from "@/stores/signalStore";
 import SmallSignalIndicatorLabel from "@/components/display/signal/SmallSignalIndicatorLabel";
 import NumberOfOpenPositionCard from "@/components/display/positions/NumberOfOpenPositionCard";
 import { useTabDragDrop } from "../../hooks/chart/useTabDragDrop";
+import { useTradingStore } from "@/stores/tradingStore";
+import SmallAutoTradeLabel from "@/components/display/auto-trade/SmallAutoTradeLabel";
 
 export function TabBar() {
   const t = useTranslations();
@@ -79,6 +81,7 @@ export function TabBar() {
   });
 
   const { openPositionsForSelectedBalance } = useFilteredPositions();
+  const { getAutoTrade } = useTradingStore();
 
   if (assets.length === 0) {
     return null;
@@ -179,6 +182,8 @@ export function TabBar() {
                   openPositionsForSelectedBalance.filter(
                     (position) => position.activeId === asset?.asset?.activeId
                   ).length;
+
+                const autoTrade = getAutoTrade(asset.id);
 
                 const signal = getSignal(asset.asset?.activeId || 0);
 
@@ -289,6 +294,7 @@ export function TabBar() {
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
                       <div className="absolute flex flex-row gap-2 z-10 -top-3 left-0 m-1 justify-space-around">
+                        {autoTrade?.enable && <SmallAutoTradeLabel />}
                         {signal && (
                           <SmallSignalIndicatorLabel signal={signal} />
                         )}

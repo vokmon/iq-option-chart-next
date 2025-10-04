@@ -1,6 +1,5 @@
 import LoadDigitalOptionsComponent from "@/components/initializeation/LoadDigitalOptionsComponent";
 import LoadPositionsDataComponent from "@/components/initializeation/LoadPositionsDataComponent";
-import CalculateSignalComponent from "@/components/initializeation/CalculateSignalComponent";
 import AppToolbar from "@/components/layout/navigation/AppToolbar";
 import { SdkProvider } from "@/provider/SdkProvider";
 import { Flex } from "@mantine/core";
@@ -10,7 +9,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SdkProvider>
       <LoadDigitalOptionsComponent />
       <LoadPositionsDataComponent />
-      <CalculateSignalComponent />
       <Flex w="100%" h="100%" direction="column">
         <AppToolbar />
         <Flex w="100%" h="100%" flex={1}>

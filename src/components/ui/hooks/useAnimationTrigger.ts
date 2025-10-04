@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useAnimationTrigger<T>(dependency: T) {
+export function useAnimationTrigger<T>(dependency?: T) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {

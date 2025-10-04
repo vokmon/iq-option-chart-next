@@ -1,8 +1,10 @@
 import { AssetState, useAssetStore } from "@/stores/assetStore";
 import { useSignalStore } from "@/stores/signalStore";
 import { useEffect } from "react";
-import { useSdk } from "../useSdk";
+import { useSdk } from "@/hooks/useSdk";
 import { calculateSignal } from "@/utils/indicators/signalCalculator";
+import { tradeEvent } from "../../events/tradeEvent";
+import { SignalType } from "@/types/signal/Signal";
 
 const CANDLE_NUMBER = 100;
 const SIGNAL_INTERVAL_SECONDS = 3;
@@ -55,7 +57,13 @@ export function useCalculateSignal() {
           //   candlesToAnalyze[candlesToAnalyze.length - 1]?.id
           // );
           const signal = calculateSignal(candlesToAnalyze, {});
-          setSignalIfChanged(activeId!, signal.signal);
+          // const signal = [{ signal: SignalType.CALL }][
+          //   Math.floor(Math.random() * 1)
+          // ];
+          const changed = setSignalIfChanged(activeId!, signal.signal);
+          if (changed && signal.signal !== SignalType.HOLD) {
+            tradeEvent.dispatchSignalChangedEvent(activeId!, signal.signal);
+          }
 
           // For Testing
           // setSignalIfChanged(

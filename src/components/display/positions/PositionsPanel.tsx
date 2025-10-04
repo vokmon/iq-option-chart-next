@@ -16,8 +16,6 @@ interface PositionsPanelProps {
   itemsPerPage?: number;
 }
 
-type PositionWithType = Position & { type: "open" | "closed" };
-
 const DEFAULT_ITEMS_PER_PAGE = 10;
 
 export default function PositionsPanel({
@@ -30,36 +28,39 @@ export default function PositionsPanel({
 }: PositionsPanelProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Combine all positions for pagination
-  const allPositions = useMemo((): PositionWithType[] => {
-    const openPositionsWithType: PositionWithType[] = openPositions.map((pos) =>
-      Object.assign(pos, { type: "open" as const })
-    );
-    const closedPositionsWithType: PositionWithType[] = closedPositions.map(
-      (pos) => Object.assign(pos, { type: "closed" as const })
-    );
-    return [...openPositionsWithType, ...closedPositionsWithType];
-  }, [openPositions, closedPositions]);
-
   // Reset to first page when positions change
   useEffect(() => {
     setCurrentPage(1);
   }, [openPositions, closedPositions]);
 
-  if (allPositions.length === 0) {
+  // Calculate pagination
+  const totalItems = closedPositions.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPositions = closedPositions.slice(startIndex, endIndex);
+
+  const closedPositionListMemo = useMemo(() => {
+    return currentPositions.map((position) => {
+      const activeInfo = activeInformation?.[position.activeId as number];
+      return (
+        <ClosePositionCard
+          key={position.externalId}
+          position={position}
+          activeInfo={activeInfo}
+          balance={balance}
+        />
+      );
+    });
+  }, [currentPositions, activeInformation, balance]);
+
+  if (closedPositions.length === 0 && openPositions.length === 0) {
     return (
       <div className="flex flex-grow h-full">
         <EmptyClosedPositions />
       </div>
     );
   }
-
-  // Calculate pagination
-  const totalItems = allPositions.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPositions = allPositions.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -69,30 +70,19 @@ export default function PositionsPanel({
     <div className="flex flex-col gap-1">
       {/* Positions List */}
       <div className="flex flex-col gap-1">
-        {currentPositions.map((position) => {
+        {openPositions.map((position) => {
           const activeInfo = activeInformation?.[position.activeId as number];
-
-          if (position.type === "open") {
-            return (
-              <OpenPositionCard
-                key={position.externalId}
-                position={position}
-                activeInfo={activeInfo}
-                balance={balance}
-                onSellClick={onSellClick}
-              />
-            );
-          } else {
-            return (
-              <ClosePositionCard
-                key={position.externalId}
-                position={position}
-                activeInfo={activeInfo}
-                balance={balance}
-              />
-            );
-          }
+          return (
+            <OpenPositionCard
+              key={position.externalId}
+              position={position}
+              activeInfo={activeInfo}
+              balance={balance}
+              onSellClick={onSellClick}
+            />
+          );
         })}
+        {closedPositionListMemo}
       </div>
 
       {/* Pagination Controls */}

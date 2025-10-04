@@ -137,5 +137,7 @@
   "Verification data fetch failed": "Verification data fetch failed",
   "Resistance zone": "Resistance zone",
   "No Signal": "No Signal",
-  "Select Account": "Select Account"
+  "Select Account": "Select Account",
+  "Auto Trade": "Auto Trade",
+  "Auto trading is enabled": "Auto trading is enabled"
 }

@@ -137,5 +137,7 @@
   "Verification data fetch failed": "ขออภัย ไม่สามารถยืนยันตัวตนได้",
   "Resistance zone": "Resistance zone",
   "No Signal": "ไม่มีสัญญาณ",
-  "Select Account": "เลือกบัญชี"
+  "Select Account": "เลือกบัญชี",
+  "Auto Trade": "เทรดอัตโนมัติ",
+  "Auto trading is enabled": "เทรดอัตโนมัติเปิดใช้งาน"
 }
