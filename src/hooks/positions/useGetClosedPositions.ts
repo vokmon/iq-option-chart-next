@@ -1,6 +1,6 @@
 import { useTransition } from "react";
 import { useSdk } from "../useSdk";
-import { usePositionsStore } from "@/stores/positionsStore";
+import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Position } from "@quadcode-tech/client-sdk-js";
 
@@ -10,7 +10,7 @@ let isFetching = false;
 
 export function useGetClosedPositions() {
   const { sdk } = useSdk();
-  const { setClosedPositions } = usePositionsStore();
+  const { setClosedPositions } = useClosedPositionsStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();

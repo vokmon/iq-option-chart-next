@@ -1,7 +1,8 @@
 import { useSdk } from "../useSdk";
-import { usePositionsStore } from "@/stores/positionsStore";
 import { Positions, Position } from "@quadcode-tech/client-sdk-js";
 import { useEffect, useRef, useTransition } from "react";
+import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
+import { useOpenPositionsStore } from "@/stores/positions/openPositionsStore";
 
 export const useSubscribeToPositionsUpdates = ({
   onPositionClosed,
@@ -14,12 +15,10 @@ export const useSubscribeToPositionsUpdates = ({
   const [_, startTransition] = useTransition();
 
   const { sdk } = useSdk();
-  const {
-    openPositions,
-    upsertOpenPosition,
-    removeOpenPosition,
-    addClosedPositionOnce,
-  } = usePositionsStore();
+  const { openPositions, upsertOpenPosition, removeOpenPosition } =
+    useOpenPositionsStore();
+
+  const { addClosedPositionOnce } = useClosedPositionsStore();
 
   useEffect(() => {
     // Safe guard to ensure the positions will be closed after the expiration time

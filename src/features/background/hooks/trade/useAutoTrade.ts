@@ -2,7 +2,7 @@ import { useAssetStore } from "@/stores/assetStore";
 import { useTradingStore } from "@/stores/tradingStore";
 import { useEffect } from "react";
 import { tradeEvent } from "../../events/tradeEvent";
-import { usePositionsStore } from "@/stores/positionsStore";
+import { useOpenPositionsStore } from "@/stores/positions/openPositionsStore";
 import { useTradingActions } from "@/hooks/useTradingActions";
 import { useSdk } from "@/hooks/useSdk";
 import {
@@ -25,7 +25,7 @@ export const useAutoTrade = ({
   const { sdk } = useSdk();
   const { actives } = useDigitalOptions();
   const { getAutoTrade, getSelectedBalanceId } = useTradingStore();
-  const { openPositions } = usePositionsStore();
+  const { openPositions } = useOpenPositionsStore();
   const { assets } = useAssetStore();
   const { mutateAsync: createOrder } = useTradingActions({ onSuccess });
 

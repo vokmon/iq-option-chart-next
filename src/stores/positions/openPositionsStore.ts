@@ -6,20 +6,16 @@ import { Position } from "@quadcode-tech/client-sdk-js";
 interface PositionsStore {
   // Data
   openPositions: Position[];
-  closedPositions: Position[];
 
   // Actions
   setOpenPositions: (positions: Position[]) => void;
-  setClosedPositions: (positions: Position[]) => void;
   addOpenPosition: (position: Position) => void;
-  addClosedPosition: (position: Position) => void;
   removeOpenPosition: (externalId: number) => void;
   updateOpenPosition: (externalId: number, position: Position) => void;
   upsertOpenPosition: (position: Position) => void;
-  addClosedPositionOnce: (position: Position) => boolean;
 }
 
-export const usePositionsStore = create<PositionsStore>((set) => ({
+export const useOpenPositionsStore = create<PositionsStore>((set) => ({
   // Initial state
   openPositions: [],
   closedPositions: [],
@@ -31,21 +27,9 @@ export const usePositionsStore = create<PositionsStore>((set) => ({
     });
   },
 
-  setClosedPositions: (positions: Position[]) => {
-    set({
-      closedPositions: positions,
-    });
-  },
-
   addOpenPosition: (position: Position) => {
     set((state) => ({
       openPositions: [position, ...state.openPositions],
-    }));
-  },
-
-  addClosedPosition: (position: Position) => {
-    set((state) => ({
-      closedPositions: [position, ...state.closedPositions],
     }));
   },
 
@@ -81,25 +65,5 @@ export const usePositionsStore = create<PositionsStore>((set) => ({
         return { openPositions: [position, ...state.openPositions] };
       }
     });
-  },
-
-  addClosedPositionOnce: (position: Position) => {
-    let wasAdded = false;
-    set((state) => {
-      const existingIndex = state.closedPositions.findIndex(
-        (p) => p.externalId === position.externalId
-      );
-
-      if (existingIndex === -1) {
-        wasAdded = true;
-        return { closedPositions: [position, ...state.closedPositions] };
-      } else {
-        wasAdded = false;
-        return state;
-      }
-    });
-
-    console.log("wasAdded", wasAdded);
-    return wasAdded;
   },
 }));

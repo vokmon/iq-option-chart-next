@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { usePositionsStore } from "@/stores/positionsStore";
+import { useOpenPositionsStore } from "@/stores/positions/openPositionsStore";
 
 export interface UseOrderReferenceLinesProps {
   activeId: number;
@@ -8,7 +8,7 @@ export interface UseOrderReferenceLinesProps {
 export function useOrderReferenceLines({
   activeId,
 }: UseOrderReferenceLinesProps) {
-  const { openPositions } = usePositionsStore();
+  const { openPositions } = useOpenPositionsStore();
   const openPositionsOfActiveAsset = useMemo(() => {
     return openPositions.filter((position) => {
       return (

@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
 import { useAssetSelection } from "../../hooks/chart";
 import CandleSizeSelector from "../input/CandleSizeSelector";
-import PositionTableController from "../displays/PositionTableController";
 import TodayTradeSummary from "../displays/TodayTradeSummary";
 import AssetSelectorAttentions from "@/components/cta/AssetSelectorAttentions";
 import SignalPanelController from "../displays/SignalPanelController";
 import AutoTradeSelectorController from "../input/AutoTradeSelectorController";
+import OpenPositionTableController from "../displays/OpenPositionTableController";
+import ClosedPositionTableController from "../displays/ClosedPositionTableController";
 
 export default function ChartSidebar() {
   // Use custom hooks for asset selection and candle size management
@@ -55,8 +56,9 @@ export default function ChartSidebar() {
       <Flex className="h-10">
         <AutoTradeSelectorController />
       </Flex>
-      <Flex className="flex-1 w-full relative">
-        <PositionTableController />
+      <Flex className="flex-1 flex-col w-full relative gap-1">
+        <OpenPositionTableController />
+        <ClosedPositionTableController />
       </Flex>
       <Flex className="h-15">
         <TodayTradeSummary />

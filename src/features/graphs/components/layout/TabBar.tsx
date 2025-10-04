@@ -24,7 +24,7 @@ import { useTabAssetHandlers } from "../../hooks/tab/useTabAssetHandlers";
 import { useTabScrollEffects } from "../../hooks/tab/useTabScrollEffects";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
-import { useFilteredPositions } from "../../hooks/positions/useFilteredPositions";
+import { useGetOpenPositions } from "../../hooks/positions/useFilteredPositions";
 import { useSignalStore } from "@/stores/signalStore";
 import SmallSignalIndicatorLabel from "@/components/display/signal/SmallSignalIndicatorLabel";
 import NumberOfOpenPositionCard from "@/components/display/positions/NumberOfOpenPositionCard";
@@ -80,7 +80,7 @@ export function TabBar() {
     scrollToActiveTab,
   });
 
-  const { openPositionsForSelectedBalance } = useFilteredPositions();
+  const openPositionsForSelectedBalance = useGetOpenPositions();
   const { getAutoTrade } = useTradingStore();
 
   if (assets.length === 0) {

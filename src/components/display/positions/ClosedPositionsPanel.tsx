@@ -1,37 +1,32 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Pagination, Text } from "@mantine/core";
-import ClosePositionCard from "./ClosePositionCard";
-import OpenPositionCard from "./OpenPositionCard";
+import ClosePositionCard from "./elements/ClosePositionCard";
 import { Active, Balance, Position } from "@quadcode-tech/client-sdk-js";
 import { EmptyClosedPositions } from "./EmptyClosedPositions";
 
-interface PositionsPanelProps {
-  openPositions: Position[];
+interface ClosedPositionsPanelProps {
   closedPositions: Position[];
   activeInformation?: Record<number, Active>;
   balance?: Balance;
-  onSellClick?: (position: Position) => void;
   itemsPerPage?: number;
 }
 
 const DEFAULT_ITEMS_PER_PAGE = 10;
 
-export default function PositionsPanel({
-  openPositions,
+export default function ClosedPositionsPanel({
   closedPositions,
   activeInformation,
   balance,
-  onSellClick,
   itemsPerPage = DEFAULT_ITEMS_PER_PAGE,
-}: PositionsPanelProps) {
+}: ClosedPositionsPanelProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Reset to first page when positions change
   useEffect(() => {
     setCurrentPage(1);
-  }, [openPositions, closedPositions]);
+  }, [closedPositions]);
 
   // Calculate pagination
   const totalItems = closedPositions.length;
@@ -40,21 +35,7 @@ export default function PositionsPanel({
   const endIndex = startIndex + itemsPerPage;
   const currentPositions = closedPositions.slice(startIndex, endIndex);
 
-  const closedPositionListMemo = useMemo(() => {
-    return currentPositions.map((position) => {
-      const activeInfo = activeInformation?.[position.activeId as number];
-      return (
-        <ClosePositionCard
-          key={position.externalId}
-          position={position}
-          activeInfo={activeInfo}
-          balance={balance}
-        />
-      );
-    });
-  }, [currentPositions, activeInformation, balance]);
-
-  if (closedPositions.length === 0 && openPositions.length === 0) {
+  if (closedPositions.length === 0) {
     return (
       <div className="flex flex-grow h-full">
         <EmptyClosedPositions />
@@ -70,19 +51,17 @@ export default function PositionsPanel({
     <div className="flex flex-col gap-1">
       {/* Positions List */}
       <div className="flex flex-col gap-1">
-        {openPositions.map((position) => {
+        {currentPositions.map((position) => {
           const activeInfo = activeInformation?.[position.activeId as number];
           return (
-            <OpenPositionCard
+            <ClosePositionCard
               key={position.externalId}
               position={position}
               activeInfo={activeInfo}
               balance={balance}
-              onSellClick={onSellClick}
             />
           );
         })}
-        {closedPositionListMemo}
       </div>
 
       {/* Pagination Controls */}

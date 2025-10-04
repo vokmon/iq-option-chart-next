@@ -1,4 +1,4 @@
-import { usePositionsStore } from "@/stores/positionsStore";
+import { useOpenPositionsStore } from "@/stores/positions/openPositionsStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTransition } from "react";
 import { useSdk } from "../useSdk";
@@ -8,7 +8,7 @@ const QUERY_KEY_OPEN_POSITIONS = ["openPositions"];
 
 export function useGetOpenPositions() {
   const { sdk } = useSdk();
-  const { setOpenPositions } = usePositionsStore();
+  const { setOpenPositions } = useOpenPositionsStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
