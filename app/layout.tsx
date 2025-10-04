@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { QueryProvider } from "../lib/query-provider";
+import { QueryProvider } from "@/lib/query-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { ThemeProvider } from "../provider/ThemeProvider";
-import { ThemeCSSInjector } from "../components/theme/ThemeCSSInjector";
+import { ThemeProvider } from "@/provider/ThemeProvider";
+import { ThemeCSSInjector } from "@/components/theme/ThemeCSSInjector";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

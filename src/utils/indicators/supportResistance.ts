@@ -1,7 +1,6 @@
 import type {
   SupportResistanceData,
   SupportResistanceConfig,
-  CandlestickData,
 } from "@/types/indicators/supportResistance";
 import { Candle } from "@quadcode-tech/client-sdk-js";
 

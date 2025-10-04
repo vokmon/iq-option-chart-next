@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
 import { OAuthMethod } from "@quadcode-tech/client-sdk-js";
@@ -24,7 +23,6 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_IQ_OPTION_CLIENT_ID;
 export default function LoginIqOptionOAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const t = useTranslations();
   const theme = useMantineTheme();
 
