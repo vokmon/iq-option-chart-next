@@ -51,7 +51,10 @@ export const useAutoTrade = ({
       }
 
       const openPosition = openPositions.find(
-        (position) => position.activeId === activeId && position
+        (position) =>
+          position.activeId === activeId &&
+          position &&
+          position.direction?.toLowerCase() === signal.toLowerCase()
       );
       if (openPosition) {
         console.log("Open position found", activeId);
