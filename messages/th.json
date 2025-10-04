@@ -1,5 +1,4 @@
 {
-  "IQ Option Chart": "กราฟเทรด IQ Option",
   "Advanced trading charts with technical indicators": "กราฟเทรดขั้นสูงพร้อมตัวชี้วัดทางเทคนิค",
   "Home": "หน้าแรก",
   "Charts": "กราฟ",
@@ -139,5 +138,11 @@
   "No Signal": "ไม่มีสัญญาณ",
   "Select Account": "เลือกบัญชี",
   "Auto Trade": "เทรดอัตโนมัติ",
-  "Auto trading is enabled": "เทรดอัตโนมัติเปิดใช้งาน"
+  "Auto trading is enabled": "เทรดอัตโนมัติเปิดใช้งาน",
+  "This prompt will close in {countdown} seconds": "ข้อความนี้จะปิดใน {countdown} วินาที",
+  "Install {appName}": "ติดตั้ง {appName}",
+  "Add this app to your home screen for a better experience": "เพิ่มแอปนี้ลงในหน้าจอหลัก",
+  "Install": "ติดตั้ง",
+  "Open in Safari": "เปิดใน Safari",
+  "Dismiss": "ปิด"
 }

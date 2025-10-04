@@ -7,6 +7,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import { ThemeCSSInjector } from "@/components/theme/ThemeCSSInjector";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { pwaMetadata } from "@/config/pwa";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,10 +20,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "IQ Option Chart",
-  description: "IQ Option Chart",
-};
+export const metadata: Metadata = pwaMetadata;
 
 export default async function RootLayout({
   children,
@@ -40,6 +39,7 @@ export default async function RootLayout({
             <ThemeProvider>
               <ThemeCSSInjector />
               <NuqsAdapter>{children}</NuqsAdapter>
+              <InstallPrompt />
             </ThemeProvider>
           </QueryProvider>
         </NextIntlClientProvider>

@@ -1,0 +1,14 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple circular background -->
+  <circle cx="16" cy="16" r="15" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  
+  <!-- Simple up/down arrows for binary options -->
+  <!-- Up arrow (green) -->
+  <path d="M12 10 L16 6 L20 10 L18 10 L18 18 L14 18 L14 10 Z" fill="#00ff88"/>
+  
+  <!-- Down arrow (red) -->
+  <path d="M12 22 L16 26 L20 22 L18 22 L18 14 L14 14 L14 22 Z" fill="#ff4444"/>
+  
+  <!-- Simple chart line -->
+  <path d="M8 20 Q12 16 16 18 T24 16" stroke="#ffffff" stroke-width="1" fill="none" stroke-linecap="round"/>
+</svg>

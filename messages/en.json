@@ -1,5 +1,4 @@
 {
-  "IQ Option Chart": "IQ Option Chart",
   "Advanced trading charts with technical indicators": "Advanced trading charts with technical indicators",
   "Home": "Home",
   "Charts": "Charts",
@@ -139,5 +138,11 @@
   "No Signal": "No Signal",
   "Select Account": "Select Account",
   "Auto Trade": "Auto Trade",
-  "Auto trading is enabled": "Auto trading is enabled"
+  "Auto trading is enabled": "Auto trading is enabled",
+  "This prompt will close in {countdown} seconds": "This prompt will close in {countdown} seconds",
+  "Install {appName}": "Install {appName}",
+  "Add this app to your home screen for a better experience": "Add this app to your home screen for a better experience",
+  "Install": "Install",
+  "Open in Safari": "Open in Safari",
+  "Dismiss": "Dismiss"
 }

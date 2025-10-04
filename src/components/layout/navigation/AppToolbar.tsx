@@ -9,6 +9,7 @@ import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
 import { ThemeSwitcher } from "@/components/display/theme/ThemeSwitcher";
 import { useTranslations } from "next-intl";
 import TimePanel from "@/components/display/time/TimePanel";
+import { APP_METADATA } from "@/constants/app";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -40,7 +41,7 @@ export default function AppToolbar() {
             letterSpacing: "0.5px",
           }}
         >
-          {t("IQ Option Chart")}
+          {APP_METADATA.name}
         </Text>
       </Group>
 
