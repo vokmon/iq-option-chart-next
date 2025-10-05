@@ -3,12 +3,13 @@ import { useSdk } from "../useSdk";
 import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Position } from "@quadcode-tech/client-sdk-js";
+import { checkSameDay } from "@/utils/dateTime";
 
 const REFRESH_INTERVAL_CLOSE_POSITIONS = 1000 * 60 * 5; // 5 minutes
 const QUERY_KEY_CLOSED_POSITIONS = ["closedPositions"];
 let isFetching = false;
 
-export function useGetClosedPositions() {
+export function useGetClosedPositions(date: Date) {
   const { sdk } = useSdk();
   const { setClosedPositions } = useClosedPositionsStore();
 
@@ -20,7 +21,6 @@ export function useGetClosedPositions() {
     queryFn: async () => {
       try {
         const positions = await sdk.positions();
-        const now = sdk.currentTime();
 
         const allClosedPositionsHistory = await positions.getPositionsHistory();
 
@@ -30,6 +30,8 @@ export function useGetClosedPositions() {
         }
 
         const allClosedPositions: { [key: number]: Position } = {};
+        let isFound = false;
+
         while (true) {
           const positions = allClosedPositionsHistory.getPositions();
           if (positions.length === 0) {
@@ -45,13 +47,12 @@ export function useGetClosedPositions() {
           positions.forEach((position) => {
             if (position.closeTime) {
               const closeDate = new Date(position.closeTime);
-              const currentDate = now;
-              const isSameDay =
-                closeDate.getFullYear() === currentDate.getFullYear() &&
-                closeDate.getMonth() === currentDate.getMonth() &&
-                closeDate.getDate() === currentDate.getDate();
+              const currentDate = date;
+              const isSameDay = checkSameDay(closeDate, currentDate);
 
               if (isSameDay) {
+                isFound = true;
+                foundDifferentDay = false;
                 // allClosedPositions.push(position);
                 allClosedPositions[position.externalId!] = position;
               } else {
@@ -60,7 +61,7 @@ export function useGetClosedPositions() {
             }
           });
 
-          if (foundDifferentDay) {
+          if (foundDifferentDay && isFound) {
             break;
           }
           if (allClosedPositionsHistory.hasPrevPage()) {

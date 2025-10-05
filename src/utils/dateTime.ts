@@ -9,7 +9,7 @@
  */
 export function formatDateTime(date: Date | string | number): string {
   const dateObj = new Date(date);
-  return dateObj.toLocaleString(undefined, {
+  return dateObj.toLocaleString("en-UK", {
     year: "numeric",
     month: "numeric",
     day: "numeric",
@@ -90,4 +90,12 @@ export function formatRelativeTime(date: Date | string | number): string {
 
   const diffInYears = Math.floor(diffInDays / 365);
   return `${diffInYears} year${diffInYears === 1 ? "" : "s"} ago`;
+}
+
+export function checkSameDay(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
 }
