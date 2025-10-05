@@ -148,6 +148,11 @@
   "Quick Links": "Quick Links",
   "All rights reserved": "All rights reserved",
   "Welcome": "Welcome",
+  "Menu": "Menu",
+  "Trade Room": "Trade Room",
+  "User Info": "User Info",
+  "Trade Settings": "Trade Settings",
+  "Trade Reports": "Trade Reports",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",
@@ -303,6 +308,5 @@
     "contactEmail": "Email: support@yourapp.com",
     "contactResponse": "Response time: Within 24-48 hours",
     "footerText": "By using this service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
-  },
-  "Menu": "Menu"
+  }
 }

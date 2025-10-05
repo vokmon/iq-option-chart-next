@@ -82,7 +82,9 @@ export const PositionClosedNotification = ({
           <Text size="lg" fw={600} c={resultColor}>
             {isWin ? "+" : isLoss ? "" : ""}
             {formatAmount(
-              isWin ? position.closeProfit ?? 0 : pnl,
+              isWin
+                ? position.closeProfit ?? pnl + (position.invest || 0)
+                : pnl,
               balance?.currency
             )}
           </Text>

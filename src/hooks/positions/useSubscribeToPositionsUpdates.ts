@@ -35,7 +35,7 @@ export const useSubscribeToPositionsUpdates = ({
             });
           },
           position.expirationTime
-            ? position.expirationTime?.getTime() - Date.now() + 500
+            ? position.expirationTime?.getTime() - Date.now() + 2000
             : 60
         );
         positionsTimeoutRef.current[position.externalId!] = timeoutId;

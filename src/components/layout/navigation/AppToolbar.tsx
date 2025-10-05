@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 import TimePanel from "@/components/display/time/TimePanel";
 import { APP_METADATA } from "@/constants/app";
 import AppDrawer from "@/components/menu/AppDrawer";
+import Link from "next/link";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -71,12 +72,14 @@ export default function AppToolbar() {
             <Menu.Label>{t("Account")}</Menu.Label>
 
             {/* User Info Display */}
-            <Menu.Item className="pointer-events-none">
-              <UserInfoDisplay
-                firstName={firstName}
-                lastName={lastName}
-                userId={userId}
-              />
+            <Menu.Item>
+              <Link href="/trade/user-info">
+                <UserInfoDisplay
+                  firstName={firstName}
+                  lastName={lastName}
+                  userId={userId}
+                />
+              </Link>
             </Menu.Item>
 
             <Menu.Divider />
