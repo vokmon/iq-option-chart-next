@@ -2,12 +2,10 @@ import { useTransition } from "react";
 import { useSdk } from "../useSdk";
 import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Position } from "@quadcode-tech/client-sdk-js";
-import { checkSameDay } from "@/utils/dateTime";
+import { getClosedPositionsForSelectedBalance } from "@/utils/closePositionsUtils";
 
 const REFRESH_INTERVAL_CLOSE_POSITIONS = 1000 * 60 * 5; // 5 minutes
 const QUERY_KEY_CLOSED_POSITIONS = ["closedPositions"];
-let isFetching = false;
 
 export function useGetClosedPositions() {
   const { sdk } = useSdk();
@@ -21,54 +19,10 @@ export function useGetClosedPositions() {
     queryFn: async () => {
       try {
         const now = sdk.currentTime();
-        const positions = await sdk.positions();
-
-        const allClosedPositionsHistory = await positions.getPositionsHistory();
-
-        if (!isFetching) {
-          await allClosedPositionsHistory.fetchPrevPage();
-          isFetching = true;
-        }
-
-        const allClosedPositions: { [key: number]: Position } = {};
-
-        while (true) {
-          const positions = allClosedPositionsHistory.getPositions();
-          if (positions.length === 0) {
-            if (allClosedPositionsHistory.hasPrevPage()) {
-              await allClosedPositionsHistory.fetchPrevPage();
-              continue;
-            }
-            break;
-          }
-
-          let foundDifferentDay = false;
-
-          positions.forEach((position) => {
-            if (position.closeTime) {
-              const closeDate = new Date(position.closeTime);
-              const currentDate = now;
-              const isSameDay = checkSameDay(closeDate, currentDate);
-
-              if (isSameDay) {
-                foundDifferentDay = false;
-                // allClosedPositions.push(position);
-                allClosedPositions[position.externalId!] = position;
-              } else {
-                foundDifferentDay = true;
-              }
-            }
-          });
-
-          if (foundDifferentDay) {
-            break;
-          }
-          if (allClosedPositionsHistory.hasPrevPage()) {
-            await allClosedPositionsHistory.fetchPrevPage();
-          } else {
-            break;
-          }
-        }
+        const allClosedPositions = await getClosedPositionsForSelectedBalance({
+          sdk,
+          dates: [now],
+        });
 
         // Update the store with the fetched closed positions
         startTransition(() => {
@@ -79,7 +33,6 @@ export function useGetClosedPositions() {
       } catch (error) {
         console.error("Error fetching closed positions:", error);
         throw error;
-      } finally {
       }
     },
     enabled: !!sdk,

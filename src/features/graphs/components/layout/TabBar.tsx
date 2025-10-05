@@ -14,7 +14,7 @@ import {
   IconX,
   IconChevronLeft,
   IconChevronRight,
-  IconGripVertical,
+  // IconGripVertical,
 } from "@tabler/icons-react";
 import { useAssetStore, MAX_ASSETS } from "@/stores/assetStore";
 import { getCandleSizeLabel, getCandleColor } from "@/utils/candleColors";
@@ -200,10 +200,11 @@ export function TabBar() {
                     onDragOver={(e) => handleDragOver(e, index)}
                     onDragLeave={handleDragLeave}
                     onDrop={(e) => handleDrop(e, index)}
+                    px={12}
                     rightSection={
                       <Group gap={4}>
                         {/* Drag handle */}
-                        <div
+                        {/* <div
                           className="group"
                           style={{
                             padding: 2,
@@ -222,7 +223,7 @@ export function TabBar() {
                             size={12}
                             className="group-hover:text-gray-700 group-hover:scale-110 transition-all duration-200 ease-in-out"
                           />
-                        </div>
+                        </div> */}
                         {/* Remove button */}
                         {canRemoveAsset(asset.id) && (
                           <div
@@ -318,12 +319,12 @@ export function TabBar() {
                         )}
                       </div>
                       {activeData?.imageUrl && (
-                        <div className="w-6 h-6">
+                        <div className="w-5 h-5">
                           <Image
                             src={activeData.imageUrl}
                             alt={activeData.name}
-                            width={20}
-                            height={20}
+                            width={25}
+                            height={25}
                           />
                         </div>
                       )}
