@@ -9,7 +9,7 @@ const REFRESH_INTERVAL_CLOSE_POSITIONS = 1000 * 60 * 5; // 5 minutes
 const QUERY_KEY_CLOSED_POSITIONS = ["closedPositions"];
 let isFetching = false;
 
-export function useGetClosedPositions(date: Date) {
+export function useGetClosedPositions() {
   const { sdk } = useSdk();
   const { setClosedPositions } = useClosedPositionsStore();
 
@@ -20,6 +20,7 @@ export function useGetClosedPositions(date: Date) {
     queryKey: QUERY_KEY_CLOSED_POSITIONS,
     queryFn: async () => {
       try {
+        const now = sdk.currentTime();
         const positions = await sdk.positions();
 
         const allClosedPositionsHistory = await positions.getPositionsHistory();
@@ -30,7 +31,6 @@ export function useGetClosedPositions(date: Date) {
         }
 
         const allClosedPositions: { [key: number]: Position } = {};
-        let isFound = false;
 
         while (true) {
           const positions = allClosedPositionsHistory.getPositions();
@@ -47,11 +47,10 @@ export function useGetClosedPositions(date: Date) {
           positions.forEach((position) => {
             if (position.closeTime) {
               const closeDate = new Date(position.closeTime);
-              const currentDate = date;
+              const currentDate = now;
               const isSameDay = checkSameDay(closeDate, currentDate);
 
               if (isSameDay) {
-                isFound = true;
                 foundDifferentDay = false;
                 // allClosedPositions.push(position);
                 allClosedPositions[position.externalId!] = position;
@@ -61,7 +60,7 @@ export function useGetClosedPositions(date: Date) {
             }
           });
 
-          if (foundDifferentDay && isFound) {
+          if (foundDifferentDay) {
             break;
           }
           if (allClosedPositionsHistory.hasPrevPage()) {

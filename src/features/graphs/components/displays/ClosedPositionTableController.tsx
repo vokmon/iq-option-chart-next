@@ -16,10 +16,6 @@ export default function ClosedPositionTableController() {
     return <PositionsPanelLoader />;
   }
 
-  if (closedPositionsForSelectedBalance.length === 0) {
-    return null;
-  }
-
   return (
     <div className="h-full w-full relative overflow-y-auto ">
       <div className="h-full w-full absolute">

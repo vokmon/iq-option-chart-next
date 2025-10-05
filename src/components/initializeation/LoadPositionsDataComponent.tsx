@@ -6,31 +6,10 @@ import { useSubscribeToPositionsUpdates } from "@/hooks/positions/useSubscribeTo
 import { notifications } from "@mantine/notifications";
 import { Position } from "@quadcode-tech/client-sdk-js";
 import { PositionClosedNotification } from "@/components/notifications/PositionClosedNotification";
-import { useEffect, useState } from "react";
-import { useSdk } from "@/hooks/useSdk";
-import { checkSameDay } from "@/utils/dateTime";
 
 export default function LoadPositionsDataComponent() {
-  const { sdk } = useSdk();
-  const [date, setDate] = useState(new Date());
-  useEffect(() => {
-    sdk.subscribeOnWsCurrentTime((currentTime) => {
-      setDate((previousDate) => {
-        const isSameDay = checkSameDay(previousDate, currentTime);
-        if (isSameDay) {
-          return previousDate;
-        }
-        return currentTime;
-      });
-    });
-
-    return () => {
-      sdk.unsubscribeOnWsCurrentTime(() => {});
-    };
-  }, [sdk]);
-
   useGetOpenPositions();
-  useGetClosedPositions(date);
+  useGetClosedPositions();
   useSubscribeToPositionsUpdates({ onPositionClosed: handlePositionClosed });
   return null;
 }
