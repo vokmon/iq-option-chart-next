@@ -14,9 +14,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AppToolbar />
         <Flex w="100%" h="100%" flex={1}>
           {children}
+          <InstallPrompt />
         </Flex>
       </Flex>
-      <InstallPrompt />
     </SdkProvider>
   );
 }

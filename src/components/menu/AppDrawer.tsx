@@ -131,10 +131,10 @@ export default function AppDrawer() {
                     padding="md"
                     radius="lg"
                     withBorder
-                    className={`relative backdrop-blur-lg cursor-pointer group ${
+                    className={`relative backdrop-blur-lg cursor-pointer !transition-all !duration-100 !ease-in-out group ${
                       isActive
-                        ? "!bg-gradient-to-r from-blue-600/90 to-blue-500/90 !border-blue-400/60 shadow-lg shadow-blue-500/20 transition-all duration-700 ease-in-out"
-                        : "!bg-gradient-to-r from-gray-800/90 to-gray-700/90 !border-gray-600/50 hover:from-gray-700/95 hover:to-gray-600/95 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-400/30 hover:scale-[1.02] transition-all duration-300 ease-out"
+                        ? "!bg-gradient-to-r from-blue-600/90 to-blue-500/90 !border-blue-400/60 shadow-lg shadow-blue-500/20 "
+                        : "!bg-gradient-to-r from-gray-800/90 to-gray-700/90 !border-gray-600/50 hover:-translate-y-1"
                     }`}
                     style={{
                       transitionProperty:
