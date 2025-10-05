@@ -53,10 +53,16 @@ export default function Footer() {
 
             {/* Legal Links */}
             <Stack gap="sm" align="flex-end" style={{ minWidth: "150px" }}>
-              <Text size="sm" fw={600} c="white">
-                {t("Legal")}
-              </Text>
               <Stack gap="xs" align="flex-end">
+                <Anchor
+                  component={Link}
+                  href="/term-of-service"
+                  size="sm"
+                  c="dimmed"
+                  style={{ textDecoration: "none" }}
+                >
+                  {t("terms.title")}
+                </Anchor>
                 <Anchor
                   component={Link}
                   href="/disclaimer"
