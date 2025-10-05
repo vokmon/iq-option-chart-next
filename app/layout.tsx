@@ -7,7 +7,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import { ThemeCSSInjector } from "@/components/theme/ThemeCSSInjector";
-import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { pwaMetadata, pwaViewport } from "@/config/pwa";
 
 const geistSans = Geist({
@@ -41,7 +40,6 @@ export default async function RootLayout({
             <ThemeProvider>
               <ThemeCSSInjector />
               <NuqsAdapter>{children}</NuqsAdapter>
-              <InstallPrompt />
             </ThemeProvider>
           </QueryProvider>
         </NextIntlClientProvider>

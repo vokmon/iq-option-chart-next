@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import LanguageSwitcher from "@/components/display/language/LanguageSwitcher";
 import { OAuthMethod } from "@quadcode-tech/client-sdk-js";
 import {
   Container,
@@ -16,15 +15,15 @@ import {
   Center,
   Loader,
 } from "@mantine/core";
-import { useMantineTheme } from "@mantine/core";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_IQ_OPTION_CLIENT_ID;
+const IQ_OPTION_API_URL = process.env.NEXT_PUBLIC_IQ_OPTION_API_URL;
+const IQ_OPTION_ALLOW_SCOPE = process.env.NEXT_PUBLIC_IQ_OPTION_ALLOW_SCOPE;
 
 export default function LoginIqOptionOAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations();
-  const theme = useMantineTheme();
 
   const handleIQOptionLogin = async () => {
     setIsLoading(true);
@@ -32,10 +31,10 @@ export default function LoginIqOptionOAuth() {
 
     try {
       const oauth = new OAuthMethod(
-        "https://api.iqoption.com",
+        IQ_OPTION_API_URL!,
         Number(CLIENT_ID!),
         `${window.location.origin}/auth/iqoption/callback`,
-        "full"
+        IQ_OPTION_ALLOW_SCOPE!
       );
 
       const { url, codeVerifier } = await oauth.createAuthorizationUrl();
@@ -49,28 +48,9 @@ export default function LoginIqOptionOAuth() {
   };
 
   return (
-    <Box
-      style={{
-        minHeight: "100vh",
-        background: "var(--gradient-primary)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: theme.spacing.md,
-      }}
-    >
+    <Box className="animate-fade-in flex flex-col items-center justify-center">
       <Container size="xs" w="100%">
         <Stack gap="xl" align="center">
-          {/* Header */}
-          <Stack gap="md" align="center">
-            <Title order={1} size="3rem" fw={700} c="white" ta="center">
-              IQ Option
-            </Title>
-            <Text size="lg" c="dimmed" ta="center">
-              {t("Advanced trading charts with technical indicators")}
-            </Text>
-          </Stack>
-
           {/* Login Card */}
           <Paper
             radius="xl"
@@ -136,7 +116,7 @@ export default function LoginIqOptionOAuth() {
                     {t("Signing in")}
                   </Center>
                 ) : (
-                  "Sign in"
+                  t("Sign in")
                 )}
               </Button>
 
@@ -145,7 +125,7 @@ export default function LoginIqOptionOAuth() {
                 By continuing, you agree to our{" "}
                 <Text
                   component="a"
-                  href="#"
+                  href="/disclaimer"
                   c="primary.5"
                   td="underline"
                   style={{ cursor: "pointer" }}
@@ -155,7 +135,7 @@ export default function LoginIqOptionOAuth() {
                 and{" "}
                 <Text
                   component="a"
-                  href="#"
+                  href="/privacy-policy"
                   c="primary.5"
                   td="underline"
                   style={{ cursor: "pointer" }}
@@ -165,11 +145,6 @@ export default function LoginIqOptionOAuth() {
               </Text>
             </Stack>
           </Paper>
-
-          {/* Language Switcher */}
-          <Center>
-            <LanguageSwitcher />
-          </Center>
         </Stack>
       </Container>
     </Box>

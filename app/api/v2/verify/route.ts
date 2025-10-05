@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const IQ_OPTION_API_URL = process.env.NEXT_PUBLIC_IQ_OPTION_API_URL;
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  const response = await fetch("https://api.iqoption.com/v2/2fa/verify", {
+  const response = await fetch(`${IQ_OPTION_API_URL}/v2/2fa/verify`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSdk } from "@/hooks/useSdk";
-import { Group, Text, Menu, Box } from "@mantine/core";
+import { Group, Text, Menu, Box, Image } from "@mantine/core";
 import LogoutButton from "@/components/buttons/LogoutButton";
 import UserMenuButton from "@/components/display/user-info/UserMenuButton";
 import UserInfoDisplay from "@/components/display/user-info/UserInfoDisplay";
@@ -32,6 +32,14 @@ export default function AppToolbar() {
     >
       {/* Left side - App title or logo */}
       <Group>
+        <div className="w-10 h-10">
+          <Image
+            src="/icons/icon.svg"
+            alt={APP_METADATA.name}
+            width={32}
+            height={32}
+          />
+        </div>
         <Text
           size="xl"
           fw={700}
