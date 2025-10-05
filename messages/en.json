@@ -303,5 +303,6 @@
     "contactEmail": "Email: support@yourapp.com",
     "contactResponse": "Response time: Within 24-48 hours",
     "footerText": "By using this service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
-  }
+  },
+  "Menu": "Menu"
 }

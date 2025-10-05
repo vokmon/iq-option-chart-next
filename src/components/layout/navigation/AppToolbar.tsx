@@ -10,6 +10,7 @@ import { ThemeSwitcher } from "@/components/display/theme/ThemeSwitcher";
 import { useTranslations } from "next-intl";
 import TimePanel from "@/components/display/time/TimePanel";
 import { APP_METADATA } from "@/constants/app";
+import AppDrawer from "@/components/menu/AppDrawer";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -32,6 +33,7 @@ export default function AppToolbar() {
     >
       {/* Left side - App title or logo */}
       <Group>
+        <AppDrawer />
         <div className="w-10 h-10">
           <Image
             src="/icons/icon.svg"
