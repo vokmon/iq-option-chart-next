@@ -8,12 +8,17 @@ import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore
 
 export function useGetActiveInformation() {
   const { sdk } = useSdk();
-  const { actives, setActiveInformation } = useDigitalOptionsStore();
+  const { actives, activeInformation, setActiveInformation } =
+    useDigitalOptionsStore();
   const { assets } = useAssetStore();
   const { closedPositions } = useClosedPositionsStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
+
+  const activeInformationIds = Object.keys(activeInformation).map((id) =>
+    parseInt(id)
+  );
 
   const closedPositionsIds = closedPositions.map((p) => p.activeId);
   const assetsIds = assets.map((a) => a.asset?.activeId);
@@ -25,8 +30,12 @@ export function useGetActiveInformation() {
   ];
   const uniqueActiveIds = [...new Set(allActiveIds)];
 
+  const activeIdsToFetch = uniqueActiveIds.filter(
+    (id) => !activeInformationIds.includes(id)
+  );
+
   const query = useQuery({
-    queryKey: ["activeInformation", uniqueActiveIds],
+    queryKey: ["activeInformation", activeIdsToFetch],
     queryFn: async (): Promise<Record<number, Active>> => {
       if (!sdk || !actives.length) {
         throw new Error("SDK or actives not available");
@@ -39,8 +48,8 @@ export function useGetActiveInformation() {
       const BATCH_SIZE = 10; // Process 5 actives at a time
       const batches = [];
 
-      for (let i = 0; i < uniqueActiveIds.length; i += BATCH_SIZE) {
-        batches.push(uniqueActiveIds.slice(i, i + BATCH_SIZE));
+      for (let i = 0; i < activeIdsToFetch.length; i += BATCH_SIZE) {
+        batches.push(activeIdsToFetch.slice(i, i + BATCH_SIZE));
       }
 
       for (const batch of batches) {
