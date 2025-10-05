@@ -3,7 +3,7 @@ import React from "react";
 
 export default function AssetSelectorAttentions() {
   return (
-    <div className="absolute top-3 -left-15">
+    <div className="absolute top-3 -left-15 z-10">
       <IconArrowRight
         size={56}
         className="text-orange-500 drop-shadow-lg animate-pulse hover:animate-bounce transition-all duration-300 hover:scale-110"

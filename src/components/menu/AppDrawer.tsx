@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { APP_METADATA } from "@/constants/app";
+import packageJson from "../../../package.json";
 import {
   IconMenu2,
   IconHome,
@@ -76,7 +77,6 @@ export default function AppDrawer() {
       <Button
         variant="subtle"
         color="white"
-        leftSection={<IconMenu2 size={20} />}
         onClick={() => setOpened(true)}
         style={{
           background: "rgba(255, 255, 255, 0.1)",
@@ -84,7 +84,7 @@ export default function AppDrawer() {
           border: "1px solid rgba(255, 255, 255, 0.2)",
         }}
       >
-        {t("Menu")}
+        <IconMenu2 size={20} />
       </Button>
 
       <Drawer
@@ -220,9 +220,14 @@ export default function AppDrawer() {
                   height={24}
                 />
               </div>
-              <Text size="sm" fw={600} c="gray" className="drop-shadow-sm">
-                {APP_METADATA.name}
-              </Text>
+              <div className="flex flex-col">
+                <Text size="sm" fw={600} c="gray" className="drop-shadow-sm">
+                  {APP_METADATA.name}
+                </Text>
+                <Text size="xs" c="dimmed" className="drop-shadow-sm">
+                  v {packageJson.version}
+                </Text>
+              </div>
             </Group>
           </Box>
         </div>

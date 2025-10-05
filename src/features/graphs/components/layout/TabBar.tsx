@@ -204,6 +204,7 @@ export function TabBar() {
                       <Group gap={4}>
                         {/* Drag handle */}
                         <div
+                          className="group"
                           style={{
                             padding: 2,
                             borderRadius: 4,
@@ -212,25 +213,21 @@ export function TabBar() {
                             justifyContent: "center",
                             color: "var(--mantine-color-gray-5)",
                             cursor: "grab",
-                            transition: "all 0.1s ease",
+                            transition: "all 0.2s ease",
                             minWidth: 16,
                             minHeight: 16,
                           }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color =
-                              "var(--mantine-color-gray-7)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color =
-                              "var(--mantine-color-gray-5)";
-                          }}
                         >
-                          <IconGripVertical size={12} />
+                          <IconGripVertical
+                            size={12}
+                            className="group-hover:text-gray-700 group-hover:scale-110 transition-all duration-200 ease-in-out"
+                          />
                         </div>
                         {/* Remove button */}
                         {canRemoveAsset(asset.id) && (
                           <div
                             onClick={(e) => handleRemoveAsset(asset.id, e)}
+                            className="group"
                             style={{
                               padding: 2,
                               borderRadius: 4,
@@ -238,25 +235,16 @@ export function TabBar() {
                               alignItems: "center",
                               justifyContent: "center",
                               color: "var(--mantine-color-gray-6)",
-                              transition: "all 0.1s ease",
+                              transition: "all 0.2s ease",
                               minWidth: 16,
                               minHeight: 16,
                               cursor: "pointer",
                             }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                "var(--mantine-color-gray-1)";
-                              e.currentTarget.style.color =
-                                "var(--mantine-color-gray-8)";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                "transparent";
-                              e.currentTarget.style.color =
-                                "var(--mantine-color-gray-6)";
-                            }}
                           >
-                            <IconX size={12} />
+                            <IconX
+                              size={12}
+                              className="group-hover:text-gray-800 group-hover:scale-110 transition-all duration-200 ease-in-out"
+                            />
                           </div>
                         )}
                       </Group>
@@ -290,6 +278,31 @@ export function TabBar() {
                       boxShadow: isDragOver
                         ? "0 0 0 2px var(--mantine-color-blue-3)"
                         : "none",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (
+                        activeAssetId !== asset.id &&
+                        !isDragOver &&
+                        !isDragging
+                      ) {
+                        e.currentTarget.style.backgroundColor =
+                          colorScheme === "dark"
+                            ? "var(--mantine-color-blue-8)"
+                            : "var(--mantine-color-blue-0)";
+                        e.currentTarget.style.borderColor =
+                          "var(--mantine-color-blue-3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (
+                        activeAssetId !== asset.id &&
+                        !isDragOver &&
+                        !isDragging
+                      ) {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.borderColor =
+                          "var(--mantine-color-gray-3)";
+                      }
                     }}
                   >
                     <Group gap="xs" style={{ width: "100%" }}>
@@ -346,6 +359,7 @@ export function TabBar() {
                               fontWeight:
                                 activeAssetId === asset.id ? 600 : 500,
                             }}
+                            className="!cursor-pointer"
                           >
                             {getCandleSizeLabel(asset.candleSize)}
                           </Badge>

@@ -25,6 +25,8 @@ import {
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useMantineTheme } from "@mantine/core";
+import { APP_METADATA } from "../../../src/constants/app";
+import IqOptionLink from "@/components/display/links/IqOptionLink";
 
 export default function PrivacyPolicyPage() {
   const t = useTranslations();
@@ -85,7 +87,8 @@ export default function PrivacyPolicyPage() {
                 </Title>
               </Group>
               <Text size="md" c="dimmed">
-                {t("privacy.introductionText")}
+                {t("privacy.introductionText")} <IqOptionLink path="/profile" />
+                .
               </Text>
             </Stack>
           </Paper>
@@ -126,7 +129,8 @@ export default function PrivacyPolicyPage() {
                       {t("privacy.personalInformation")}
                     </Text>
                     <Text size="sm" c="dimmed">
-                      {t("privacy.personalInformationText")}
+                      {t("privacy.personalInformationText")}{" "}
+                      <IqOptionLink path="/profile" />.
                     </Text>
                   </Stack>
                 </Card>
@@ -164,7 +168,8 @@ export default function PrivacyPolicyPage() {
                       {t("privacy.tradingData")}
                     </Text>
                     <Text size="sm" c="dimmed">
-                      {t("privacy.tradingDataText")}
+                      {t("privacy.tradingDataText")}{" "}
+                      <IqOptionLink path="/profile" />.
                     </Text>
                   </Stack>
                 </Card>
@@ -388,7 +393,9 @@ export default function PrivacyPolicyPage() {
                 </Title>
               </Group>
               <Text size="md" c="dimmed">
-                {t("privacy.contactText")}
+                {t("privacy.contactText", {
+                  supportEmail: APP_METADATA.supportEmail,
+                })}
               </Text>
             </Stack>
           </Paper>

@@ -30,6 +30,8 @@ import {
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useMantineTheme } from "@mantine/core";
+import { APP_METADATA } from "../../../src/constants/app";
+import IqOptionLink from "@/components/display/links/IqOptionLink";
 
 export default function TermsOfServicePage() {
   const t = useTranslations("terms");
@@ -166,7 +168,12 @@ export default function TermsOfServicePage() {
               <List.Item>{t("accounts2")}</List.Item>
               <List.Item>{t("accounts3")}</List.Item>
               <List.Item>{t("accounts4")}</List.Item>
-              <List.Item>{t("accounts5")}</List.Item>
+              <List.Item>
+                {t("accounts5")} <IqOptionLink path="/profile" />.
+              </List.Item>
+              <List.Item>
+                {t("accounts6")} <IqOptionLink path="/profile" />.
+              </List.Item>
             </List>
           </Paper>
 
@@ -392,7 +399,9 @@ export default function TermsOfServicePage() {
                 <Group gap="sm">
                   <IconMail size={16} />
                   <Text c="dimmed" size="sm">
-                    {t("contactEmail")}
+                    {t("contactEmail", {
+                      supportEmail: APP_METADATA.supportEmail,
+                    })}
                   </Text>
                 </Group>
                 <Group gap="sm">

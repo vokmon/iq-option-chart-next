@@ -100,7 +100,9 @@ export function useCalculateSignal() {
 
     const calculateSignals = async () => {
       // Run all calculateSignal calls in parallel
-      const promises = assets.map((asset) => runCalculateSignal(asset));
+      const promises = assets
+        .filter((asset) => asset.asset)
+        .map((asset) => runCalculateSignal(asset));
 
       // Wait for all to complete
       try {

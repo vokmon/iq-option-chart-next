@@ -31,21 +31,24 @@ export default function Footer() {
           {/* Main Footer Content */}
           <Group justify="space-between" align="flex-start" wrap="wrap">
             {/* App Info */}
+
             <Stack gap="sm" style={{ flex: 1, minWidth: "250px" }}>
-              <Group gap="sm" align="center">
-                <div className="w-10 h-10">
-                  <Image
-                    src="/icons/icon.svg"
-                    alt={APP_METADATA.name}
-                    width={32}
-                    height={32}
-                    style={{ flexShrink: 0 }}
-                  />
-                </div>
-                <Text size="lg" fw={600} c="white">
-                  {APP_METADATA.name}
-                </Text>
-              </Group>
+              <Link href="/">
+                <Group gap="sm" align="center">
+                  <div className="w-10 h-10">
+                    <Image
+                      src="/icons/icon.svg"
+                      alt={APP_METADATA.name}
+                      width={32}
+                      height={32}
+                      style={{ flexShrink: 0 }}
+                    />
+                  </div>
+                  <Text size="lg" fw={600} c="white">
+                    {APP_METADATA.name}
+                  </Text>
+                </Group>
+              </Link>
               <Text size="sm" c="dimmed">
                 {APP_METADATA.description}
               </Text>
