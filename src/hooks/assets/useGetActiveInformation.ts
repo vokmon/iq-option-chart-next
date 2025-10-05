@@ -4,29 +4,33 @@ import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import { Active } from "@quadcode-tech/client-sdk-js";
 import { useTransition } from "react";
 import { useAssetStore } from "@/stores/assetStore";
+import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 
 export function useGetActiveInformation() {
   const { sdk } = useSdk();
   const { actives, setActiveInformation } = useDigitalOptionsStore();
   const { assets } = useAssetStore();
+  const { closedPositions } = useClosedPositionsStore();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, startTransition] = useTransition();
 
+  const closedPositionsIds = closedPositions.map((p) => p.activeId);
+  const assetsIds = assets.map((a) => a.asset?.activeId);
+
+  const allActiveIds = [
+    ...assetsIds.filter((id) => id !== undefined),
+    ...closedPositionsIds.filter((id) => id !== undefined),
+    ...actives.map((a) => a.activeId),
+  ];
+  const uniqueActiveIds = [...new Set(allActiveIds)];
+
   const query = useQuery({
-    queryKey: ["activeInformation", actives.map((a) => a.activeId)],
+    queryKey: ["activeInformation", uniqueActiveIds],
     queryFn: async (): Promise<Record<number, Active>> => {
       if (!sdk || !actives.length) {
         throw new Error("SDK or actives not available");
       }
-
-      const assetsIds = assets.map((a) => a.asset?.activeId);
-
-      const allActiveIds = [
-        ...assetsIds.filter((id) => id !== undefined),
-        ...actives.map((a) => a.activeId),
-      ];
-
-      const uniqueActiveIds = [...new Set(allActiveIds)];
 
       const activesSdk = sdk.actives();
       const activeInformation: Record<number, Active> = {};
