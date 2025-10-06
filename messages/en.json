@@ -205,6 +205,9 @@
   "Save Settings": "Save Settings",
   "Cancel": "Cancel",
   "Reset to Defaults": "Reset to Defaults",
+  "15 minutes": "15 minutes",
+  "30 minutes": "30 minutes",
+  "60 minutes": "60 minutes",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",

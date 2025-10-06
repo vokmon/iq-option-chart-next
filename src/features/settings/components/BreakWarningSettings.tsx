@@ -58,14 +58,14 @@ export default function BreakWarningSettings({
   };
 
   const timeWindowOptions = [
-    { value: "15", label: "15 minutes" },
-    { value: "30", label: "30 minutes" },
+    { value: "15", label: t("15 minutes") },
+    { value: "30", label: t("30 minutes") },
   ];
 
   const pauseDurationOptions = [
-    { value: "15", label: "15 minutes" },
-    { value: "30", label: "30 minutes" },
-    { value: "60", label: "60 minutes" },
+    { value: "15", label: t("15 minutes") },
+    { value: "30", label: t("30 minutes") },
+    { value: "60", label: t("60 minutes") },
   ];
 
   return (

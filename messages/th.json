@@ -205,6 +205,9 @@
   "Save Settings": "บันทึกการตั้งค่า",
   "Cancel": "ยกเลิก",
   "Reset to Defaults": "รีเซ็ตเป็นค่าเริ่มต้น",
+  "15 minutes": "15 นาที",
+  "30 minutes": "30 นาที",
+  "60 minutes": "60 นาที",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",
