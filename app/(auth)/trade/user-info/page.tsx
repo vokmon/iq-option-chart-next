@@ -1,5 +1,5 @@
-function UserInfoPage() {
-  return <div>UserInfoPage</div>;
-}
+import UserInfoPage from "@/features/user-info/UserInfoPage";
 
-export default UserInfoPage;
+export default function UserInfo() {
+  return <UserInfoPage />;
+}
