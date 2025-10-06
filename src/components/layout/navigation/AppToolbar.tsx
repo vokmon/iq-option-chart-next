@@ -12,6 +12,7 @@ import TimePanel from "@/components/display/time/TimePanel";
 import { APP_METADATA } from "@/constants/app";
 import AppDrawer from "@/components/menu/AppDrawer";
 import Link from "next/link";
+import NotificationPanel from "@/components/display/notifications/NotificationPanel";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -59,6 +60,7 @@ export default function AppToolbar() {
 
       {/* Right side - User menu */}
       <Group>
+        <NotificationPanel />
         <TimePanel />
         <Menu shadow="md" width={300} position="bottom-end">
           <Menu.Target>

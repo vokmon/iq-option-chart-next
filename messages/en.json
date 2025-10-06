@@ -217,6 +217,8 @@
   "15 minutes": "15 minutes",
   "30 minutes": "30 minutes",
   "60 minutes": "60 minutes",
+  "Notifications": "Notifications",
+  "No new notifications": "No new notifications",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",
