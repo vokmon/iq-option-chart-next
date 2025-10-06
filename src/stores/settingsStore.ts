@@ -7,7 +7,7 @@ import { persist } from "zustand/middleware";
 // DEFAULT VALUES
 // ============================================================================
 
-const DEFAULT_RISK_MANAGEMENT = {
+const DEFAULT_TRADING_GOALS = {
   dailyProfitTarget: 0,
   dailyLossLimit: 0,
 } as const;
@@ -26,7 +26,7 @@ const DEFAULT_TRADING_LIMITS = {
 } as const;
 
 const DEFAULT_SETTINGS = {
-  riskManagement: DEFAULT_RISK_MANAGEMENT,
+  tradingGoals: DEFAULT_TRADING_GOALS,
   tradingLimits: DEFAULT_TRADING_LIMITS,
 } as const;
 
@@ -34,7 +34,7 @@ const DEFAULT_SETTINGS = {
 // TYPES
 // ============================================================================
 
-export interface RiskManagementSettings {
+export interface TradingGoalsSettings {
   dailyProfitTarget: number;
   dailyLossLimit: number;
 }
@@ -54,18 +54,18 @@ export interface TradingLimitsSettings {
 
 export interface SettingsState {
   // Saved settings (persisted)
-  riskManagement: RiskManagementSettings;
+  tradingGoals: TradingGoalsSettings;
   tradingLimits: TradingLimitsSettings;
 }
 
 export interface SettingsActions {
   // Settings Management Actions
-  updateRiskManagement: (settings: Partial<RiskManagementSettings>) => void;
+  updateTradingGoals: (settings: Partial<TradingGoalsSettings>) => void;
   updateTradingLimits: (settings: Partial<TradingLimitsSettings>) => void;
   updateBreakWarning: (settings: Partial<BreakWarningSettings>) => void;
 
   // Getters
-  getRiskManagement: () => RiskManagementSettings;
+  getTradingGoals: () => TradingGoalsSettings;
   getTradingLimits: () => TradingLimitsSettings;
   getBreakWarning: () => BreakWarningSettings;
 }
@@ -83,20 +83,19 @@ export const useSettingsStore = create<SettingsStore>()(
       ...DEFAULT_SETTINGS,
 
       // Settings Management Actions
-      updateRiskManagement: (settings: Partial<RiskManagementSettings>) => {
+      updateTradingGoals: (settings: Partial<TradingGoalsSettings>) => {
         set((state) => ({
-          riskManagement: {
-            ...state.riskManagement,
+          tradingGoals: {
+            ...state.tradingGoals,
             ...settings,
             // Ensure non-negative values
             dailyProfitTarget: Math.max(
               0,
-              settings.dailyProfitTarget ??
-                state.riskManagement.dailyProfitTarget
+              settings.dailyProfitTarget ?? state.tradingGoals.dailyProfitTarget
             ),
             dailyLossLimit: Math.max(
               0,
-              settings.dailyLossLimit ?? state.riskManagement.dailyLossLimit
+              settings.dailyLossLimit ?? state.tradingGoals.dailyLossLimit
             ),
           },
         }));
@@ -135,9 +134,9 @@ export const useSettingsStore = create<SettingsStore>()(
       },
 
       // Getters
-      getRiskManagement: () => {
+      getTradingGoals: () => {
         const state = get();
-        return state.riskManagement;
+        return state.tradingGoals;
       },
 
       getTradingLimits: () => {
@@ -153,7 +152,7 @@ export const useSettingsStore = create<SettingsStore>()(
     {
       name: "settings-storage",
       partialize: (state) => ({
-        riskManagement: state.riskManagement,
+        tradingGoals: state.tradingGoals,
         tradingLimits: state.tradingLimits,
       }),
     }
@@ -165,7 +164,7 @@ export const useSettingsStore = create<SettingsStore>()(
 // ============================================================================
 
 export {
-  DEFAULT_RISK_MANAGEMENT,
+  DEFAULT_TRADING_GOALS,
   DEFAULT_BREAK_WARNING,
   DEFAULT_TRADING_LIMITS,
   DEFAULT_SETTINGS,

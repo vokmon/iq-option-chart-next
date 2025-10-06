@@ -176,6 +176,15 @@
   "Set your daily profit target": "ตั้งเป้าหมายกำไรรายวันของคุณ",
   "Daily Loss Limit": "จำกัดการขาดทุนรายวัน",
   "Set your daily loss protection limit": "ตั้งค่าการป้องกันการขาดทุนรายวันของคุณ",
+  "Profit Target Reached": "ถึงเป้าหมายกำไรแล้ว",
+  "Loss Limit Reached": "ถึงขีดจำกัดการขาดทุนแล้ว",
+  "Congratulations! Daily profit target reached!": "ยินดีด้วย! ถึงเป้าหมายกำไรรายวันแล้ว!",
+  "Daily loss limit reached": "ถึงขีดจำกัดการขาดทุนรายวันแล้ว",
+  "Target": "เป้าหมาย",
+  "Actual": "จริง",
+  "Limit": "ขีดจำกัด",
+  "Go to Reports": "ไปที่รายงาน",
+  "Continue Trading": "เทรดต่อ",
   "Smart Trading Controls": "การควบคุมการเทรดอัจฉริยะ",
   "Take a breather when things get rough": "หยุดพักเมื่อสถานการณ์ยากลำบาก เราจะหยุดเทรดอัตโนมัติและแสดงตัวนับถอยหลังให้คุณได้ผ่อนคลายก่อนกลับมาเทรดต่อ",
   "Cool-Down Timer": "ตัวนับถอยหลัง",
@@ -186,8 +195,8 @@
   "Minimum trades to check": "จำนวนการเทรดขั้นต่ำที่ต้องตรวจสอบ",
   "Loss Threshold": "เกณฑ์การขาดทุน",
   "How many losses in a row triggers the break": "แพ้ติดต่อกันกี่ครั้งถึงจะหยุดพัก",
-  "Dialog Duration": "ระยะเวลาการแสดงการนับถอยหลัง",
-  "How long to show the countdown dialog": "แสดงตัวนับถอยหลังนานแค่ไหน",
+  "Pause Duration": "ระยะเวลาหยุดเทรด",
+  "Trading pause duration after loss threshold": "ระยะเวลาพักเทรดหลังถึงขีดจำกัดขาดทุน",
   "Auto-pause trading": "หยุดเทรดอัตโนมัติ",
   "Automatically pause auto-trading when the break triggers": "หยุดเทรดอัตโนมัติโดยอัตโนมัติเมื่อเกิดการหยุดพัก",
   "Settings Saved": "บันทึกการตั้งค่าแล้ว",
@@ -365,6 +374,10 @@
     "contactText": "หากคุณมีคำถามเกี่ยวกับข้อกำหนดการใช้งานเหล่านี้ กรุณาติดต่อเรา:",
     "contactEmail": "อีเมล: {supportEmail}",
     "contactResponse": "เวลาตอบกลับ: ภายใน 24-48 ชั่วโมง",
-    "footerText": "การใช้งานบริการนี้ คุณยอมรับว่าคุณได้อ่าน เข้าใจ และตกลงที่จะผูกพันตามข้อกำหนดการใช้งานเหล่านี้"
+    "footerText": "การใช้งานบริการนี้ คุณยอมรับว่าคุณได้อ่าน เข้าใจ และตกลงที่จะผูกพันตามข้อกำหนดการใช้งานเหล่านี้",
+    "Daily profit targets and loss limits reached": "ถึงเป้าหมายกำไรรายวันและขีดจำกัดการขาดทุนแล้ว",
+    "Daily profit target reached!": "ถึงเป้าหมายกำไรรายวันแล้ว!",
+    "Daily loss limit reached": "ถึงขีดจำกัดการขาดทุนรายวันแล้ว",
+    "Daily trading goals reached": "ถึงเป้าหมายการเทรดรายวันแล้ว"
   }
 }

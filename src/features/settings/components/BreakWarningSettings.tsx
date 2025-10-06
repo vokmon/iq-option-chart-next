@@ -119,7 +119,7 @@ export default function BreakWarningSettings({
 
             <div className="space-y-2">
               <Text size="sm" fw={500} c="dimmed">
-                {t("Dialog Duration")}
+                {t("Pause Duration")}
               </Text>
               <Select
                 value={breakWarning.pauseDuration.toString()}
@@ -131,7 +131,7 @@ export default function BreakWarningSettings({
                 data={pauseDurationOptions}
                 size="md"
                 radius="md"
-                description={t("How long to show the countdown dialog")}
+                description={t("Trading pause duration after loss threshold")}
               />
             </div>
           </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import { Balance, BalanceType } from "@quadcode-tech/client-sdk-js";
+import { Balance } from "@quadcode-tech/client-sdk-js";
 import { Text, Badge, Group, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { formatAmount } from "@/utils/currency";
+import { getBalanceTypeColor, getBalanceTypeLabel } from "@/utils/balanceType";
 
 type BalanceCardProps = {
   balance: Balance;
@@ -25,28 +26,6 @@ export default function BalanceCard({ balance }: BalanceCardProps) {
     };
   }, [balance]);
 
-  const getBalanceTypeColor = (type: BalanceType | undefined) => {
-    switch (type) {
-      case BalanceType.Real:
-        return "green";
-      case BalanceType.Demo:
-        return "orange";
-      default:
-        return "gray";
-    }
-  };
-
-  const getBalanceTypeLabel = (type: BalanceType | undefined) => {
-    switch (type) {
-      case BalanceType.Real:
-        return "Real";
-      case BalanceType.Demo:
-        return "Practice";
-      default:
-        return "Unknown";
-    }
-  };
-
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md py-4 px-6 border border-gray-200 dark:border-gray-700">
       <Group justify="space-between" align="flex-start">
@@ -56,11 +35,11 @@ export default function BalanceCard({ balance }: BalanceCardProps) {
               {t("Balance")} #{balance.id}
             </Text>
             <Badge
-              color={getBalanceTypeColor(balance.type)}
+              color={getBalanceTypeColor(balance.type?.toString() || "")}
               variant="light"
               size="sm"
             >
-              {getBalanceTypeLabel(balance.type)}
+              ({t(getBalanceTypeLabel(balance.type?.toString() || ""))})
             </Badge>
           </Group>
 

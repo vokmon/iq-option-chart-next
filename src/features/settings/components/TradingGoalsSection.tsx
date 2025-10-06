@@ -3,19 +3,17 @@
 import { NumberInput, Text, Group, Card, ThemeIcon } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { IconTrendingUp, IconShield, IconTarget } from "@tabler/icons-react";
-import { RiskManagementSettings } from "@/stores/settingsStore";
+import { TradingGoalsSettings } from "@/stores/settingsStore";
 
-interface RiskManagementSectionProps {
-  draftRiskManagement: RiskManagementSettings;
-  updateDraftRiskManagement: (
-    settings: Partial<RiskManagementSettings>
-  ) => void;
+interface TradingGoalsSectionProps {
+  draftTradingGoals: TradingGoalsSettings;
+  updateDraftTradingGoals: (settings: Partial<TradingGoalsSettings>) => void;
 }
 
-export default function RiskManagementSection({
-  draftRiskManagement,
-  updateDraftRiskManagement,
-}: RiskManagementSectionProps) {
+export default function TradingGoalsSection({
+  draftTradingGoals,
+  updateDraftTradingGoals,
+}: TradingGoalsSectionProps) {
   const t = useTranslations();
 
   return (
@@ -52,9 +50,9 @@ export default function RiskManagementSection({
           </Group>
           <NumberInput
             placeholder="0"
-            value={draftRiskManagement.dailyProfitTarget}
+            value={draftTradingGoals.dailyProfitTarget}
             onChange={(value) =>
-              updateDraftRiskManagement({
+              updateDraftTradingGoals({
                 dailyProfitTarget: Number(value) || 0,
               })
             }
@@ -94,9 +92,9 @@ export default function RiskManagementSection({
           </Group>
           <NumberInput
             placeholder="0"
-            value={draftRiskManagement.dailyLossLimit}
+            value={draftTradingGoals.dailyLossLimit}
             onChange={(value) =>
-              updateDraftRiskManagement({ dailyLossLimit: Number(value) || 0 })
+              updateDraftTradingGoals({ dailyLossLimit: Number(value) || 0 })
             }
             min={0}
             step={10}

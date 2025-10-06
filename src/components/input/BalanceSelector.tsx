@@ -21,7 +21,8 @@ import {
 import { useTranslations } from "next-intl";
 import { useSdk } from "@/hooks/useSdk";
 import { formatAmount } from "@/utils/currency";
-import type { Balance, BalanceType } from "@quadcode-tech/client-sdk-js";
+import { getBalanceTypeLabel, getBalanceTypeColor } from "@/utils/balanceType";
+import type { Balance } from "@quadcode-tech/client-sdk-js";
 
 interface BalanceSelectorProps {
   onBalanceChange?: (balance: Balance) => void;
@@ -44,30 +45,6 @@ export default function BalanceSelector({
   useEffect(() => {
     onBalanceChangeRef.current = onBalanceChange;
   }, [onBalanceChange]);
-
-  // Get balance type display name
-  const getBalanceTypeDisplay = (type: BalanceType | undefined) => {
-    switch (type) {
-      case "real":
-        return t("Real");
-      case "demo":
-        return t("Practice");
-      default:
-        return t("UNKNOWN");
-    }
-  };
-
-  // Get balance type color
-  const getBalanceTypeColor = (type: BalanceType | undefined) => {
-    switch (type) {
-      case "real":
-        return "green";
-      case "demo":
-        return "orange";
-      default:
-        return "gray";
-    }
-  };
 
   // Load initial balances
   const loadBalances = useCallback(async () => {
@@ -213,7 +190,9 @@ export default function BalanceSelector({
               <Group justify="space-between" align="center">
                 {/* Clickable Account Type Badge */}
                 <Badge
-                  color={getBalanceTypeColor(selectedBalance.type)}
+                  color={getBalanceTypeColor(
+                    selectedBalance.type?.toString() || ""
+                  )}
                   variant="filled"
                   size="lg"
                   style={{ cursor: "pointer" }}
@@ -232,7 +211,9 @@ export default function BalanceSelector({
                     </ActionIcon>
                   }
                 >
-                  {getBalanceTypeDisplay(selectedBalance.type)}
+                  {t(
+                    getBalanceTypeLabel(selectedBalance.type?.toString() || "")
+                  )}
                 </Badge>
 
                 {/* Balance Amount */}
@@ -250,7 +231,9 @@ export default function BalanceSelector({
                     c={
                       selectedBalance.amount === 0
                         ? "orange"
-                        : getBalanceTypeColor(selectedBalance.type)
+                        : getBalanceTypeColor(
+                            selectedBalance.type?.toString() || ""
+                          )
                     }
                   >
                     {formatAmount(
@@ -278,7 +261,7 @@ export default function BalanceSelector({
             <Button
               key={balance.id}
               variant={selectedBalance?.id === balance.id ? "filled" : "light"}
-              color={getBalanceTypeColor(balance.type)}
+              color={getBalanceTypeColor(balance.type?.toString() || "")}
               justify="space-between"
               leftSection={
                 selectedBalance?.id === balance.id ? (
@@ -296,7 +279,7 @@ export default function BalanceSelector({
               fullWidth
               size="md"
             >
-              {getBalanceTypeDisplay(balance.type)}
+              {t(getBalanceTypeLabel(balance.type?.toString() || ""))}
             </Button>
           ))}
         </Stack>

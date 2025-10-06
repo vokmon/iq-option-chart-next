@@ -5,34 +5,34 @@ import { useSettingsStore } from "@/stores/settingsStore";
 import { notifications } from "@mantine/notifications";
 import { useTranslations } from "next-intl";
 import {
-  RiskManagementSettings,
+  TradingGoalsSettings,
   TradingLimitsSettings,
-  DEFAULT_RISK_MANAGEMENT,
+  DEFAULT_TRADING_GOALS,
   DEFAULT_TRADING_LIMITS,
 } from "@/stores/settingsStore";
 
 export function useSettingsUI() {
   const t = useTranslations();
   const {
-    riskManagement,
+    tradingGoals,
     tradingLimits,
-    updateRiskManagement,
+    updateTradingGoals,
     updateTradingLimits,
   } = useSettingsStore();
 
-  const [draftRiskManagement, setDraftRiskManagement] =
-    useState<RiskManagementSettings>(riskManagement);
+  const [draftTradingGoals, setDraftTradingGoals] =
+    useState<TradingGoalsSettings>(tradingGoals);
   const [draftTradingLimits, setDraftTradingLimits] =
     useState<TradingLimitsSettings>(tradingLimits);
 
   // Simple comparison - no useEffect needed!
   const hasUnsavedChanges =
-    JSON.stringify(riskManagement) !== JSON.stringify(draftRiskManagement) ||
+    JSON.stringify(tradingGoals) !== JSON.stringify(draftTradingGoals) ||
     JSON.stringify(tradingLimits) !== JSON.stringify(draftTradingLimits);
 
-  const updateDraftRiskManagement = useCallback(
-    (settings: Partial<RiskManagementSettings>) => {
-      setDraftRiskManagement((prev) => ({
+  const updateDraftTradingGoals = useCallback(
+    (settings: Partial<TradingGoalsSettings>) => {
+      setDraftTradingGoals((prev) => ({
         ...prev,
         ...settings,
         dailyProfitTarget: Math.max(
@@ -62,7 +62,7 @@ export function useSettingsUI() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      updateRiskManagement(draftRiskManagement);
+      updateTradingGoals(draftTradingGoals);
       updateTradingLimits(draftTradingLimits);
 
       notifications.show({
@@ -81,15 +81,15 @@ export function useSettingsUI() {
       });
     }
   }, [
-    draftRiskManagement,
+    draftTradingGoals,
     draftTradingLimits,
-    updateRiskManagement,
+    updateTradingGoals,
     updateTradingLimits,
     t,
   ]);
 
   const handleCancel = useCallback(() => {
-    setDraftRiskManagement(riskManagement);
+    setDraftTradingGoals(tradingGoals);
     setDraftTradingLimits(tradingLimits);
 
     notifications.show({
@@ -98,12 +98,12 @@ export function useSettingsUI() {
       color: "blue",
       position: "bottom-right",
     });
-  }, [riskManagement, tradingLimits, t]);
+  }, [tradingGoals, tradingLimits, t]);
 
   const handleReset = useCallback(async () => {
     try {
       // Reset draft state to defaults
-      setDraftRiskManagement(DEFAULT_RISK_MANAGEMENT);
+      setDraftTradingGoals(DEFAULT_TRADING_GOALS);
       setDraftTradingLimits(DEFAULT_TRADING_LIMITS);
 
       notifications.show({
@@ -125,12 +125,12 @@ export function useSettingsUI() {
 
   return {
     // State
-    draftRiskManagement,
+    draftTradingGoals,
     draftTradingLimits,
     hasUnsavedChanges,
 
     // Actions
-    updateDraftRiskManagement,
+    updateDraftTradingGoals,
     updateDraftTradingLimits,
     handleSave,
     handleCancel,

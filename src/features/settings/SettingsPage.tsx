@@ -4,17 +4,17 @@ import { Text, Group, Box, Button, Stack } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { IconSettings, IconCheck, IconX } from "@tabler/icons-react";
 import { useSettingsUI } from "./hooks/useSettingsUI";
-import RiskManagementSection from "./components/RiskManagementSection";
+import TradingGoalsSection from "./components/TradingGoalsSection";
 import TradingLimitsSection from "./components/TradingLimitsSection";
 
 export default function SettingsPage() {
   const t = useTranslations();
   const {
-    draftRiskManagement,
+    draftTradingGoals,
     draftTradingLimits,
     hasUnsavedChanges,
 
-    updateDraftRiskManagement,
+    updateDraftTradingGoals,
     updateDraftTradingLimits,
     handleSave,
     handleCancel,
@@ -53,9 +53,9 @@ export default function SettingsPage() {
 
       {/* Settings Sections */}
       <Stack gap="lg">
-        <RiskManagementSection
-          draftRiskManagement={draftRiskManagement}
-          updateDraftRiskManagement={updateDraftRiskManagement}
+        <TradingGoalsSection
+          draftTradingGoals={draftTradingGoals}
+          updateDraftTradingGoals={updateDraftTradingGoals}
         />
         <TradingLimitsSection
           draftTradingLimits={draftTradingLimits}
