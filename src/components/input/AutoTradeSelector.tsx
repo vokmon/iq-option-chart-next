@@ -82,12 +82,13 @@ export default function AutoTradeSelector({
         onChange={handleToggleChange}
         size="md"
         color="blue"
-        className="transition-all duration-300"
+        className="transition-all duration-300 cursor-pointer"
         styles={{
           track: {
             backgroundColor: enabled ? "#2563eb" : "#9ca3af",
             border: "none",
             transition: "all 0.3s ease",
+            cursor: "pointer",
           },
           thumb: {
             backgroundColor: "white",
@@ -96,6 +97,7 @@ export default function AutoTradeSelector({
             boxShadow: enabled
               ? "0 2px 8px rgba(59, 130, 246, 0.3)"
               : "0 2px 4px rgba(0, 0, 0, 0.1)",
+            cursor: "pointer",
           },
         }}
       />

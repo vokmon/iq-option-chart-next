@@ -84,6 +84,15 @@ export default function BreakWarningSettings({
           onChange={toggleDraftBreakWarning}
           size="md"
           color="blue"
+          className="cursor-pointer"
+          styles={{
+            track: {
+              cursor: "pointer",
+            },
+            thumb: {
+              cursor: "pointer",
+            },
+          }}
         />
       </Group>
 
@@ -181,6 +190,15 @@ export default function BreakWarningSettings({
               onChange={toggleDraftPauseAutoTrade}
               size="md"
               color="blue"
+              className="cursor-pointer"
+              styles={{
+                track: {
+                  cursor: "pointer",
+                },
+                thumb: {
+                  cursor: "pointer",
+                },
+              }}
             />
           </Group>
         </Stack>
