@@ -26,7 +26,7 @@ export default function UserInfoPage() {
   }, [sdk]);
 
   return (
-    <div className="max-w-lg mx-auto space-y-4">
+    <div className="max-w-lg mx-auto">
       <div className="mb-3">
         <div className="flex justify-center mb-0 w-full">
           <Image

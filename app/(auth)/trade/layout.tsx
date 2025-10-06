@@ -6,7 +6,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <div className="self-start">
         <AppBreadcrumb skipPath={["trade"]} />
       </div>
-      <div className="w-full flex-1 pt-2">{children}</div>
+      <div className="w-full pt-2">{children}</div>
     </div>
   );
 }

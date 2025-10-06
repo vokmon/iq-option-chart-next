@@ -25,6 +25,7 @@ export default function AppToolbar() {
         borderBottom: "1px solid var(--glass-border)",
         padding: "0 24px",
         height: "64px",
+        minHeight: "64px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",

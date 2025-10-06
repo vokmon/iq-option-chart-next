@@ -22,7 +22,7 @@ export default function SettingsPage() {
   } = useSettingsUI();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 pb-10">
+    <div className="max-w-2xl mx-auto pb-10">
       {/* Header */}
       <Box className="mb-6">
         <Group justify="center" gap="md" className="mb-2">
