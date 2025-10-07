@@ -108,7 +108,7 @@ export function InstallPrompt() {
         position: "fixed",
         bottom: 16,
         right: 16,
-        zIndex: 50,
+        zIndex: 200,
         maxWidth: 384, // max-w-sm equivalent
       }}
     >

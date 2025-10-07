@@ -14,7 +14,9 @@ import {
 import { IconBell } from "@tabler/icons-react";
 import { useTodayGoalNotifications } from "./hooks/useTodayGoalNotifications";
 import { useTranslations } from "next-intl";
-import GoalFulfillmentNotificationItem from "./notification-elements/GoalFulfillmentNotificationItem";
+import { useTakeABreakNotification } from "./hooks/useTakeABreakNotification";
+import GoalFultillmentNotificationList from "./notification-elements/goal-fulfillment/GoalFultillmentNotificationList";
+import TakeABreakNotificationList from "./notification-elements/take-a-break/TakeABreakNotificationList";
 
 export default function NotificationPanel() {
   const t = useTranslations();
@@ -22,7 +24,11 @@ export default function NotificationPanel() {
   const { todayNotifications, hasNotifications: hasGoalNotificationsToday } =
     useTodayGoalNotifications();
 
-  const hasNotifications = hasGoalNotificationsToday;
+  const { activeWarnings, hasActiveWarnings: hasTakeABreakNotifications } =
+    useTakeABreakNotification();
+
+  const hasNotifications =
+    hasGoalNotificationsToday || hasTakeABreakNotifications;
 
   return (
     <Menu shadow="md" width={350} position="bottom-end">
@@ -94,12 +100,10 @@ export default function NotificationPanel() {
           </Box>
         ) : (
           <Stack gap="xs" p="xs">
-            {todayNotifications.map((fulfillment) => (
-              <GoalFulfillmentNotificationItem
-                key={fulfillment?.id}
-                fulfillment={fulfillment!}
-              />
-            ))}
+            <TakeABreakNotificationList warnings={activeWarnings} />
+            <GoalFultillmentNotificationList
+              notifications={todayNotifications}
+            />
           </Stack>
         )}
       </Menu.Dropdown>

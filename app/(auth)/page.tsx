@@ -3,6 +3,7 @@ import CalculateSignalComponent from "@/features/background/CalculateSignalCompo
 import AutoTradeBySignalComponent from "@/features/background/AutoTradeBySignalComponent";
 import GraphPage from "@/features/graphs/components/GraphPage";
 import TradeNotificationComponent from "@/features/background/TradeNotificationComponent";
+import BreakWarningNotificationComponent from "@/features/background/TakeABreakNotificationComponent";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <CalculateSignalComponent />
       <AutoTradeBySignalComponent />
       <TradeNotificationComponent />
+      <BreakWarningNotificationComponent />
       <GraphPage />
     </>
   );

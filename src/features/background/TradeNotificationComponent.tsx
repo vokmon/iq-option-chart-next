@@ -1,10 +1,10 @@
 "use client";
 
-import useCalculateGoalFulfillment from "./hooks/notification/useCalculateGoalFulfillment";
-import { useGoalNotificationState } from "./hooks/notification/useGoalNotificationState";
-import { useGoalNotificationActions } from "./hooks/notification/useGoalNotificationActions";
-import ProfitFulfillmentDialog from "@/components/display/notifications/trade-goal/ProfitFulfillmentDialog";
-import LossFulfillmentDialog from "@/components/display/notifications/trade-goal/LossFulfillmentDialog";
+import useCalculateGoalFulfillment from "./hooks/notification/goal-fulfullment/useCalculateGoalFulfillment";
+import { useGoalNotificationState } from "./hooks/notification/goal-fulfullment/useGoalNotificationState";
+import { useGoalNotificationActions } from "./hooks/notification/goal-fulfullment/useGoalNotificationActions";
+import ProfitFulfillmentDialog from "@/components/display/notifications/dialog/trade-goal/ProfitFulfillmentDialog";
+import LossFulfillmentDialog from "@/components/display/notifications/dialog/trade-goal/LossFulfillmentDialog";
 
 export default function TradeNotificationComponent() {
   useCalculateGoalFulfillment();

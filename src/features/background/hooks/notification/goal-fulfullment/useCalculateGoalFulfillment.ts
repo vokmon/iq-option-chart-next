@@ -37,6 +37,9 @@ const useCalculateGoalFulfillment = () => {
 
     const dailyProfitTarget = tradingGoals.dailyProfitTarget;
     const dailyLossLimit = tradingGoals.dailyLossLimit;
+    if (dailyProfitTarget === 0 && dailyLossLimit === 0) {
+      return;
+    }
 
     for (const balance of allBalances) {
       // Check if there's already a fulfillment for this balance today

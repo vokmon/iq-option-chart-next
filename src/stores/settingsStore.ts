@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { TimeWindow, PauseDuration } from "@/types/time";
 
 // ============================================================================
 // DEFAULT VALUES
@@ -41,11 +42,11 @@ export interface TradingGoalsSettings {
 
 export interface BreakWarningSettings {
   enabled: boolean;
-  timeWindow: 15 | 30; // minutes
+  timeWindow: TimeWindow; // minutes
   minOrdersRequired: number;
   lossThreshold: number;
   pauseAutoTrade: boolean;
-  pauseDuration: 15 | 30 | 60; // minutes
+  pauseDuration: PauseDuration; // minutes
 }
 
 export interface TradingLimitsSettings {
