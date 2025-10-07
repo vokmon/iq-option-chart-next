@@ -201,7 +201,7 @@ export default function TakeABreakDialog({
             className="px-6"
             color="orange"
           >
-            {t("Got it I'll keep trading")}
+            {t("Got it")}
           </Button>
         </Group>
       </Stack>
