@@ -9,7 +9,7 @@ import { type StochasticConfig } from "@/types/indicators/stochastic";
 import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
 import { type RSIConfig } from "@/types/indicators/rsi";
 
-export const MAX_ASSETS = 7;
+export const MAX_ASSETS = 5;
 
 export interface AssetIndicatorSettings {
   bollingerBands: {

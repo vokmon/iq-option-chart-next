@@ -1,5 +1,5 @@
 import { ClientSdk, Position } from "@quadcode-tech/client-sdk-js";
-import { checkSameDay } from "./dateTime";
+import { checkDayDifference, checkSameDay } from "./dateTime";
 
 let isFetching = false;
 
@@ -46,10 +46,15 @@ export const getClosedPositionsForSelectedBalance = async ({
             if (isSameDay) {
               isFound = true;
               foundDifferentDay = false;
-              // allClosedPositions.push(position);
               allClosedPositions[position.externalId!] = position;
             } else {
               foundDifferentDay = true;
+            }
+
+            // if the close date is before the current date
+            // meaning the position is closed before the current date
+            if (checkDayDifference(closeDate, currentDate) < 0) {
+              isFound = true;
             }
           }
         });

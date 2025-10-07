@@ -99,3 +99,17 @@ export function checkSameDay(date1: Date, date2: Date): boolean {
     date1.getDate() === date2.getDate()
   );
 }
+
+export function checkDayDifference(date1: Date, date2: Date): number {
+  const dateWithoutTime = new Date(
+    date1.getFullYear(),
+    date1.getMonth(),
+    date1.getDate()
+  );
+  const date2WithoutTime = new Date(
+    date2.getFullYear(),
+    date2.getMonth(),
+    date2.getDate()
+  );
+  return dateWithoutTime.getTime() - date2WithoutTime.getTime();
+}
