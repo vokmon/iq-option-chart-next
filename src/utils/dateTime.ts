@@ -113,3 +113,25 @@ export function checkDayDifference(date1: Date, date2: Date): number {
   );
   return dateWithoutTime.getTime() - date2WithoutTime.getTime();
 }
+
+export const isToday = (date: Date) => {
+  const today = new Date();
+  return checkSameDay(date, today);
+};
+
+export const isYesterday = (date: Date) => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return checkSameDay(date, yesterday);
+};
+
+export const formatSelectedDates = (selectedDates: Date[]) => {
+  if (selectedDates.length === 0) return "Select Date";
+  if (selectedDates.length === 1) {
+    const date = selectedDates[0];
+    if (isToday(date)) return "Today";
+    if (isYesterday(date)) return "Yesterday";
+    return date.toLocaleDateString("en-GB"); // dd/mm/yyyy format
+  }
+  return `dates selected`;
+};
