@@ -223,7 +223,6 @@ export default function PnLLineChart({
             layout: "vertical",
             verticalAlign: "bottom",
             content: ({ payload }) => {
-              console.log(payload);
               return (
                 <div className="flex flex-row items-center gap-7 mt-3">
                   {payload?.map((item, index) => {
