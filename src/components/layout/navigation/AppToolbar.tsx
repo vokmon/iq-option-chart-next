@@ -13,6 +13,7 @@ import { APP_METADATA } from "@/constants/app";
 import AppDrawer from "@/components/menu/AppDrawer";
 import Link from "next/link";
 import NotificationPanel from "@/components/display/notifications/NotificationPanel";
+import NewsComponents from "@/components/display/news/NewsComponents";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
@@ -60,6 +61,7 @@ export default function AppToolbar() {
 
       {/* Right side - User menu */}
       <Group>
+        <NewsComponents />
         <NotificationPanel />
         <TimePanel />
         <Menu shadow="md" width={300} position="bottom-end">
