@@ -13,6 +13,8 @@ interface DateRangeSelectorProps {
   selectedDates: Date[];
   onDatesChange: (dates: Date[]) => void;
   className?: string;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 interface PresetOption {
@@ -25,11 +27,13 @@ export default function DateRangeSelector({
   selectedDates,
   onDatesChange,
   className = "",
+  minDate,
+  maxDate,
 }: DateRangeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string>("today");
   const t = useTranslations();
-  const presets = getPresets(selectedDates);
+  const presets = getPresets(selectedDates, minDate, maxDate);
 
   // Sync selectedPreset with actual selected dates
   useEffect(() => {
@@ -89,8 +93,11 @@ export default function DateRangeSelector({
   };
 
   const handleDateClick = (date: Date) => {
-    onDatesChange([date]);
-    setIsOpen(false);
+    // Check if date is within allowed range
+    if (isDateInRange(date, minDate, maxDate)) {
+      onDatesChange([date]);
+      setIsOpen(false);
+    }
   };
 
   const clearSelection = () => {
@@ -170,6 +177,8 @@ export default function DateRangeSelector({
             <CustomCalendar
               selectedDates={selectedDates}
               onDateClick={handleDateClick}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           )}
 
@@ -229,12 +238,35 @@ const checkIfThisMonth = (dates: Date[]): boolean => {
   );
 };
 
-const getPresets = (selectedDates: Date[]): PresetOption[] => {
+// Helper function to check if date is within allowed range
+const isDateInRange = (date: Date, minDate?: Date, maxDate?: Date): boolean => {
+  if (minDate && date < minDate) return false;
+  if (maxDate && date > maxDate) return false;
+  return true;
+};
+
+// Helper function to filter dates within range
+const filterDatesInRange = (
+  dates: Date[],
+  minDate?: Date,
+  maxDate?: Date
+): Date[] => {
+  return dates.filter((date) => isDateInRange(date, minDate, maxDate));
+};
+
+const getPresets = (
+  selectedDates: Date[],
+  minDate?: Date,
+  maxDate?: Date
+): PresetOption[] => {
   return [
     {
       label: "Today",
       value: "today",
-      getDates: () => [new Date()],
+      getDates: () => {
+        const today = new Date();
+        return isDateInRange(today, minDate, maxDate) ? [today] : [];
+      },
     },
     {
       label: "Yesterday",
@@ -242,7 +274,7 @@ const getPresets = (selectedDates: Date[]): PresetOption[] => {
       getDates: () => {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        return [yesterday];
+        return isDateInRange(yesterday, minDate, maxDate) ? [yesterday] : [];
       },
     },
     {
@@ -262,7 +294,7 @@ const getPresets = (selectedDates: Date[]): PresetOption[] => {
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
           dates.push(new Date(d));
         }
-        return dates;
+        return filterDatesInRange(dates, minDate, maxDate);
       },
     },
     {
@@ -277,7 +309,7 @@ const getPresets = (selectedDates: Date[]): PresetOption[] => {
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
           dates.push(new Date(d));
         }
-        return dates;
+        return filterDatesInRange(dates, minDate, maxDate);
       },
     },
     {

@@ -26,6 +26,11 @@ export default function ReportPage() {
     return <ReportLoader />;
   }
 
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() - 30);
+
+  const maxDate = new Date();
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
@@ -35,6 +40,8 @@ export default function ReportPage() {
             selectedDates={selectedDates}
             onDatesChange={setSelectedDates}
             className="w-64 min-h-14 shadow-xl"
+            minDate={minDate}
+            maxDate={maxDate}
           />
           <BalanceSelector
             selectedBalanceId={balance?.id}
@@ -43,7 +50,7 @@ export default function ReportPage() {
         </div>
       </div>
 
-      {closedPositions?.length === 0 ? (
+      {!closedPositions || closedPositions?.length === 0 ? (
         <ReportEmpty />
       ) : (
         <>

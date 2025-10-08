@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeIcon } from "@mantine/core";
 import { DonutChart } from "@mantine/charts";
 import "@mantine/charts/styles.css";
 import { useTranslations } from "next-intl";
@@ -51,6 +50,7 @@ export default function AssetDonutChart({
     <div className="mt-4 flex">
       <DonutChart
         h={300}
+        w={300}
         data={chartData}
         withTooltip
         tooltipProps={{
@@ -129,7 +129,7 @@ export default function AssetDonutChart({
         withLabelsLine
         labelsType="percent"
       />
-      <div className="flex flex-col gap-2 justify-center w-full">
+      <div className="flex flex-col gap-2 justify-center">
         {chartData.map((item) => {
           const asset = activeInformation[item.activeId];
           return (

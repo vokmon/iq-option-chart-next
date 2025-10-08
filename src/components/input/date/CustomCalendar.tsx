@@ -18,11 +18,15 @@ import {
 interface CustomCalendarProps {
   selectedDates: Date[];
   onDateClick: (date: Date) => void;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 export default function CustomCalendar({
   selectedDates,
   onDateClick,
+  minDate,
+  maxDate,
 }: CustomCalendarProps) {
   const t = useTranslations();
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -71,6 +75,12 @@ export default function CustomCalendar({
     return selectedDates.some((d) => checkSameDay(d, date));
   };
 
+  const isDateInRange = (date: Date): boolean => {
+    if (minDate && date < minDate) return false;
+    if (maxDate && date > maxDate) return false;
+    return true;
+  };
+
   return (
     <Stack gap="xs">
       <Text size="sm" fw={500} className="text-gray-800">
@@ -84,6 +94,11 @@ export default function CustomCalendar({
           color="blue"
           size="md"
           onClick={() => navigateMonth("prev")}
+          disabled={
+            minDate &&
+            currentMonth.getMonth() <= minDate.getMonth() &&
+            currentMonth.getFullYear() <= minDate.getFullYear()
+          }
         >
           <IconChevronLeft size={18} />
         </ActionIcon>
@@ -98,6 +113,11 @@ export default function CustomCalendar({
           color="blue"
           size="md"
           onClick={() => navigateMonth("next")}
+          disabled={
+            maxDate &&
+            currentMonth.getMonth() >= maxDate.getMonth() &&
+            currentMonth.getFullYear() >= maxDate.getFullYear()
+          }
         >
           <IconChevronRight size={18} />
         </ActionIcon>
@@ -126,6 +146,7 @@ export default function CustomCalendar({
                   color={isDateSelected(date) ? "blue" : "gray"}
                   size="xs"
                   onClick={() => onDateClick(date)}
+                  disabled={!isDateInRange(date)}
                   className={
                     isDateSelected(date) ? "text-white" : "text-gray-800"
                   }
@@ -135,11 +156,16 @@ export default function CustomCalendar({
                     padding: 0,
                     fontSize: 12,
                     fontWeight: isToday(date) ? 700 : 400,
-                    color: isDateSelected(date) ? "white" : "#1f2937",
+                    color: isDateSelected(date)
+                      ? "white"
+                      : isDateInRange(date)
+                      ? "#1f2937"
+                      : "#9ca3af",
                     border:
                       isToday(date) && !isDateSelected(date)
                         ? "1px solid var(--mantine-color-blue-5)"
                         : "none",
+                    opacity: isDateInRange(date) ? 1 : 0.5,
                   }}
                 >
                   {date.getDate()}
