@@ -10,6 +10,8 @@ import {
   IconBolt,
   IconTarget,
   IconAlertTriangle,
+  IconChartArea,
+  IconTrendingDown,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
@@ -71,171 +73,182 @@ export default function PnLLineChart({
       </legend>
 
       <div className="mt-4">
-        {chartData.length > 0 ? (
-          <LineChart
-            h={300}
-            data={chartData}
-            dataKey="closeTime"
-            series={[
-              {
-                name: "cumulativePnL",
-                color: "indigo.6",
-                label: t("Trading Results in"),
-              },
-              {
-                name: "profitTarget",
-                color: "green",
-                label: t("Profit Target"),
-              },
-              {
-                name: "lossLimit",
-                color: "red",
-                label: t("Loss Limit"),
-              },
-            ]}
-            xAxisProps={{
-              label: "",
-              tickFormatter: (value) => formatDateTime(value),
-            }}
-            yAxisProps={{
-              label: "",
-              tickFormatter: (value) =>
-                formatAmount(value, balance?.currency, {
-                  noDecimals: true,
-                }),
-              allowDecimals: true,
-            }}
-            gridAxis="xy"
-            mx={"md"}
-            withTooltip
-            curveType="linear"
-            strokeWidth={2}
-            tooltipProps={{
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              content: ({ label, payload }) => {
-                if (payload && payload.length > 0) {
-                  const data = payload[0].payload;
-                  return (
-                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-200 dark:border-slate-600 backdrop-blur-sm">
-                      {/* Header */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <p className="font-semibold text-slate-700 dark:text-slate-300 text-base">
-                          {formatDateTime(data.closeTime)}
-                        </p>
-                      </div>
+        <LineChart
+          h={300}
+          data={chartData}
+          dataKey="closeTime"
+          series={[
+            {
+              name: "cumulativePnL",
+              color: "indigo.6",
+              label: t("Trading Results in"),
+            },
+            {
+              name: "profitTarget",
+              color: "green",
+              label: t("Profit Target"),
+            },
+            {
+              name: "lossLimit",
+              color: "red",
+              label: t("Loss Limit"),
+            },
+          ]}
+          xAxisProps={{
+            label: "",
+            tickFormatter: (value) => formatDateTime(value),
+          }}
+          yAxisProps={{
+            label: "",
+            tickFormatter: (value) =>
+              formatAmount(value, balance?.currency, {
+                noDecimals: true,
+              }),
+            allowDecimals: true,
+          }}
+          gridAxis="xy"
+          mx={"md"}
+          withTooltip
+          curveType="linear"
+          strokeWidth={2}
+          tooltipProps={{
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            content: ({ label, payload }) => {
+              if (payload && payload.length > 0) {
+                const data = payload[0].payload;
+                return (
+                  <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-200 dark:border-slate-600 backdrop-blur-sm">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <p className="font-semibold text-slate-700 dark:text-slate-300 text-base">
+                        {formatDateTime(data.closeTime)}
+                      </p>
+                    </div>
 
-                      {/* Performance Section */}
-                      <div className="space-y-2 mb-3">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-1.5">
-                            <IconTrendingUp
-                              size={14}
-                              className={`${
-                                data.cumulativePnL >= 0
-                                  ? "text-blue-500 dark:text-blue-400"
-                                  : "text-orange-500 dark:text-orange-400"
-                              }`}
-                            />
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
-                              Total Performance
-                            </span>
-                          </div>
-                          <span
-                            className={`font-semibold text-sm ${
+                    {/* Performance Section */}
+                    <div className="space-y-2 mb-3">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-1.5">
+                          <IconTrendingUp
+                            size={14}
+                            className={`${
                               data.cumulativePnL >= 0
-                                ? "text-green-600 dark:text-green-400"
-                                : "text-red-600 dark:text-red-400"
+                                ? "text-blue-500 dark:text-blue-400"
+                                : "text-orange-500 dark:text-orange-400"
                             }`}
-                          >
-                            {formatAmount(
-                              data.cumulativePnL,
-                              balance?.currency
-                            )}
+                          />
+                          <span className="text-sm text-slate-600 dark:text-slate-400">
+                            Total Performance
                           </span>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-1.5">
-                            <IconBolt
-                              size={14}
-                              className={`${
-                                data.pnl >= 0
-                                  ? "text-yellow-500 dark:text-yellow-400"
-                                  : "text-red-500 dark:text-red-400"
-                              }`}
-                            />
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
-                              Trade Result
-                            </span>
-                          </div>
-                          <span
-                            className={`font-semibold text-sm ${
-                              data.pnl >= 0
-                                ? "text-green-600 dark:text-green-400"
-                                : "text-red-600 dark:text-red-400"
-                            }`}
-                          >
-                            {formatAmount(data.pnl, balance?.currency)}
-                          </span>
-                        </div>
+                        <span
+                          className={`font-semibold text-sm ${
+                            data.cumulativePnL >= 0
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
+                          }`}
+                        >
+                          {formatAmount(data.cumulativePnL, balance?.currency)}
+                        </span>
                       </div>
-
-                      <Divider className="my-3 border-slate-200 dark:border-slate-600" />
-
-                      {/* Goals Section */}
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-1.5">
-                            <IconTarget
-                              size={14}
-                              className="text-green-500 dark:text-green-400"
-                            />
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
-                              Profit Target
-                            </span>
-                          </div>
-                          <span className="font-semibold text-sm text-green-600 dark:text-green-400">
-                            {formatAmount(data.profitTarget, balance?.currency)}
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-1.5">
+                          <IconBolt
+                            size={14}
+                            className={`${
+                              data.pnl >= 0
+                                ? "text-yellow-500 dark:text-yellow-400"
+                                : "text-red-500 dark:text-red-400"
+                            }`}
+                          />
+                          <span className="text-sm text-slate-600 dark:text-slate-400">
+                            Trade Result
                           </span>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-1.5">
-                            <IconAlertTriangle
-                              size={14}
-                              className="text-red-500 dark:text-red-400"
-                            />
-                            <span className="text-sm text-slate-600 dark:text-slate-400">
-                              Loss Limit
-                            </span>
-                          </div>
-                          <span className="font-semibold text-sm text-red-600 dark:text-red-400">
-                            {formatAmount(data.lossLimit, balance?.currency)}
-                          </span>
-                        </div>
+                        <span
+                          className={`font-semibold text-sm ${
+                            data.pnl >= 0
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
+                          }`}
+                        >
+                          {formatAmount(data.pnl, balance?.currency)}
+                        </span>
                       </div>
                     </div>
-                  );
-                }
-                return null;
-              },
-            }}
-            withDots
-            withLegend
-            legendProps={{
-              layout: "vertical",
-              verticalAlign: "bottom",
-            }}
-          />
-        ) : (
-          <div className="flex items-center justify-center h-[300px] text-slate-500 dark:text-slate-400">
-            <div className="text-center">
-              <p className="text-lg font-medium mb-2">📊 No Trading Data Yet</p>
-              <p className="text-sm">
-                Start trading to see your performance chart
-              </p>
-            </div>
-          </div>
-        )}
+
+                    <Divider className="my-3 border-slate-200 dark:border-slate-600" />
+
+                    {/* Goals Section */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-1.5">
+                          <IconTarget
+                            size={14}
+                            className="text-green-500 dark:text-green-400"
+                          />
+                          <span className="text-sm text-slate-600 dark:text-slate-400">
+                            Profit Target
+                          </span>
+                        </div>
+                        <span className="font-semibold text-sm text-green-600 dark:text-green-400">
+                          {formatAmount(data.profitTarget, balance?.currency)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-1.5">
+                          <IconAlertTriangle
+                            size={14}
+                            className="text-red-500 dark:text-red-400"
+                          />
+                          <span className="text-sm text-slate-600 dark:text-slate-400">
+                            Loss Limit
+                          </span>
+                        </div>
+                        <span className="font-semibold text-sm text-red-600 dark:text-red-400">
+                          {formatAmount(data.lossLimit, balance?.currency)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            },
+          }}
+          withDots
+          withLegend
+          legendProps={{
+            layout: "vertical",
+            verticalAlign: "bottom",
+            content: ({ payload }) => {
+              console.log(payload);
+              return (
+                <div className="flex flex-row items-center gap-7 mt-3">
+                  {payload?.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 px-3 py-1 rounded-xl text-gray-200 shadow-md"
+                        style={{ backgroundColor: item.color }}
+                      >
+                        {item.value === "profitTarget" ? (
+                          <IconTrendingUp size={16} />
+                        ) : item.value === "lossLimit" ? (
+                          <IconTrendingDown size={16} />
+                        ) : (
+                          <IconChartArea size={16} />
+                        )}
+                        {t(item.value as string)}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            },
+          }}
+        />
       </div>
     </fieldset>
   );

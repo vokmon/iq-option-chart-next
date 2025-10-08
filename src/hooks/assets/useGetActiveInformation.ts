@@ -6,7 +6,7 @@ import { useTransition } from "react";
 import { useAssetStore } from "@/stores/assetStore";
 import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 
-export function useGetActiveInformation() {
+export function useGetActiveInformation(additonalIds: number[] = []) {
   const { sdk } = useSdk();
   const { actives, activeInformation, setActiveInformation } =
     useDigitalOptionsStore();
@@ -27,6 +27,7 @@ export function useGetActiveInformation() {
     ...assetsIds.filter((id) => id !== undefined),
     ...closedPositionsIds.filter((id) => id !== undefined),
     ...actives.map((a) => a.activeId),
+    ...additonalIds,
   ];
   const uniqueActiveIds = [...new Set(allActiveIds)];
 

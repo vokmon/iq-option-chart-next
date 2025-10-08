@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IconCalendar, IconX } from "@tabler/icons-react";
 import { formatSelectedDates } from "@/utils/dateTime";
 import { Popover, Button, ActionIcon, Stack } from "@mantine/core";
@@ -30,6 +30,54 @@ export default function DateRangeSelector({
   const [selectedPreset, setSelectedPreset] = useState<string>("today");
   const t = useTranslations();
   const presets = getPresets(selectedDates);
+
+  // Sync selectedPreset with actual selected dates
+  useEffect(() => {
+    if (selectedDates.length === 0) {
+      setSelectedPreset("today");
+      return;
+    }
+
+    // Check if current dates match any preset
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Normalize dates for comparison (remove time)
+    const normalizeDate = (date: Date) => {
+      const normalized = new Date(date);
+      normalized.setHours(0, 0, 0, 0);
+      return normalized;
+    };
+
+    const normalizedSelected = selectedDates.map(normalizeDate);
+    const normalizedToday = normalizeDate(today);
+    const normalizedYesterday = normalizeDate(yesterday);
+
+    if (normalizedSelected.length === 1) {
+      if (normalizedSelected[0].getTime() === normalizedToday.getTime()) {
+        setSelectedPreset("today");
+      } else if (
+        normalizedSelected[0].getTime() === normalizedYesterday.getTime()
+      ) {
+        setSelectedPreset("yesterday");
+      } else {
+        setSelectedPreset("custom");
+      }
+    } else if (normalizedSelected.length > 1) {
+      // Check if it's this week or this month
+      const isThisWeek = checkIfThisWeek(normalizedSelected);
+      const isThisMonth = checkIfThisMonth(normalizedSelected);
+
+      if (isThisWeek) {
+        setSelectedPreset("thisWeek");
+      } else if (isThisMonth) {
+        setSelectedPreset("thisMonth");
+      } else {
+        setSelectedPreset("custom");
+      }
+    }
+  }, [selectedDates]);
 
   const handlePresetSelect = (preset: PresetOption) => {
     setSelectedPreset(preset.value);
@@ -138,6 +186,48 @@ export default function DateRangeSelector({
     </Popover>
   );
 }
+
+// Helper functions to check if dates match preset patterns
+const checkIfThisWeek = (dates: Date[]): boolean => {
+  const today = new Date();
+  const start = new Date(today);
+  const day = start.getDay();
+  const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Monday
+  start.setDate(diff);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6); // Sunday
+  end.setHours(23, 59, 59, 999);
+
+  const expectedDates: Date[] = [];
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    expectedDates.push(new Date(d));
+  }
+
+  if (dates.length !== expectedDates.length) return false;
+
+  return dates.every((date) =>
+    expectedDates.some((expected) => expected.getTime() === date.getTime())
+  );
+};
+
+const checkIfThisMonth = (dates: Date[]): boolean => {
+  const today = new Date();
+  const start = new Date(today.getFullYear(), today.getMonth(), 1);
+  const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const expectedDates: Date[] = [];
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    expectedDates.push(new Date(d));
+  }
+
+  if (dates.length !== expectedDates.length) return false;
+
+  return dates.every((date) =>
+    expectedDates.some((expected) => expected.getTime() === date.getTime())
+  );
+};
 
 const getPresets = (selectedDates: Date[]): PresetOption[] => {
   return [

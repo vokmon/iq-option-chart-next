@@ -4,10 +4,13 @@ import { useState } from "react";
 import useGetClosedPositionsByDate from "./hooks/useGetClosedPositionsByDate";
 import DateRangeSelector from "@/components/input/date/DateRangeSelector";
 import Title from "./components/Title";
-import ReportLoader from "./components/ReportLoader";
 import SummaryPanel from "./components/summary-panel/SummaryPanel";
 import BalanceSelector from "@/components/input/BalanceSelector";
 import { Balance } from "@quadcode-tech/client-sdk-js";
+import AssetSummaryPanel from "./components/asset-panel/AssetSummaryPanel";
+import { useGetActiveInformation } from "@/hooks/assets/useGetActiveInformation";
+import ReportLoader from "./components/loading/ReportLoader";
+import ReportEmpty from "./components/loading/ReportEmpty";
 
 export default function ReportPage() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([new Date()]);
@@ -18,6 +21,7 @@ export default function ReportPage() {
     balanceId: balance?.id,
   });
 
+  useGetActiveInformation(closedPositions?.map((p) => p.activeId!) || []);
   if (isLoading) {
     return <ReportLoader />;
   }
@@ -30,7 +34,7 @@ export default function ReportPage() {
           <DateRangeSelector
             selectedDates={selectedDates}
             onDatesChange={setSelectedDates}
-            className="w-64"
+            className="w-64 min-h-14 shadow-xl"
           />
           <BalanceSelector
             selectedBalanceId={balance?.id}
@@ -39,8 +43,23 @@ export default function ReportPage() {
         </div>
       </div>
 
-      {/* Enhanced Summary Panel */}
-      <SummaryPanel balance={balance} closedPositions={closedPositions || []} />
+      {closedPositions?.length === 0 ? (
+        <ReportEmpty />
+      ) : (
+        <>
+          {/* Enhanced Summary Panel */}
+          <SummaryPanel
+            balance={balance}
+            closedPositions={closedPositions || []}
+          />
+
+          {/* Asset Summary Panel */}
+          <AssetSummaryPanel
+            balance={balance}
+            closedPositions={closedPositions || []}
+          />
+        </>
+      )}
     </div>
   );
 }

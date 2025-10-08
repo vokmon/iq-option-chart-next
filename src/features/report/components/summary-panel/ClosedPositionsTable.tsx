@@ -71,13 +71,15 @@ export default function ClosedPositionsTable({
                   </Table.Td>
                   <Table.Td>
                     <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src={activeInfo.imageUrl}
-                        alt={activeInfo.name}
-                        width={25}
-                        height={25}
-                      />
-                      {activeInfo.name}
+                      {activeInfo?.imageUrl && (
+                        <Image
+                          src={activeInfo.imageUrl}
+                          alt={activeInfo.name}
+                          width={25}
+                          height={25}
+                        />
+                      )}
+                      {activeInfo?.name || position.active?.name}
                     </div>
                   </Table.Td>
                   <Table.Td>
