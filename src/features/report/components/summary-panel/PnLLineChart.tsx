@@ -14,7 +14,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { formatDateTime } from "@/utils/dateTime";
-import { formatAmount, getCurrencySymbol } from "@/utils/currency";
+import { formatAmount } from "@/utils/currency";
 import { useSettingsStore } from "@/stores/settingsStore";
 
 interface PnLLineChartProps {
