@@ -266,6 +266,10 @@
   "Invest": "Invest",
   "Profit/Loss": "Profit/Loss",
   "Status": "Status",
+  "Performance Tracker": "Performance Tracker",
+  "Trading Results in": "Trading Results",
+  "Profit Target": "🎯 Profit Target",
+  "Loss Limit": "⚠️ Loss Limit",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",

@@ -15,15 +15,12 @@ export default function ReportPage() {
 
   const { data: closedPositions, isLoading } = useGetClosedPositionsByDate({
     dates: selectedDates,
+    balanceId: balance?.id,
   });
 
   if (isLoading) {
     return <ReportLoader />;
   }
-
-  const selectedClosedPositions = closedPositions?.filter(
-    (position) => position.balanceId === balance?.id
-  );
 
   return (
     <div className="p-6 space-y-6">
@@ -43,10 +40,7 @@ export default function ReportPage() {
       </div>
 
       {/* Enhanced Summary Panel */}
-      <SummaryPanel
-        balance={balance}
-        closedPositions={selectedClosedPositions || []}
-      />
+      <SummaryPanel balance={balance} closedPositions={closedPositions || []} />
     </div>
   );
 }

@@ -266,6 +266,10 @@
   "Invest": "ลงทุน",
   "Profit/Loss": "กำไร/ขาดทุน",
   "Status": "สถานะ",
+  "Performance Tracker": "ติดตามประสิทธิภาพ",
+  "Trading Results in": "ผลการเทรด",
+  "Profit Target": "กำไรเป้าหมาย",
+  "Loss Limit": "ขาดทุนจำกัด",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",

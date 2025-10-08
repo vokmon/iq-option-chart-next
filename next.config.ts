@@ -3,7 +3,12 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["static.cdnroute.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "static.cdnroute.io",
+      },
+    ],
   },
   async headers() {
     return [

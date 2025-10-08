@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { QueryProvider } from "@/lib/query-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -39,7 +38,7 @@ export default async function RootLayout({
           <QueryProvider>
             <ThemeProvider>
               <ThemeCSSInjector />
-              <NuqsAdapter>{children}</NuqsAdapter>
+              {children}
             </ThemeProvider>
           </QueryProvider>
         </NextIntlClientProvider>
