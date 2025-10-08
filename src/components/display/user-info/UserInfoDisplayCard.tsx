@@ -25,7 +25,7 @@ export default function UserInfoDisplayCard({
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md py-3 px-8 border border-gray-200 dark:border-gray-700">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <Indicator
           inline
           size={16}
@@ -36,7 +36,7 @@ export default function UserInfoDisplayCard({
           processing
         >
           <Avatar
-            size="lg"
+            size="md"
             radius="xl"
             color="blue"
             style={{ fontSize: "18px" }}
@@ -46,7 +46,7 @@ export default function UserInfoDisplayCard({
         </Indicator>
         <div className="flex-1">
           <Text
-            size="lg"
+            size="md"
             fw={600}
             c="var(--mantine-color-gray-9)"
             className="mb-1"

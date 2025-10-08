@@ -56,7 +56,7 @@ export default function UserInfoPage() {
         </div>
       </fieldset>
 
-      <fieldset className="border border-emerald-200 dark:border-emerald-700 rounded-xl p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
+      <fieldset className="mt-4 border border-emerald-200 dark:border-emerald-700 rounded-xl p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
         <legend className="px-4 text-lg font-semibold text-emerald-900 dark:text-emerald-100">
           {t("Balance Management")}
         </legend>

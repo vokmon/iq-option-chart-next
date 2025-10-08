@@ -27,7 +27,7 @@ export default function BalanceCard({ balance }: BalanceCardProps) {
   }, [balance]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md py-4 px-6 border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md py-2 px-6 border border-gray-200 dark:border-gray-700">
       <Group justify="space-between" align="flex-start">
         <Stack gap="xs">
           <Group gap="sm">

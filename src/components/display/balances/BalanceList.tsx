@@ -20,7 +20,7 @@ export default function BalanceList({ balances }: BalanceListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {balances.map((balance) => (
         <BalanceCard key={balance.id} balance={balance} />
       ))}
