@@ -307,6 +307,8 @@
   "Financial news and market data": "Financial news and market data",
   "Trading Economics": "Trading Economics",
   "Economic indicators and news": "Economic indicators and news",
+  "User not found": "User not found, please contact support",
+  "User expired": "User expired, please contact support",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",

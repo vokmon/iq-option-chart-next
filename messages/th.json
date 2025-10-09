@@ -307,6 +307,8 @@
   "Financial news and market data": "ข่าวสารทางการเงินและข้อมูลตลาด",
   "Trading Economics": "Trading Economics",
   "Economic indicators and news": "ตัวชี้วัดเศรษฐกิจและข่าวสาร",
+  "User not found": "ผู้ใช้งานไม่พบ กรุณาติดต่อทีมงาน",
+  "User expired": "ผู้ใช้งานหมดอายุ กรุณาติดต่อทีมงาน",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",

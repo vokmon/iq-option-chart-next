@@ -69,7 +69,13 @@ export default function LoginUserPassword({
         }
       },
       onError: (err) => {
-        setError(err instanceof Error ? err.message : "Login failed");
+        if (err.message === "User not found") {
+          setError(t("User not found"));
+        } else if (err.message === "User expired") {
+          setError(t("User expired"));
+        } else {
+          setError(err instanceof Error ? err.message : "Login failed");
+        }
       },
     });
   };
