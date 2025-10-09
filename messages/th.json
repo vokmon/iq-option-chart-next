@@ -18,6 +18,7 @@
   "Retry": "ลองใหม่",
   "Close": "ปิด",
   "Email": "อีเมล",
+  "ID": "ID",
   "Password": "รหัสผ่าน",
   "Sign in": "เข้าสู่ระบบ",
   "Signing in": "กำลังเข้าสู่ระบบ...",
@@ -472,5 +473,10 @@
     "Daily profit target reached!": "ถึงเป้าหมายกำไรรายวันแล้ว!",
     "Daily loss limit reached": "ถึงขีดจำกัดการขาดทุนรายวันแล้ว",
     "Daily trading goals reached": "ถึงเป้าหมายการเทรดรายวันแล้ว"
+  },
+  "subscription": {
+    "active": "ใช้งานได้",
+    "expired": "หมดอายุ",
+    "expiringSoon": "หมดอายุใน {days} วัน"
   }
 }

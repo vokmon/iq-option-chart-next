@@ -26,7 +26,7 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div style={{ padding: "8px 0" }}>
+    <div style={{ padding: "8px 10px" }}>
       <Group gap="xs">
         <Group gap="xs">
           <Button

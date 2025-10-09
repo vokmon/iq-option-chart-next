@@ -14,10 +14,13 @@ import AppDrawer from "@/components/menu/AppDrawer";
 import Link from "next/link";
 import NotificationPanel from "@/components/display/notifications/NotificationPanel";
 import NewsComponents from "@/components/display/news/NewsComponents";
+import { useUserStore } from "@/stores/userStore";
+import SubscriptExpire from "@/components/display/user-info/SubscriptExpire";
 
 export default function AppToolbar() {
   const { sdk } = useSdk();
   const { firstName, lastName, userId } = sdk?.userProfile;
+  const { user } = useUserStore();
   const t = useTranslations();
 
   return (
@@ -67,9 +70,9 @@ export default function AppToolbar() {
         <Menu shadow="md" width={300} position="bottom-end">
           <Menu.Target>
             <UserMenuButton
+              user={user}
               firstName={firstName}
               lastName={lastName}
-              userId={userId}
             />
           </Menu.Target>
 
@@ -83,8 +86,15 @@ export default function AppToolbar() {
                   firstName={firstName}
                   lastName={lastName}
                   userId={userId}
+                  user={user}
                 />
               </Link>
+            </Menu.Item>
+
+            <Menu.Divider />
+
+            <Menu.Item>
+              <SubscriptExpire user={user} />
             </Menu.Item>
 
             <Menu.Divider />

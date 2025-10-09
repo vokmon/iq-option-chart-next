@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
+import { createJWT } from "@/utils/jwt";
+import { COOKIES } from "@/constants/cookies";
 
 const IQ_OPTION_API_URL = process.env.NEXT_PUBLIC_IQ_OPTION_API_URL;
 
@@ -20,7 +22,9 @@ export async function POST(request: NextRequest) {
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    if (new Date(user.expired_at) < currentDate) {
+    const expires = new Date(user.expired_at);
+
+    if (expires < currentDate) {
       return NextResponse.json({ error: "User expired" }, { status: 404 });
     }
 
@@ -58,11 +62,29 @@ export async function POST(request: NextRequest) {
 
     // Set secure cookie with ssid if available
     if (data.ssid) {
-      jsonResponse.cookies.set("ssid", data.ssid, {
+      const cookieExpires = new Date(user.expired_at);
+      cookieExpires.setHours(23, 59, 59, 999);
+
+      jsonResponse.cookies.set(COOKIES.ssid, data.ssid, {
         httpOnly: false, // Allow JavaScript access for client-side SDK
         secure: true,
         sameSite: "strict",
-        maxAge: 60 * 60 * 24 * 2, // 2 days to store access and refresh tokens
+        expires: cookieExpires, // Use absolute date instead of maxAge
+        path: "/", // Set path to root for all pages
+      });
+
+      // Create JWT token from user data with custom expiration
+      const jwtToken = createJWT({
+        email: user.email,
+        iq_option_id: user.iq_option_id,
+        expired_at: user.expired_at,
+      });
+
+      jsonResponse.cookies.set(COOKIES.accessToken, jwtToken, {
+        httpOnly: true, // Allow JavaScript access for client-side SDK
+        secure: true,
+        sameSite: "strict",
+        expires: cookieExpires, // Use absolute date instead of maxAge
         path: "/", // Set path to root for all pages
       });
     }

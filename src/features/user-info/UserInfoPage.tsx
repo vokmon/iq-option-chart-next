@@ -12,10 +12,12 @@ import Image from "next/image";
 import IQOptionLogo from "@/assets/iqoption-logo.svg";
 import { Text } from "@mantine/core";
 import BalanceLinkCard from "./BalanceLinkCard";
+import { useUserStore } from "@/stores/userStore";
 
 export default function UserInfoPage() {
   const { sdk } = useSdk();
   const { firstName, lastName, userId } = sdk?.userProfile;
+  const { user } = useUserStore();
   const [balances, setBalances] = useState<Balance[]>([]);
   const t = useTranslations();
 
@@ -51,6 +53,7 @@ export default function UserInfoPage() {
             firstName={firstName}
             lastName={lastName}
             userId={userId}
+            user={user}
           />
           <ChangePasswordLinkCard />
         </div>

@@ -10,6 +10,9 @@ import { useSdkStore } from "../stores/sdkStore";
 import LoadingPage from "@/components/loader/LoadingPage";
 import { getCookie } from "@/utils/cookies";
 import { AuthenticationRequiredDialog } from "../components/dialogs/AuthenticationRequiredDialog";
+import { COOKIES } from "@/constants/cookies";
+import { useUserStore } from "@/stores/userStore";
+import { User } from "@/types/user";
 
 // Constants
 const NEXT_PUBLIC_WEB_SOCKET_URL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL;
@@ -104,11 +107,19 @@ const initializeSdkWithRetry = async (ssid: string): Promise<ClientSdk> => {
 const initializeSdkWithReconnection = async (
   ssid: string,
   setSdk: (sdk: ClientSdk) => void,
+  setUser: (user: User) => void,
   setShowSessionDialog: (show: boolean) => void
 ): Promise<void> => {
   try {
-    const sdk = await initializeSdkWithRetry(ssid);
+    const [userProfile, sdk] = await Promise.all([
+      fetch(`/api/me/profile`),
+      initializeSdkWithRetry(ssid),
+    ]);
+
+    const userProfileData = await userProfile.json();
+
     setSdk(sdk);
+    setUser(userProfileData);
 
     // Subscribe to connection state changes
     (await sdk.wsConnectionState()).subscribeOnStateChanged(async (state) => {
@@ -116,7 +127,12 @@ const initializeSdkWithReconnection = async (
 
       if (state === "disconnected") {
         console.log("WebSocket disconnected, attempting reconnection...");
-        await initializeSdkWithReconnection(ssid, setSdk, setShowSessionDialog);
+        await initializeSdkWithReconnection(
+          ssid,
+          setSdk,
+          setUser,
+          setShowSessionDialog
+        );
       }
     });
   } catch (error) {
@@ -127,6 +143,7 @@ const initializeSdkWithReconnection = async (
 
 export const SdkProvider = ({ children }: { children: ReactNode }) => {
   const setSdk = useSdkStore((state) => state.setSdk);
+  const setUser = useUserStore((state) => state.setUser);
   const sdk = useSdkStore((state) => state.sdk);
   const hasInitializedRef = useRef(false);
   const [showSessionDialog, setShowSessionDialog] = useState(false);
@@ -136,7 +153,7 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
     hasInitializedRef.current = true;
 
     const init = async () => {
-      const ssid = getCookie("ssid");
+      const ssid = getCookie(COOKIES.ssid);
       if (!ssid) {
         console.warn("No SSID cookie found. User may not be logged in.");
         setShowSessionDialog(true);
@@ -144,7 +161,12 @@ export const SdkProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        await initializeSdkWithReconnection(ssid, setSdk, setShowSessionDialog);
+        await initializeSdkWithReconnection(
+          ssid,
+          setSdk,
+          setUser,
+          setShowSessionDialog
+        );
       } catch (err) {
         console.error("Failed to initialize SDK:", err);
         setShowSessionDialog(true);

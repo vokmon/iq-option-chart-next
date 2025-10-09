@@ -2,24 +2,19 @@
 
 import { Button, Avatar, Text, Indicator } from "@mantine/core";
 import { forwardRef } from "react";
-import { useTranslations } from "next-intl";
+import { User } from "@/types/user";
 
 interface UserMenuButtonProps {
+  user?: User;
   firstName?: string;
   lastName?: string;
-  userId?: number;
 }
 
 const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
-  ({ firstName, lastName, userId, ...props }, ref) => {
-    const t = useTranslations();
-
+  ({ firstName, lastName, user, ...props }, ref) => {
     const getInitials = (first: string, last: string) => {
       return `${first?.charAt(0) || ""}${last?.charAt(0) || ""}`.toUpperCase();
     };
-
-    const fullName =
-      `${firstName || ""} ${lastName || ""}`.trim() || `${t("User")} ${userId}`;
 
     return (
       <Button
@@ -78,11 +73,11 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
           c="white"
           truncate
           style={{
-            maxWidth: "120px",
+            maxWidth: "200px",
             textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
           }}
         >
-          {fullName}
+          {user?.email}
         </Text>
       </Button>
     );

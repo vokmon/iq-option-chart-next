@@ -18,6 +18,7 @@
   "Retry": "Retry",
   "Close": "Close",
   "Email": "Email",
+  "ID": "ID",
   "Password": "Password",
   "Sign in": "Sign in",
   "Signing in": "Signing in...",
@@ -468,5 +469,10 @@
     "contactEmail": "Email: {supportEmail}",
     "contactResponse": "Response time: Within 24-48 hours",
     "footerText": "By using this service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
+  },
+  "subscription": {
+    "active": "Active",
+    "expired": "Expired",
+    "expiringSoon": "Expires in {days} days"
   }
 }

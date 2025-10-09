@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { COOKIES } from "@/constants/cookies";
 
 export async function POST(request: NextRequest) {
   try {
     // Get the SSID from cookies
-    const ssid = request.cookies.get("ssid")?.value;
+    const ssid = request.cookies.get(COOKIES.ssid)?.value;
 
     // Call IQ Option logout API if SSID exists
     if (ssid) {
@@ -25,12 +26,20 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ message: "Logged out successfully" });
 
     // Clear the SSID cookie
-    response.cookies.set("ssid", "", {
+    response.cookies.set(COOKIES.ssid, "", {
       httpOnly: false,
       secure: true,
       sameSite: "strict",
       expires: new Date(0), // Set to past date to delete
       path: "/",
+    });
+
+    // Clear the JWT cookie
+    response.cookies.set(COOKIES.accessToken, "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      expires: new Date(0), // Set to past date to delete
     });
 
     return response;
