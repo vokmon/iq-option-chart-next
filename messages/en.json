@@ -311,6 +311,15 @@
   "User not found": "User not found, please contact support",
   "User expired": "User expired, please contact support",
   "Enable": "Enable",
+  "active": "Active",
+  "expired": "Expired",
+  "expiringSoon": "Expires in {days} days",
+  "Subscription expires in days": "Subscription expires in {days} days",
+  "Subscription expires today": "Subscription expires today",
+  "Subscription expires tomorrow": "Subscription expires tomorrow",
+  "Expires in days": "Expires in {days} days",
+  "Expires today": "Expires today",
+  "Expires tomorrow": "Expires tomorrow",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",
@@ -469,10 +478,5 @@
     "contactEmail": "Email: {supportEmail}",
     "contactResponse": "Response time: Within 24-48 hours",
     "footerText": "By using this service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
-  },
-  "subscription": {
-    "active": "Active",
-    "expired": "Expired",
-    "expiringSoon": "Expires in {days} days"
   }
 }

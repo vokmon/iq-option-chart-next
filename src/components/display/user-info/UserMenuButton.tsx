@@ -1,8 +1,18 @@
 "use client";
 
-import { Button, Avatar, Text, Indicator } from "@mantine/core";
+import {
+  Button,
+  Avatar,
+  Text,
+  Indicator,
+  Tooltip,
+  ThemeIcon,
+} from "@mantine/core";
 import { forwardRef } from "react";
 import { User } from "@/types/user";
+import { useSubscriptionExpire } from "@/hooks/useSubscriptionExpire";
+import { IconBell } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 interface UserMenuButtonProps {
   user?: User;
@@ -12,8 +22,26 @@ interface UserMenuButtonProps {
 
 const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
   ({ firstName, lastName, user, ...props }, ref) => {
+    const t = useTranslations();
     const getInitials = (first: string, last: string) => {
       return `${first?.charAt(0) || ""}${last?.charAt(0) || ""}`.toUpperCase();
+    };
+
+    const expireState = useSubscriptionExpire(user);
+
+    const getTooltipLabel = () => {
+      if (expireState?.isExpiringSoon) {
+        if (expireState.daysRemaining > 1) {
+          return t("Subscription expires in days", {
+            days: expireState.daysRemaining,
+          });
+        } else if (expireState.daysRemaining === 1) {
+          return t("Subscription expires tomorrow");
+        } else {
+          return t("Subscription expires today");
+        }
+      }
+      return "";
     };
 
     return (
@@ -21,13 +49,15 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
         ref={ref}
         variant="subtle"
         rightSection={
-          <Text
-            c="white"
-            fw={600}
-            style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }}
-          >
-            ▼
-          </Text>
+          <div className="flex items-center gap-2">
+            <Text
+              c="white"
+              fw={600}
+              style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)" }}
+            >
+              ▼
+            </Text>
+          </div>
         }
         leftSection={
           <Indicator
@@ -39,21 +69,36 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
             processing
             withBorder
           >
-            <Avatar
-              size="sm"
-              radius="xl"
-              color="white"
-              style={{
-                fontSize: "12px",
-                background: "rgba(255, 255, 255, 0.25)",
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                color: "white",
-                fontWeight: "600",
-                textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
-              }}
-            >
-              {getInitials(firstName || "", lastName || "")}
-            </Avatar>
+            <div className="flex items-center gap-2">
+              {expireState?.isExpiringSoon && (
+                <Tooltip label={getTooltipLabel()} position="bottom">
+                  <ThemeIcon
+                    size="sm"
+                    variant="filled"
+                    color="orange"
+                    radius="xl"
+                    className="!border-2 !border-white !border-solid !animate-bounce"
+                  >
+                    <IconBell size={12} />
+                  </ThemeIcon>
+                </Tooltip>
+              )}
+              <Avatar
+                size="sm"
+                radius="xl"
+                color="white"
+                style={{
+                  fontSize: "12px",
+                  background: "rgba(255, 255, 255, 0.25)",
+                  border: "1px solid rgba(255, 255, 255, 0.3)",
+                  color: "white",
+                  fontWeight: "600",
+                  textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                {getInitials(firstName || "", lastName || "")}
+              </Avatar>
+            </div>
           </Indicator>
         }
         style={{

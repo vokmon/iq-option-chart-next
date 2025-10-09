@@ -311,6 +311,15 @@
   "User not found": "ผู้ใช้งานไม่พบ กรุณาติดต่อทีมงาน",
   "User expired": "ผู้ใช้งานหมดอายุ กรุณาติดต่อทีมงาน",
   "Enable": "เปิดใช้งาน",
+  "active": "ใช้งานได้",
+  "expired": "หมดอายุ",
+  "expiringSoon": "หมดอายุใน {days} วัน",
+  "Subscription expires in {days} days": "หมดอายุใน {days} วัน",
+  "Subscription expires today": "หมดอายุวันนี้",
+  "Subscription expires tomorrow": "หมดอายุวันพรุ่งนี้",
+  "Expires in days": "หมดอายุใน {days} วัน",
+  "Expires today": "หมดอายุวันนี้",
+  "Expires tomorrow": "หมดอายุวันพรุ่งนี้",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",
@@ -473,10 +482,5 @@
     "Daily profit target reached!": "ถึงเป้าหมายกำไรรายวันแล้ว!",
     "Daily loss limit reached": "ถึงขีดจำกัดการขาดทุนรายวันแล้ว",
     "Daily trading goals reached": "ถึงเป้าหมายการเทรดรายวันแล้ว"
-  },
-  "subscription": {
-    "active": "ใช้งานได้",
-    "expired": "หมดอายุ",
-    "expiringSoon": "หมดอายุใน {days} วัน"
   }
 }
