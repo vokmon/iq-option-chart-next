@@ -1,4 +1,4 @@
-import { Modal, Stack, Group, NumberInput, Text } from "@mantine/core";
+import { Modal, Stack, Group, NumberInput, Text, Switch } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
 
@@ -6,6 +6,8 @@ interface StochasticSettingsModalProps {
   opened: boolean;
   onClose: () => void;
   stochasticConfig: StochasticConfig;
+  showStochastic: boolean;
+  updateEnabled: (enabled: boolean) => void;
   updateKPeriod: (kPeriod: number) => void;
   updateDPeriod: (dPeriod: number) => void;
   updateSmoothing: (smoothing: number) => void;
@@ -16,6 +18,8 @@ export function StochasticSettingsModal({
   opened,
   onClose,
   stochasticConfig,
+  showStochastic,
+  updateEnabled,
   updateKPeriod,
   updateDPeriod,
   updateSmoothing,
@@ -35,6 +39,14 @@ export function StochasticSettingsModal({
           {t("Configure Stochastic Oscillator parameters")}
         </Text>
 
+        <Switch
+          label={t("Enable")}
+          checked={showStochastic}
+          onChange={(event) => updateEnabled(event.currentTarget.checked)}
+          size={size}
+          color="stochastic.4"
+        />
+
         <Group grow>
           <NumberInput
             label={t("%K Period")}
@@ -45,6 +57,7 @@ export function StochasticSettingsModal({
             step={1}
             size={size}
             placeholder="13"
+            disabled={!showStochastic}
           />
           <NumberInput
             label={t("%D Period")}
@@ -55,6 +68,7 @@ export function StochasticSettingsModal({
             step={1}
             size={size}
             placeholder="3"
+            disabled={!showStochastic}
           />
         </Group>
 
@@ -68,6 +82,7 @@ export function StochasticSettingsModal({
             step={1}
             size={size}
             placeholder="3"
+            disabled={!showStochastic}
           />
         </Group>
       </Stack>

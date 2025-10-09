@@ -1,8 +1,8 @@
-import { Switch, Group, Button } from "@mantine/core";
+import { Button, ThemeIcon, Tooltip } from "@mantine/core";
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { IconSettings } from "@tabler/icons-react";
+import { IconChartLine } from "@tabler/icons-react";
 import { BollingerBandsSettingsModal } from "./BollingerBandsSettingsModal";
 
 export function BollingerBandsComponent() {
@@ -18,35 +18,25 @@ export function BollingerBandsComponent() {
 
   return (
     <>
-      <Group justify="space-between" align="center" className="min-h-[36px]">
-        <Switch
-          label={t("Bollinger Bands")}
-          checked={showBollingerBands}
-          onChange={(event) =>
-            setShowBollingerBands(event.currentTarget.checked)
-          }
-          size="sm"
-          color="bollinger.4"
-          style={{ flex: 1 }}
-        />
-        {showBollingerBands && (
-          <Button
-            variant="subtle"
-            size="sm"
-            color="bollinger.4"
-            leftSection={<IconSettings size={16} />}
-            onClick={() => setOpened(true)}
-            style={{ flexShrink: 0 }}
-          >
-            {t("Settings")}
-          </Button>
-        )}
-      </Group>
+      <Tooltip label={t("Bollinger Bands Settings")}>
+        <Button
+          variant="subtle"
+          p={2}
+          size="xs"
+          onClick={() => setOpened(true)}
+        >
+          <ThemeIcon color="bollinger.4" size="sm">
+            <IconChartLine size={16} />
+          </ThemeIcon>
+        </Button>
+      </Tooltip>
 
       <BollingerBandsSettingsModal
         opened={opened}
         onClose={() => setOpened(false)}
         bollingerConfig={bollingerConfig}
+        showBollingerBands={showBollingerBands}
+        updateEnabled={(value) => setShowBollingerBands(value)}
         updatePeriod={updatePeriod}
         updateStdDev={updateStdDev}
         size="sm"

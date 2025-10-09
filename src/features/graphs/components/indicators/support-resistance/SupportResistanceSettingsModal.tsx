@@ -1,4 +1,4 @@
-import { Modal, Stack, Group, NumberInput, Text } from "@mantine/core";
+import { Modal, Stack, Group, NumberInput, Text, Switch } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
 
@@ -6,6 +6,8 @@ interface SupportResistanceSettingsModalProps {
   opened: boolean;
   onClose: () => void;
   supportResistanceConfig: SupportResistanceConfig;
+  showSupportResistance: boolean;
+  updateEnabled: (enabled: boolean) => void;
   updateBoxPeriod: (boxPeriod: number) => void;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
 }
@@ -14,6 +16,8 @@ export function SupportResistanceSettingsModal({
   opened,
   onClose,
   supportResistanceConfig,
+  showSupportResistance,
+  updateEnabled,
   updateBoxPeriod,
   size = "sm",
 }: SupportResistanceSettingsModalProps) {
@@ -31,6 +35,14 @@ export function SupportResistanceSettingsModal({
           {t("Configure Support & Resistance parameters")}
         </Text>
 
+        <Switch
+          label={t("Enable")}
+          checked={showSupportResistance}
+          onChange={(event) => updateEnabled(event.currentTarget.checked)}
+          size={size}
+          color="supportResistance.4"
+        />
+
         <Group grow>
           <NumberInput
             label={t("Box Period")}
@@ -41,6 +53,7 @@ export function SupportResistanceSettingsModal({
             step={1}
             size={size}
             placeholder="25"
+            disabled={!showSupportResistance}
           />
         </Group>
       </Stack>

@@ -326,26 +326,22 @@ export function SecondaryChart({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="relative mt-0 w-full"
-      style={{ height: chartHeight }}
-    >
-      <div className="absolute top-[-20px] left-0 z-100">
-        <div
-          className="px-3 flex flex-row gap-2"
-          style={{
-            background: "var(--glass-bg)",
-            backdropFilter: "blur(2px)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "12px",
-            boxShadow: "var(--glass-shadow)",
-          }}
-        >
-          <StochasticComponent />
-          <RSIComponent />
-        </div>
-      </div>
+    <div className="flex flex-row gap-1 w-full">
+      <GraphSidebar />
+      <div
+        ref={containerRef}
+        className="relative mt-0 w-full"
+        style={{ height: chartHeight }}
+      ></div>
     </div>
   );
 }
+
+const GraphSidebar = () => {
+  return (
+    <div className="flex flex-col gap-2">
+      <StochasticComponent />
+      <RSIComponent />
+    </div>
+  );
+};

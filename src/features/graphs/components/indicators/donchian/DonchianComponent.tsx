@@ -1,8 +1,8 @@
-import { Switch, Group, Button } from "@mantine/core";
+import { Button, Tooltip, ThemeIcon } from "@mantine/core";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { IconSettings } from "@tabler/icons-react";
+import { IconChartBar } from "@tabler/icons-react";
 import { DonchianSettingsModal } from "./DonchianSettingsModal";
 
 export function DonchianComponent() {
@@ -17,33 +17,25 @@ export function DonchianComponent() {
 
   return (
     <>
-      <Group justify="space-between" align="center" className="min-h-[36px]">
-        <Switch
-          label={t("Donchian Channels")}
-          checked={showDonchian}
-          onChange={(event) => setShowDonchian(event.currentTarget.checked)}
-          size="sm"
-          color="donchian.4"
-          style={{ flex: 1 }}
-        />
-        {showDonchian && (
-          <Button
-            variant="subtle"
-            size="sm"
-            leftSection={<IconSettings size={16} />}
-            onClick={() => setOpened(true)}
-            color="donchian.4"
-            style={{ flexShrink: 0 }}
-          >
-            {t("Settings")}
-          </Button>
-        )}
-      </Group>
+      <Tooltip label={t("Donchian Channels Settings")}>
+        <Button
+          variant="subtle"
+          p={2}
+          size="xs"
+          onClick={() => setOpened(true)}
+        >
+          <ThemeIcon color="donchian.4" size="sm">
+            <IconChartBar size={16} />
+          </ThemeIcon>
+        </Button>
+      </Tooltip>
 
       <DonchianSettingsModal
         opened={opened}
         onClose={() => setOpened(false)}
         donchianConfig={donchianConfig}
+        showDonchianChannels={showDonchian}
+        updateEnabled={(value) => setShowDonchian(value)}
         updateDonchianPeriod={updateDonchianPeriod}
         size="sm"
       />

@@ -443,23 +443,26 @@ export function MainChart({
   ]);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative mt-0 w-full animate-fade-in"
-      style={{ height: chartHeight }}
-    >
-      <div className="absolute top-0 left-0 z-100">
-        <div
-          className="px-3 animate-fade-in"
-          style={{
-            background: "var(--glass-bg)",
-            backdropFilter: "blur(2px)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "12px",
-            boxShadow: "var(--glass-shadow)",
-          }}
-        >
-          <GraphHeader activeId={activeId} />
+    <div className="flex flex-row gap-1 w-full">
+      <GraphSidebar />
+      <div
+        ref={containerRef}
+        className="relative mt-0 flex-1 animate-fade-in"
+        style={{ height: chartHeight }}
+      >
+        <div className="absolute top-0 left-0 z-100">
+          <div
+            className="px-3 animate-fade-in"
+            style={{
+              background: "var(--glass-bg)",
+              backdropFilter: "blur(2px)",
+              border: "1px solid var(--glass-border)",
+              borderRadius: "12px",
+              boxShadow: "var(--glass-shadow)",
+            }}
+          >
+            <GraphHeader activeId={activeId} />
+          </div>
         </div>
       </div>
     </div>
@@ -470,29 +473,23 @@ const GraphHeader = ({ activeId }: { activeId: number }) => {
   const { activeInformation } = useDigitalOptionsStore();
   const active = activeInformation[activeId];
   return (
-    <div>
-      {active && (
+    active && (
+      <div className="flex flex-row gap-2 items-center">
+        <Image src={active.imageUrl} alt={active.name} width={45} height={45} />
         <Text size="md" fw={700}>
           {active.name}
         </Text>
-      )}
-      <div className="flex items-center gap-4">
-        {active && (
-          <div className="flex flex-col items-start gap-2 animate-fade-in">
-            <Image
-              src={active.imageUrl}
-              alt={active.name}
-              width={45}
-              height={45}
-            />
-          </div>
-        )}
-        <div className="flex flex-col gap-0">
-          <BollingerBandsComponent />
-          <DonchianComponent />
-          <SupportResistanceComponent />
-        </div>
       </div>
+    )
+  );
+};
+
+const GraphSidebar = () => {
+  return (
+    <div className="flex flex-col gap-2">
+      <BollingerBandsComponent />
+      <DonchianComponent />
+      <SupportResistanceComponent />
     </div>
   );
 };

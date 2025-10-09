@@ -1,8 +1,8 @@
-import { Switch, Group, Button } from "@mantine/core";
+import { Button, Tooltip, ThemeIcon } from "@mantine/core";
 import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { IconSettings } from "@tabler/icons-react";
+import { IconChartArea } from "@tabler/icons-react";
 import { StochasticSettingsModal } from "./StochasticSettingsModal";
 
 export function StochasticComponent() {
@@ -19,33 +19,25 @@ export function StochasticComponent() {
 
   return (
     <>
-      <Group justify="space-between" align="center" className="min-h-[36px]">
-        <Switch
-          label={t("Stochastic Oscillator")}
-          checked={showStochastic}
-          onChange={(event) => setShowStochastic(event.currentTarget.checked)}
-          size="sm"
-          color="stochastic.4"
-          style={{ flex: 1 }}
-        />
-        {showStochastic && (
-          <Button
-            variant="subtle"
-            size="sm"
-            leftSection={<IconSettings size={16} />}
-            onClick={() => setOpened(true)}
-            color="stochastic.4"
-            style={{ flexShrink: 0 }}
-          >
-            {t("Settings")}
-          </Button>
-        )}
-      </Group>
+      <Tooltip label={t("Stochastic Oscillator Settings")}>
+        <Button
+          variant="subtle"
+          p={2}
+          size="xs"
+          onClick={() => setOpened(true)}
+        >
+          <ThemeIcon color="stochastic.4" size="sm">
+            <IconChartArea size={16} />
+          </ThemeIcon>
+        </Button>
+      </Tooltip>
 
       <StochasticSettingsModal
         opened={opened}
         onClose={() => setOpened(false)}
         stochasticConfig={stochasticConfig}
+        showStochastic={showStochastic}
+        updateEnabled={(value) => setShowStochastic(value)}
         updateKPeriod={updateKPeriod}
         updateDPeriod={updateDPeriod}
         updateSmoothing={updateSmoothing}

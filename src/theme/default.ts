@@ -119,16 +119,16 @@ const supportResistanceSupportColor: MantineColorsTuple = [
 ];
 
 const rsiColor: MantineColorsTuple = [
-  "#faf5ff", // 0 - lightest
-  "#f3e8ff", // 1
-  "#e9d5ff", // 2
-  "#ddd6fe", // 3
-  "#c4b5fd", // 4 - primary (RSI line)
-  "#a78bfa", // 5
-  "#8b5cf6", // 6
-  "#7c3aed", // 7
-  "#6d28d9", // 8
-  "#5b21b6", // 9 - darkest
+  "#fef3c7", // 0 - lightest
+  "#fde68a", // 1
+  "#fcd34d", // 2
+  "#fbbf24", // 3
+  "#f59e0b", // 4 - primary (RSI line)
+  "#d97706", // 5
+  "#b45309", // 6
+  "#92400e", // 7
+  "#78350f", // 8
+  "#451a03", // 9 - darkest
 ];
 
 // Candle size colors - different colors for different timeframes
@@ -402,16 +402,16 @@ export const themeColors = {
   },
   // RSI colors
   rsi: {
-    50: "#faf5ff",
-    100: "#f3e8ff",
-    200: "#e9d5ff",
-    300: "#ddd6fe",
-    400: "#c4b5fd", // primary (RSI line)
-    500: "#a78bfa",
-    600: "#8b5cf6",
-    700: "#7c3aed",
-    800: "#6d28d9",
-    900: "#5b21b6",
+    50: "#fef3c7",
+    100: "#fde68a",
+    200: "#fcd34d",
+    300: "#fbbf24",
+    400: "#f59e0b", // primary (RSI line)
+    500: "#d97706",
+    600: "#b45309",
+    700: "#92400e",
+    800: "#78350f",
+    900: "#451a03",
   },
 
   // Semantic colors

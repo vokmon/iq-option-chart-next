@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ThemeIcon, Text, Stack, Group, Skeleton } from "@mantine/core";
-import { IconChartBar, IconLoader } from "@tabler/icons-react";
+import { ThemeIcon, Text, Group, Skeleton } from "@mantine/core";
+import { IconLoader } from "@tabler/icons-react";
 
 export default function ReportLoader() {
   const t = useTranslations();
