@@ -50,17 +50,17 @@ export const useAutoTrade = ({
         return;
       }
 
-      const openPosition = openPositions.find(
-        (position) =>
-          position.activeId === activeId &&
-          position &&
-          position.direction?.toLowerCase() === signal.toLowerCase()
-      );
-      if (openPosition) {
-        console.log("Open position found", activeId);
-        // If thre is an open position, we don't need to create a new one
-        return;
-      }
+      // const openPosition = openPositions.find(
+      //   (position) =>
+      //     position.activeId === activeId &&
+      //     position &&
+      //     position.direction?.toLowerCase() === signal.toLowerCase()
+      // );
+      // if (openPosition) {
+      //   console.log("Open position found", activeId);
+      //   // If thre is an open position, we don't need to create a new one
+      //   return;
+      // }
 
       const selectedBalanceId = getSelectedBalanceId(asset.id);
       const balances = await sdk.balances();

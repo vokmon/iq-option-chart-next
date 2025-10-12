@@ -3,6 +3,7 @@ import {
   CandlestickSeries,
   createChart,
   type UTCTimestamp,
+  AutoscaleInfoProvider,
 } from "lightweight-charts";
 import { useSdk } from "@/hooks/useSdk";
 import { useWindowHeight } from "@/features/graphs/hooks/chart/useWindowHeight";
