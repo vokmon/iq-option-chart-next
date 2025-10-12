@@ -1,5 +1,5 @@
 "use client";
-import { Divider, Flex } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { AssetSelector } from "../input/AssetSelector";
 import { useEffect } from "react";
 import TradingPanelController from "../input/TradingPanelController";
@@ -24,13 +24,7 @@ export default function ChartSidebar() {
   }, [activeAsset?.asset?.activeId, handleAssetSelect]);
 
   return (
-    <Flex
-      w="100%"
-      h="100%"
-      direction="column"
-      gap="xs"
-      style={{ minHeight: 0 }}
-    >
+    <Flex w="100%" h="100%" direction="column" gap={3} style={{ minHeight: 0 }}>
       <Flex direction="row" gap="md">
         <div className="relative w-full">
           {!activeAsset?.asset && <AssetSelectorAttentions />}
@@ -48,7 +42,6 @@ export default function ChartSidebar() {
           key={`candle-${activeAssetId}`} // Force re-render when active asset changes
         />
       </Flex>
-      <Divider />
       <TradingPanelController />
       <Flex className="h-12">
         <SignalPanelController />
@@ -57,8 +50,12 @@ export default function ChartSidebar() {
         <AutoTradeSelectorController />
       </Flex>
       <Flex className="flex-1 flex-col w-full relative gap-1">
-        <OpenPositionTableController />
-        <ClosedPositionTableController />
+        <div className="h-full w-full relative overflow-y-auto ">
+          <div className="h-full w-full absolute">
+            <OpenPositionTableController />
+            <ClosedPositionTableController />
+          </div>
+        </div>
       </Flex>
       <Flex className="h-15">
         <TodayTradeSummary />

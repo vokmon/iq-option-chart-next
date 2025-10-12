@@ -12,7 +12,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <LoadPositionsDataComponent />
       <Flex w="100%" h="100%" direction="column">
         <AppToolbar />
-        <Flex w="100%" h="100%" flex={1}>
+        <Flex
+          w="100%"
+          // h="100%"
+          flex={1}
+          className="bg-gradient-to-r from-[rgba(28,34,51,1)] to-[rgba(18,22,33,0.85)]"
+        >
           {children}
           <InstallPrompt />
         </Flex>

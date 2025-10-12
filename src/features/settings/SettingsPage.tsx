@@ -29,7 +29,12 @@ export default function SettingsPage() {
           <Box className="p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/40">
             <IconSettings size={32} className="text-white" />
           </Box>
-          <Text size="xl" fw={700} className="drop-shadow-sm tracking-wide">
+          <Text
+            size="xl"
+            fw={700}
+            c="dark.1"
+            className="drop-shadow-sm tracking-wide"
+          >
             {t("Trade Settings")}
           </Text>
         </Group>

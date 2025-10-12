@@ -60,6 +60,7 @@ export interface BreakWarningActions {
   // Getters with computed status
   getActiveWarning: (balanceId: number) => BreakWarningEvent | null;
   getActiveWarnings: () => BreakWarningEvent[];
+  removeWarning: (warningId: string) => void;
 }
 
 export type BreakWarningStore = BreakWarningState & BreakWarningActions;
@@ -182,6 +183,17 @@ export const useBreakWarningStore = create<BreakWarningStore>()(
         );
 
         return warnings.filter(isActive);
+      },
+
+      removeWarning: (warningId: string) => {
+        set((state) => {
+          return {
+            warningsByBalance: {
+              ...state.warningsByBalance,
+              [warningId]: null,
+            },
+          };
+        });
       },
     }),
     {

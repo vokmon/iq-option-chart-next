@@ -42,6 +42,7 @@ export default function TradingPanelController() {
           balance,
           amount,
           direction: DigitalOptionsDirection.Call,
+          period: activeAsset!.candleSize!,
         });
       }}
       onPut={async (balance, amount) => {
@@ -50,6 +51,7 @@ export default function TradingPanelController() {
           balance,
           amount,
           direction: DigitalOptionsDirection.Put,
+          period: activeAsset!.candleSize!,
         });
       }}
     />

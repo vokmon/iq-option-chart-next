@@ -1,7 +1,7 @@
 export const APP_METADATA = {
-  name: "IQ Option Chart",
-  description: "IQ Option Chart - Advanced Trading Charts",
-  supportEmail: "support@iqoption-th.com",
+  name: "BO Academy",
+  description: "BOA - BO Academy",
+  supportEmail: "support@boa-academy.com",
 };
 
 export const IQ_OPTION = {

@@ -15,6 +15,7 @@ interface TradingParams {
   balance: Balance;
   amount: number;
   direction: DigitalOptionsDirection;
+  period: number;
   isSystemTrade?: boolean;
 }
 
@@ -42,6 +43,7 @@ export function useTradingActions({
     balance,
     amount,
     direction,
+    period,
     isSystemTrade,
   }: TradingParams): Promise<void> => {
     try {
@@ -55,7 +57,9 @@ export function useTradingActions({
       ]);
 
       const instrument = instruments?.getAvailableForBuyAt(new Date());
-      const firstInstrument = instrument?.[0];
+      const firstInstrument = instrument?.find(
+        (instrument) => instrument.period === period
+      );
 
       if (!firstInstrument) {
         throw new Error("No available instruments for trading");
@@ -101,6 +105,7 @@ export function useTradingActions({
       balance: Balance;
       amount: number;
       direction: DigitalOptionsDirection;
+      period: number;
       isSystemTrade?: boolean;
     }) => executeTrade({ ...params }),
   });

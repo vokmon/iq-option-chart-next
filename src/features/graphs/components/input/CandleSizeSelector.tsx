@@ -37,6 +37,9 @@ export default function CandleSizeSelector() {
           <IconClock color="white" />
         </div>
       }
+      classNames={{
+        label: "text-white/90",
+      }}
     />
   );
 }

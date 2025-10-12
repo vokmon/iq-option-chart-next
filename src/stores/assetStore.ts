@@ -28,10 +28,6 @@ export interface AssetIndicatorSettings {
     enabled: boolean;
     config: SupportResistanceConfig;
   };
-  rsi: {
-    enabled: boolean;
-    config: RSIConfig;
-  };
 }
 
 export interface AssetState {
@@ -86,10 +82,6 @@ const defaultIndicators: AssetIndicatorSettings = {
   supportResistance: {
     enabled: true,
     config: { boxPeriod: 25 },
-  },
-  rsi: {
-    enabled: true,
-    config: { period: 14 },
   },
 };
 
@@ -276,12 +268,6 @@ export const useAssetStore = create<AssetStore>()(
                       supportResistance: {
                         ...assetState.indicators.supportResistance,
                         ...indicators.supportResistance,
-                      },
-                    }),
-                    ...(indicators.rsi && {
-                      rsi: {
-                        ...assetState.indicators.rsi,
-                        ...indicators.rsi,
                       },
                     }),
                   },

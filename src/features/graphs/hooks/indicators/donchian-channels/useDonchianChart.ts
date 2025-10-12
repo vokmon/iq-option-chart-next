@@ -63,7 +63,7 @@ export function useDonchianChart({
 
       const upperChannelSeries = chart.addSeries(LineSeries, {
         color: colors.primary,
-        lineWidth: 2,
+        lineWidth: 4,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Upper",
         lastValueVisible: false,
@@ -89,7 +89,7 @@ export function useDonchianChart({
 
       const lowerChannelSeries = chart.addSeries(LineSeries, {
         color: colors.primary,
-        lineWidth: 2,
+        lineWidth: 4,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Lower",
         lastValueVisible: false,
@@ -102,7 +102,7 @@ export function useDonchianChart({
 
       const areaSeries = chart.addSeries(AreaSeries, {
         topColor: "rgba(206, 147, 216, 0.3)",
-        bottomColor: "rgba(206, 147, 216, 0)",
+        bottomColor: "rgba(34, 40, 58, 0.1)",
         lineColor: "transparent", // Hide the boundary lines
         priceLineVisible: false,
         lastValueVisible: false,

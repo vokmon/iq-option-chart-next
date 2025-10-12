@@ -24,8 +24,11 @@ export default function NotificationPanel() {
   const { todayNotifications, hasNotifications: hasGoalNotificationsToday } =
     useTodayGoalNotifications();
 
-  const { activeWarnings, hasActiveWarnings: hasTakeABreakNotifications } =
-    useTakeABreakNotification();
+  const {
+    activeWarnings,
+    hasActiveWarnings: hasTakeABreakNotifications,
+    removeWarning,
+  } = useTakeABreakNotification();
 
   const hasNotifications =
     hasGoalNotificationsToday || hasTakeABreakNotifications;
@@ -100,7 +103,10 @@ export default function NotificationPanel() {
           </Box>
         ) : (
           <Stack gap="xs" p="xs">
-            <TakeABreakNotificationList warnings={activeWarnings} />
+            <TakeABreakNotificationList
+              warnings={activeWarnings}
+              onComplete={(warning) => removeWarning(warning.id)}
+            />
             <GoalFultillmentNotificationList
               notifications={todayNotifications}
             />

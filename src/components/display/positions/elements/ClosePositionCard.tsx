@@ -10,17 +10,21 @@ interface ClosePositionCardProps {
   position: Position;
   activeInfo?: Active;
   balance?: Balance;
+  className?: string;
+  textColor?: string;
 }
 
 export default function ClosePositionCard({
   position,
   activeInfo,
   balance,
+  className,
+  textColor,
 }: ClosePositionCardProps) {
   const t = useTranslations();
 
   const renderPositionSummary = (position: Position, activeInfo?: Active) => (
-    <div className="flex flex-col justify-center items-start w-full gap-1">
+    <div className={`flex flex-col justify-center items-start w-full gap-1`}>
       <div className="flex flex-row justify-between items-center gap-2 w-full">
         <div className="flex flex-row justify-start items-center gap-2">
           <div className="w-6 h-6">
@@ -33,7 +37,7 @@ export default function ClosePositionCard({
               />
             )}
           </div>
-          <Text size="sm" fw={500}>
+          <Text size="sm" fw={500} c={textColor}>
             {activeInfo?.name || position.active?.name}
           </Text>
         </div>
@@ -56,7 +60,7 @@ export default function ClosePositionCard({
             </div>
           </Badge>
 
-          <Text size="sm" fw={600}>
+          <Text size="sm" fw={600} c={textColor}>
             {formatAmount(position.invest || 0, balance?.currency, {
               noDecimals: true,
             })}
@@ -120,6 +124,7 @@ export default function ClosePositionCard({
       variant="contained"
       chevronPosition="right"
       key={position.externalId}
+      className={className}
     >
       <Accordion.Item value={String(position.externalId)}>
         <Accordion.Control>

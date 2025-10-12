@@ -66,6 +66,11 @@ const useCalculateGoalFulfillment = () => {
             ? GoalFulfillmentType.PROFIT
             : GoalFulfillmentType.LOSS;
 
+        const targetValue =
+          type === GoalFulfillmentType.PROFIT
+            ? dailyProfitTarget
+            : -dailyLossLimit;
+
         recordGoalFulfillment({
           balance: {
             balanceId: balance.id,
@@ -74,7 +79,7 @@ const useCalculateGoalFulfillment = () => {
           },
           type: type,
           actualValue: sum,
-          targetValue: dailyProfitTarget || 0,
+          targetValue: targetValue,
         });
 
         // turn off auto trade

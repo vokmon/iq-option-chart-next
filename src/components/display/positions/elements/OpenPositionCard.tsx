@@ -15,6 +15,8 @@ interface OpenPositionCardProps {
   activeInfo?: Active;
   balance?: Balance;
   onSellClick?: (position: Position) => void;
+  className?: string;
+  textColor?: string;
 }
 
 export default function OpenPositionCard({
@@ -22,6 +24,8 @@ export default function OpenPositionCard({
   activeInfo,
   balance,
   onSellClick,
+  className,
+  textColor,
 }: OpenPositionCardProps) {
   const renderPositionSummary = (position: Position, activeInfo?: Active) => (
     <div className="flex flex-col justify-center items-start w-full gap-1">
@@ -38,7 +42,7 @@ export default function OpenPositionCard({
                 />
               )}
             </div>
-            <Text size="sm" fw={500}>
+            <Text size="sm" fw={500} c={textColor}>
               {activeInfo?.name || position.active?.name}
             </Text>
           </div>
@@ -107,7 +111,7 @@ export default function OpenPositionCard({
       variant="contained"
       chevronPosition="right"
       key={position.externalId}
-      className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+      className={`${className} bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200`}
     >
       <Accordion.Item
         value={String(position.externalId)}
@@ -116,7 +120,7 @@ export default function OpenPositionCard({
         <Accordion.Control className="bg-transparent hover:bg-blue-100/50 transition-colors duration-200">
           {renderPositionSummary(position, activeInfo)}
         </Accordion.Control>
-        <Accordion.Panel className="bg-white/80 backdrop-blur-sm">
+        <Accordion.Panel className="backdrop-blur-sm">
           <PositionDetails position={position} />
         </Accordion.Panel>
       </Accordion.Item>

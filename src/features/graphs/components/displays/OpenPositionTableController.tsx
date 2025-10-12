@@ -32,6 +32,8 @@ export default function OpenPositionTableController() {
         activeInformation={activeInformation}
         balance={selectedBalance}
         onSellClick={handleSellClick}
+        cardClassName="bg-gray-300"
+        textColor="black"
       />
     </div>
   );

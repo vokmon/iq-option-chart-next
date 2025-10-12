@@ -56,7 +56,7 @@ export default function TradingPanel({
   };
 
   return (
-    <Paper p="sm" withBorder radius="md">
+    <Paper p="sm" withBorder radius="md" className="!bg-gray-200">
       <Stack gap="sm">
         {/* Balance Selection */}
         <BalanceSelector

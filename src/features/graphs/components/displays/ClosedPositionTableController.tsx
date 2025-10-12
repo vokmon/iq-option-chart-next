@@ -17,15 +17,15 @@ export default function ClosedPositionTableController() {
   }
 
   return (
-    <div className="h-full w-full relative overflow-y-auto ">
-      <div className="h-full w-full absolute">
-        <ClosedPositionsPanel
-          closedPositions={closedPositionsForSelectedBalance}
-          activeInformation={activeInformation}
-          balance={selectedBalance}
-          itemsPerPage={20}
-        />
-      </div>
+    <div className="h-full w-full">
+      <ClosedPositionsPanel
+        closedPositions={closedPositionsForSelectedBalance}
+        activeInformation={activeInformation}
+        balance={selectedBalance}
+        itemsPerPage={20}
+        cardClassName="bg-gray-200 rounded-lg border-gray-500"
+        // textColor="gray"
+      />
     </div>
   );
 }

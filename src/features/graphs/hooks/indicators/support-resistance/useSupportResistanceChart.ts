@@ -141,6 +141,7 @@ export function useSupportResistanceChart({
             value: latestSR.resistance,
           });
         }
+
         if (latestSR.support !== null) {
           series.support?.update({
             time: latestSR.time as UTCTimestamp,

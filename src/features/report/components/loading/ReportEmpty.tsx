@@ -21,7 +21,7 @@ export default function ReportEmpty() {
           <ThemeIcon
             size={120}
             radius="xl"
-            variant="light"
+            variant="filled"
             color="blue"
             className="mx-auto"
           >
@@ -41,8 +41,8 @@ export default function ReportEmpty() {
         {/* Description */}
         <Text
           size="lg"
-          c="dimmed"
-          className="text-slate-600 dark:text-slate-400 mb-8"
+          c="dark.8"
+          className="text-slate-100 dark:text-slate-400 mb-8"
         >
           {t(
             "Start your trading journey to see detailed performance reports, charts, and analytics"
@@ -55,7 +55,7 @@ export default function ReportEmpty() {
             <ThemeIcon
               size="lg"
               radius="xl"
-              variant="light"
+              variant="filled"
               color="green"
               className="mb-3"
             >
@@ -70,7 +70,7 @@ export default function ReportEmpty() {
             </Text>
             <Text
               size="xs"
-              c="dimmed"
+              c="dark.8"
               className="text-slate-600 dark:text-slate-400"
             >
               {t("Monitor your P&L progression with detailed charts")}
@@ -81,7 +81,7 @@ export default function ReportEmpty() {
             <ThemeIcon
               size="lg"
               radius="xl"
-              variant="light"
+              variant="filled"
               color="blue"
               className="mb-3"
             >
@@ -96,7 +96,7 @@ export default function ReportEmpty() {
             </Text>
             <Text
               size="xs"
-              c="dimmed"
+              c="dark.8"
               className="text-slate-600 dark:text-slate-400"
             >
               {t("Analyze performance by individual assets")}
@@ -107,7 +107,7 @@ export default function ReportEmpty() {
             <ThemeIcon
               size="lg"
               radius="xl"
-              variant="light"
+              variant="filled"
               color="orange"
               className="mb-3"
             >
@@ -122,7 +122,7 @@ export default function ReportEmpty() {
             </Text>
             <Text
               size="xs"
-              c="dimmed"
+              c="dark.8"
               className="text-slate-600 dark:text-slate-400"
             >
               {t("Get actionable insights from your trading data")}
@@ -134,7 +134,7 @@ export default function ReportEmpty() {
         <Stack gap="md" align="center" mb="md">
           <Text
             size="sm"
-            c="dimmed"
+            c="dark.8"
             className="text-slate-600 dark:text-slate-400"
           >
             {t("Ready to start trading?")}
@@ -165,7 +165,7 @@ export default function ReportEmpty() {
         {/* Footer Note */}
         <Text
           size="xs"
-          c="dimmed"
+          c="dark.8"
           className="mt-8 text-slate-500 dark:text-slate-500"
         >
           {t("Your trading data will appear here once you start making trades")}

@@ -289,7 +289,7 @@ export function TabBar() {
                         e.currentTarget.style.backgroundColor =
                           colorScheme === "dark"
                             ? "var(--mantine-color-blue-8)"
-                            : "var(--mantine-color-blue-0)";
+                            : "var(--mantine-color-blue-4)";
                         e.currentTarget.style.borderColor =
                           "var(--mantine-color-blue-3)";
                       }
@@ -340,7 +340,7 @@ export function TabBar() {
                                 : "var(--mantine-color-blue-9)"
                               : asset.isEmpty
                               ? "var(--mantine-color-dimmed)"
-                              : undefined,
+                              : "var(--mantine-color-gray-3)",
                           fontWeight: activeAssetId === asset.id ? 600 : 400,
                         }}
                       >
@@ -418,7 +418,7 @@ export function TabBar() {
                   size="xs"
                   variant="filled"
                   color={assets.length >= MAX_ASSETS ? "gray" : "blue"}
-                  className="absolute -top-3 -right-4 min-w-[18px] h-[18px] text-[9px] font-semibold flex items-center justify-center rounded-full shadow-sm"
+                  className="absolute -top-2 -right-4 min-w-[18px] h-[18px] text-[9px] font-semibold flex items-center justify-center rounded-full shadow-sm"
                   style={{
                     border: "1px solid white",
                     boxShadow:

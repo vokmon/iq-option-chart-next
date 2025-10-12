@@ -1,48 +1,23 @@
 "use client";
 
 import { BreakWarningEvent } from "@/stores/notifications/breakWarningStore";
-import { Box, Group, Text, ThemeIcon, Badge, Progress } from "@mantine/core";
-import { IconCoffee, IconClock } from "@tabler/icons-react";
+import { Box, Group, Text, ThemeIcon, Badge } from "@mantine/core";
+import { IconCoffee } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { getBalanceTypeColor, getBalanceTypeLabel } from "@/utils/balanceType";
 import { formatDateTime } from "@/utils/dateTime";
-import { useEffect, useState } from "react";
+import CountdownWithProgressBar from "@/components/display/countdown/CountdownWithProgressBar";
 
 export default function TakeABreakNotificationItem({
   warning,
+  onComplete,
 }: {
   warning: BreakWarningEvent;
+  onComplete?: () => void;
 }) {
   const t = useTranslations();
-  const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   const lossRate = Math.round((warning.lossCount / warning.totalOrders) * 100);
-
-  // Calculate time remaining until break period ends
-  useEffect(() => {
-    const updateTimeRemaining = () => {
-      const now = Date.now();
-      const remaining = Math.max(0, warning.expiresAt - now);
-      setTimeRemaining(remaining);
-    };
-
-    updateTimeRemaining();
-    const interval = setInterval(updateTimeRemaining, 1000);
-
-    return () => clearInterval(interval);
-  }, [warning.expiresAt]);
-
-  const formatTimeRemaining = (ms: number) => {
-    const minutes = Math.floor(ms / (1000 * 60));
-    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
-  const getProgressPercentage = () => {
-    const totalDuration = warning.expiresAt - warning.triggerTime;
-    const elapsed = Date.now() - warning.triggerTime;
-    return Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-  };
 
   return (
     <Box className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-700">
@@ -86,7 +61,7 @@ export default function TakeABreakNotificationItem({
       </Group>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2 mb-2">
         <div className="text-center p-2 bg-white dark:bg-gray-900 rounded">
           <Text size="xs" c="dimmed" mb={1}>
             {t("Time")}
@@ -125,34 +100,15 @@ export default function TakeABreakNotificationItem({
       </div>
 
       {/* Countdown section */}
-      {warning.settings.pauseAutoTrade && (
-        <Box className="mt-3 p-3 bg-orange-100 dark:bg-orange-900/30 rounded border border-orange-300 dark:border-orange-600">
-          <Group justify="space-between" align="center" mb="xs">
-            <Text size="xs" fw={600} c="orange.7">
-              {t("Take your time")}
-            </Text>
-            <Group gap="xs">
-              <IconClock size={12} />
-              <Text size="xs" fw={600} c="orange.6">
-                {formatTimeRemaining(timeRemaining)}
-              </Text>
-            </Group>
-          </Group>
-
-          <Progress
-            value={getProgressPercentage()}
-            color="orange"
-            size="xs"
-            radius="xl"
-            animated
-            className="mb-2"
-          />
-
-          <Text size="xs" c="orange.6" ta="center">
-            {t("Auto-trading paused")}
-          </Text>
-        </Box>
-      )}
+      <CountdownWithProgressBar
+        title={t("Take your time")}
+        subtitle={t(
+          "I've turned off auto-trading for you When you're ready to try again, just turn it back on"
+        )}
+        triggerTime={warning.triggerTime}
+        expiresAt={warning.expiresAt}
+        onComplete={onComplete}
+      />
     </Box>
   );
 }

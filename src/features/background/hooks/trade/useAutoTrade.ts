@@ -84,6 +84,7 @@ export const useAutoTrade = ({
         balance: balance,
         amount: autoTrade.amount,
         direction: signal,
+        period: asset.candleSize,
         isSystemTrade: true,
       });
     };

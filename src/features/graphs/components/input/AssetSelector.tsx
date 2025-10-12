@@ -83,6 +83,9 @@ export function AssetSelector({
           opacity: "1 !important",
         },
       }}
+      classNames={{
+        label: "text-white/90",
+      }}
       leftSectionWidth={40}
       leftSection={
         activeInformation[selectedActiveId as unknown as number]?.imageUrl && (

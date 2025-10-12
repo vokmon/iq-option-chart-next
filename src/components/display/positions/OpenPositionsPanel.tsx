@@ -8,6 +8,8 @@ interface OpenPositionsPanelProps {
   activeInformation?: Record<number, Active>;
   balance?: Balance;
   onSellClick?: (position: Position) => void;
+  cardClassName?: string;
+  textColor?: string;
 }
 
 export default function OpenPositionsPanel({
@@ -15,6 +17,8 @@ export default function OpenPositionsPanel({
   activeInformation,
   balance,
   onSellClick,
+  cardClassName,
+  textColor,
 }: OpenPositionsPanelProps) {
   if (openPositions.length === 0) {
     return null;
@@ -30,6 +34,8 @@ export default function OpenPositionsPanel({
             activeInfo={activeInfo}
             balance={balance}
             onSellClick={onSellClick}
+            className={cardClassName}
+            textColor={textColor}
           />
         );
       })}

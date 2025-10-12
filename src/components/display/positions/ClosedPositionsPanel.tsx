@@ -11,6 +11,8 @@ interface ClosedPositionsPanelProps {
   activeInformation?: Record<number, Active>;
   balance?: Balance;
   itemsPerPage?: number;
+  cardClassName?: string;
+  textColor?: string;
 }
 
 const DEFAULT_ITEMS_PER_PAGE = 10;
@@ -20,6 +22,8 @@ export default function ClosedPositionsPanel({
   activeInformation,
   balance,
   itemsPerPage = DEFAULT_ITEMS_PER_PAGE,
+  cardClassName,
+  textColor,
 }: ClosedPositionsPanelProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -59,6 +63,8 @@ export default function ClosedPositionsPanel({
               position={position}
               activeInfo={activeInfo}
               balance={balance}
+              className={cardClassName}
+              textColor={textColor}
             />
           );
         })}

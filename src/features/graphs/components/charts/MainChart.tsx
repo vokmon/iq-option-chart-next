@@ -102,11 +102,19 @@ export function MainChart({
 
     const chart = createChart(containerRef.current, {
       layout: {
-        textColor: "black",
+        textColor: "gray",
         attributionLogo: false,
         background: { color: "transparent" },
       },
       height: chartHeight,
+      grid: {
+        vertLines: {
+          color: "gray",
+        },
+        horzLines: {
+          color: "gray",
+        },
+      },
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
@@ -141,6 +149,12 @@ export function MainChart({
       lastValueVisible: true,
       priceLineWidth: 4,
       priceLineStyle: 2, // 0 = solid, 1 = dotted, 2 = dashed
+      upColor: "#10b981", // Rich emerald green for bullish candles
+      downColor: "#dc2626", // Saturated red for bearish candles
+      borderUpColor: "#10b981",
+      borderDownColor: "#dc2626",
+      wickUpColor: "#10b981",
+      wickDownColor: "#dc2626",
     });
 
     // Create Bollinger Bands series
@@ -476,7 +490,7 @@ const GraphHeader = ({ activeId }: { activeId: number }) => {
     active && (
       <div className="flex flex-row gap-2 items-center">
         <Image src={active.imageUrl} alt={active.name} width={45} height={45} />
-        <Text size="md" fw={700}>
+        <Text size="md" fw={700} c="white">
           {active.name}
         </Text>
       </div>

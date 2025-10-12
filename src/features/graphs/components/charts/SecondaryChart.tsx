@@ -4,11 +4,8 @@ import { useSdk } from "@/hooks/useSdk";
 import { Candle, RealTimeChartDataLayer } from "@quadcode-tech/client-sdk-js";
 import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
 import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
-import { useRSIChart } from "@/features/graphs/hooks/indicators/rsi/useRSIChart";
-import { useRSITabQuery } from "@/features/graphs/hooks/indicators/rsi/useRSITabQuery";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
-import { RSIComponent } from "../indicators/rsi/RSIComponent";
 
 interface SecondaryChartProps {
   activeId: number;
@@ -32,9 +29,6 @@ export function SecondaryChart({
   // Query parameter hooks for stochastic oscillator
   const { showStochastic, stochasticConfig } = useStochasticTabQuery();
 
-  // Query parameter hooks for RSI
-  const { showRSI, rsiConfig } = useRSITabQuery();
-
   // Stochastic Oscillator hook
   const {
     createStochasticSeries,
@@ -46,22 +40,11 @@ export function SecondaryChart({
     stochasticConfig,
   });
 
-  // RSI hook
-  const {
-    createRSISeries,
-    updateRSIData,
-    destroyRSISeries,
-    recreateRSISeries,
-  } = useRSIChart({
-    showRSI,
-    rsiConfig,
-  });
-
   // Theme change detection
   const { onThemeChange } = useThemeChange();
 
   useEffect(() => {
-    if (!sdk || !containerRef.current || (!showStochastic && !showRSI)) return;
+    if (!sdk || !containerRef.current || !showStochastic) return;
 
     let isDisposed = false;
     let chartLayer: RealTimeChartDataLayer;
@@ -69,9 +52,17 @@ export function SecondaryChart({
 
     const chart = createChart(containerRef.current, {
       layout: {
-        textColor: "black",
+        textColor: "gray",
         attributionLogo: false,
         background: { color: "transparent" },
+      },
+      grid: {
+        vertLines: {
+          color: "gray",
+        },
+        horzLines: {
+          color: "gray",
+        },
       },
       height: chartHeight,
       timeScale: {
@@ -105,9 +96,6 @@ export function SecondaryChart({
     // Create Stochastic Oscillator series
     let stochasticSeries = createStochasticSeries(chart);
 
-    // Create RSI series
-    let rsiSeries = createRSISeries(chart);
-
     // Handle theme changes by recreating series
     const cleanupThemeChange = onThemeChange(() => {
       if (isDisposed) return;
@@ -120,18 +108,11 @@ export function SecondaryChart({
           stochasticSeries = recreateStochasticSeries(chart, stochasticSeries);
         }
 
-        if (showRSI) {
-          rsiSeries = recreateRSISeries(chart, rsiSeries);
-        }
-
         // Re-update data with current candles
         if (chartLayer) {
           const allCandles = chartLayer.getAllCandles();
           if (showStochastic) {
             updateStochasticData(stochasticSeries, allCandles);
-          }
-          if (showRSI) {
-            updateRSIData(rsiSeries, allCandles);
           }
         }
       }, 100); // 100ms delay to ensure CSS variables are updated
@@ -150,11 +131,6 @@ export function SecondaryChart({
       // Update Stochastic Oscillator data
       if (showStochastic) {
         updateStochasticData(stochasticSeries, candles);
-      }
-
-      // Update RSI data
-      if (showRSI) {
-        updateRSIData(rsiSeries, candles);
       }
 
       // Auto-fit the chart to show the data better
@@ -178,9 +154,6 @@ export function SecondaryChart({
           if (showStochastic) {
             updateStochasticData(stochasticSeries, allCandles, true);
           }
-          if (showRSI) {
-            updateRSIData(rsiSeries, allCandles, true);
-          }
         } catch (error) {
           console.warn("Error updating indicator data:", error);
         }
@@ -198,9 +171,6 @@ export function SecondaryChart({
           // Recalculate indicators after consistency recovery
           if (showStochastic) {
             updateStochasticData(stochasticSeries, all);
-          }
-          if (showRSI) {
-            updateRSIData(rsiSeries, all);
           }
         } catch (error) {
           console.warn("Error handling indicator consistency recovery:", error);
@@ -237,9 +207,6 @@ export function SecondaryChart({
                 // Update indicators with new historical data
                 if (showStochastic) {
                   updateStochasticData(stochasticSeries, moreData);
-                }
-                if (showRSI) {
-                  updateRSIData(rsiSeries, moreData);
                 }
               } catch (error) {
                 console.warn(
@@ -286,9 +253,6 @@ export function SecondaryChart({
         if (showStochastic) {
           destroyStochasticSeries(chart, stochasticSeries);
         }
-        if (showRSI) {
-          destroyRSISeries(chart, rsiSeries);
-        }
       } catch (error) {
         console.warn("Error destroying indicator series:", error);
       }
@@ -308,22 +272,12 @@ export function SecondaryChart({
     chartMinutesBack,
     showStochastic,
     stochasticConfig,
-    showRSI,
-    rsiConfig,
     createStochasticSeries,
     updateStochasticData,
     destroyStochasticSeries,
     recreateStochasticSeries,
-    createRSISeries,
-    updateRSIData,
-    destroyRSISeries,
-    recreateRSISeries,
     onThemeChange,
   ]);
-
-  if (!showStochastic && !showRSI) {
-    return null;
-  }
 
   return (
     <div className="flex flex-row gap-1 w-full">
@@ -341,7 +295,6 @@ const GraphSidebar = () => {
   return (
     <div className="flex flex-col gap-2">
       <StochasticComponent />
-      <RSIComponent />
     </div>
   );
 };

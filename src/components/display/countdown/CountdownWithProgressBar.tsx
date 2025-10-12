@@ -9,6 +9,7 @@ interface CountdownWithProgressBarProps {
   subtitle?: string;
   triggerTime: number;
   expiresAt: number;
+  onComplete?: () => void;
 }
 
 export default function CountdownWithProgressBar({
@@ -16,6 +17,7 @@ export default function CountdownWithProgressBar({
   subtitle,
   triggerTime,
   expiresAt,
+  onComplete,
 }: CountdownWithProgressBarProps) {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
@@ -25,13 +27,16 @@ export default function CountdownWithProgressBar({
       const now = Date.now();
       const remaining = Math.max(0, expiresAt - now);
       setTimeRemaining(remaining);
+      if (remaining <= 0) {
+        onComplete?.();
+      }
     };
 
     updateTimeRemaining();
     const interval = setInterval(updateTimeRemaining, 1000);
 
     return () => clearInterval(interval);
-  }, [expiresAt]);
+  }, [expiresAt, onComplete]);
 
   const formatTimeRemaining = (ms: number) => {
     const minutes = Math.floor(ms / (1000 * 60));

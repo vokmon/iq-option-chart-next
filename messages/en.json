@@ -195,7 +195,7 @@
   "Minimum Orders": "Minimum Orders",
   "Minimum trades to check": "Minimum trades to check",
   "Loss Threshold": "Loss Threshold",
-  "How many losses in a row triggers the break": "How many losses in a row triggers the break",
+  "How many losses in a row triggers the break": "How many losses in a row",
   "Pause Duration": "Pause Duration",
   "Trading pause duration after loss threshold": "Trading pause duration after loss threshold",
   "Auto-pause trading": "Auto-pause trading",
