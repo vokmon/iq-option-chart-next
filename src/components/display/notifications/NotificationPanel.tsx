@@ -105,7 +105,7 @@ export default function NotificationPanel() {
           <Stack gap="xs" p="xs">
             <TakeABreakNotificationList
               warnings={activeWarnings}
-              onComplete={(warning) => removeWarning(warning.id)}
+              onComplete={(warning) => removeWarning(warning.balance.balanceId)}
             />
             <GoalFultillmentNotificationList
               notifications={todayNotifications}

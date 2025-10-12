@@ -75,7 +75,7 @@ export default function CountdownWithProgressBar({
       />
 
       {subtitle && (
-        <Text size="xs" c="dimmed" ta="center">
+        <Text size="xs" c="dimmed" ta="center" mt="sm">
           {subtitle}
         </Text>
       )}

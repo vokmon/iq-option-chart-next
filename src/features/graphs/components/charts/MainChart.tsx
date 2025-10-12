@@ -14,6 +14,7 @@ import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bo
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useSupportResistanceTabQuery } from "@/features/graphs/hooks/indicators/support-resistance/useSupportResistanceTabQuery";
 import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePositionReferenceLines";
+import { useLastCandleMarker } from "@/features/graphs/hooks/chart/useLastCandleMarker";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
@@ -21,6 +22,7 @@ import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
 import { Text } from "@mantine/core";
 import { SupportResistanceComponent } from "../indicators/support-resistance/SupportResistanceComponent";
+import { PurchaseEndTimeOverlay } from "../indicators/purchase-end-time/PurchaseEndTimeOverlay";
 
 interface MainChartProps {
   activeId: number;
@@ -89,6 +91,13 @@ export function MainChart({
   } = usePositionReferenceLines({
     activeId,
   });
+
+  // Last candle marker hook
+  const {
+    initializeMarker,
+    updateCandle,
+    cleanup: cleanupMarker,
+  } = useLastCandleMarker();
 
   // Theme change detection
   const { onThemeChange } = useThemeChange();
@@ -216,6 +225,8 @@ export function MainChart({
           chart,
           positionReferenceLines
         );
+
+        // Note: Purchase end time indicator will be recreated when data updates
       }, 100); // 100ms delay to ensure CSS variables are updated
     });
 
@@ -256,6 +267,9 @@ export function MainChart({
 
       if (candles.length > 0) {
         earliestLoadedRef.current = candles[0].from as number;
+        // Initialize the last candle marker
+        const lastCandle = candles[candles.length - 1];
+        initializeMarker(series, lastCandle);
       }
 
       // Subscribe to candle changes
@@ -270,6 +284,9 @@ export function MainChart({
             low: candle.min,
             close: candle.close,
           });
+
+          // Update last candle marker
+          updateCandle(candle);
 
           // Update Bollinger Bands with the latest data
           const allCandles = chartLayer.getAllCandles();
@@ -377,6 +394,9 @@ export function MainChart({
     return () => {
       isDisposed = true;
 
+      // Clean up last candle marker
+      cleanupMarker();
+
       // Clean up theme change listener
       cleanupThemeChange();
 
@@ -417,7 +437,7 @@ export function MainChart({
         console.warn("Error destroying Position reference lines:", error);
       }
 
-      // Remove the chart
+      // Remove the chart (this will also clean up the markers plugin)
       try {
         chart.remove();
       } catch (error) {
@@ -454,6 +474,9 @@ export function MainChart({
     updatePositionReferenceLines,
     destroyPositionReferenceLines,
     recreatePositionReferenceLines,
+    initializeMarker,
+    updateCandle,
+    cleanupMarker,
   ]);
 
   return (
@@ -478,6 +501,7 @@ export function MainChart({
             <GraphHeader activeId={activeId} />
           </div>
         </div>
+        <PurchaseEndTimeOverlay />
       </div>
     </div>
   );

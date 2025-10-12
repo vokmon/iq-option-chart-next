@@ -9,6 +9,7 @@ import {
 import { notifications } from "@mantine/notifications";
 import { useTranslations } from "next-intl";
 import { useRefetchOpenPositions } from "./positions/useGetOpenPositions";
+import { getFirstAvailableInstrument } from "@/utils/tradingUtil";
 
 interface TradingParams {
   asset: DigitalOptionsUnderlying;
@@ -56,10 +57,7 @@ export function useTradingActions({
         sdk.digitalOptions(),
       ]);
 
-      const instrument = instruments?.getAvailableForBuyAt(new Date());
-      const firstInstrument = instrument?.find(
-        (instrument) => instrument.period === period
-      );
+      const firstInstrument = getFirstAvailableInstrument(instruments, period);
 
       if (!firstInstrument) {
         throw new Error("No available instruments for trading");

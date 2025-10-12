@@ -135,3 +135,12 @@ export const formatSelectedDates = (selectedDates: Date[]) => {
   }
   return `dates selected`;
 };
+
+export const formatSecondsToMMSS = (seconds: number) => {
+  const totalSeconds = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${minutes.toString().padStart(2, "0")}:${secs
+    .toString()
+    .padStart(2, "0")}`;
+};

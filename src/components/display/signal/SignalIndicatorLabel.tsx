@@ -24,7 +24,7 @@ export default function SignalIndicatorLabel({
       processing
       color={config.color}
       offset={2}
-      size={30}
+      size={25}
       withBorder
       position="top-start"
       disabled={signal === SignalType.HOLD}
