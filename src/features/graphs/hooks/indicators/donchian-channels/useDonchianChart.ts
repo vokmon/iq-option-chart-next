@@ -17,7 +17,6 @@ import { getDonchianColors } from "@/utils/indicatorColors";
 
 export interface DonchianSeries {
   upper: ISeriesApi<"Line"> | null;
-  middle: ISeriesApi<"Line"> | null;
   lower: ISeriesApi<"Line"> | null;
   area: ISeriesApi<"Area"> | null;
 }
@@ -53,7 +52,6 @@ export function useDonchianChart({
       if (!showDonchian) {
         return {
           upper: null,
-          middle: null,
           lower: null,
           area: null,
         };
@@ -66,19 +64,6 @@ export function useDonchianChart({
         lineWidth: 4,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Upper",
-        lastValueVisible: false,
-        priceFormat: {
-          type: "price",
-          precision: 3,
-          minMove: 0.00001,
-        },
-      });
-
-      const middleChannelSeries = chart.addSeries(LineSeries, {
-        color: colors.secondary,
-        lineWidth: 2,
-        lineStyle: LineStyle.Solid,
-        // title: "Donchian Middle",
         lastValueVisible: false,
         priceFormat: {
           type: "price",
@@ -102,7 +87,7 @@ export function useDonchianChart({
 
       const areaSeries = chart.addSeries(AreaSeries, {
         topColor: "rgba(206, 147, 216, 0.3)",
-        bottomColor: "rgba(34, 40, 58, 0.1)",
+        bottomColor: "rgba(34, 40, 58, 0)",
         lineColor: "transparent", // Hide the boundary lines
         priceLineVisible: false,
         lastValueVisible: false,
@@ -111,7 +96,6 @@ export function useDonchianChart({
 
       const series = {
         upper: upperChannelSeries,
-        middle: middleChannelSeries,
         lower: lowerChannelSeries,
         area: areaSeries,
       };
@@ -127,10 +111,7 @@ export function useDonchianChart({
         time: d.time as UTCTimestamp,
         value: d.upper,
       }));
-      const middleData = donchianData.map((d) => ({
-        time: d.time as UTCTimestamp,
-        value: d.middle,
-      }));
+
       const lowerData = donchianData.map((d) => ({
         time: d.time as UTCTimestamp,
         value: d.lower,
@@ -143,7 +124,7 @@ export function useDonchianChart({
         bottomValue: d.lower, // Bottom line (lower channel)
       }));
 
-      return { upperData, middleData, lowerData, areaData };
+      return { upperData, lowerData, areaData };
     },
     []
   );
@@ -158,7 +139,7 @@ export function useDonchianChart({
 
       if (donchianData.length === 0) return;
 
-      const { upperData, middleData, lowerData, areaData } =
+      const { upperData, lowerData, areaData } =
         formatDonchianDataForChart(donchianData);
 
       if (isUpdate && donchianData.length > 0) {
@@ -167,10 +148,6 @@ export function useDonchianChart({
         series.upper?.update({
           time: latestDonchian.time as UTCTimestamp,
           value: latestDonchian.upper,
-        });
-        series.middle?.update({
-          time: latestDonchian.time as UTCTimestamp,
-          value: latestDonchian.middle,
         });
         series.lower?.update({
           time: latestDonchian.time as UTCTimestamp,
@@ -184,7 +161,6 @@ export function useDonchianChart({
       } else {
         // Set all data
         series.upper?.setData(upperData);
-        series.middle?.setData(middleData);
         series.lower?.setData(lowerData);
         series.area?.setData(areaData);
       }
@@ -194,7 +170,6 @@ export function useDonchianChart({
 
   const clearDonchianData = useCallback((series: DonchianSeries) => {
     series.upper?.setData([]);
-    series.middle?.setData([]);
     series.lower?.setData([]);
     series.area?.setData([]);
   }, []);
@@ -202,7 +177,6 @@ export function useDonchianChart({
   const destroyDonchianSeries = useCallback(
     (chart: IChartApi, series: DonchianSeries) => {
       if (series.upper) chart.removeSeries(series.upper);
-      if (series.middle) chart.removeSeries(series.middle);
       if (series.lower) chart.removeSeries(series.lower);
       if (series.area) chart.removeSeries(series.area);
       seriesRef.current = null;

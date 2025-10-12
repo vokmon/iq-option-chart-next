@@ -16,7 +16,6 @@ import { getBollingerColors } from "@/utils/indicatorColors";
 
 export interface BollingerBandsSeries {
   upper: ISeriesApi<"Line"> | null;
-  middle: ISeriesApi<"Line"> | null;
   lower: ISeriesApi<"Line"> | null;
 }
 
@@ -52,7 +51,7 @@ export function useBollingerBandsChart({
   const createBollingerBandsSeries = useCallback(
     (chart: IChartApi): BollingerBandsSeries => {
       if (!showBollingerBands) {
-        return { upper: null, middle: null, lower: null };
+        return { upper: null, lower: null };
       }
 
       const colors = getBollingerColors();
@@ -62,19 +61,6 @@ export function useBollingerBandsChart({
         lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "BB Upper",
-        lastValueVisible: false,
-        priceFormat: {
-          type: "price",
-          precision: 3,
-          minMove: 0.00001,
-        },
-      });
-
-      const middleBandSeries = chart.addSeries(LineSeries, {
-        color: colors.secondary,
-        lineWidth: 2,
-        lineStyle: LineStyle.Solid,
-        // title: "BB Middle (SMA)",
         lastValueVisible: false,
         priceFormat: {
           type: "price",
@@ -98,7 +84,6 @@ export function useBollingerBandsChart({
 
       const series = {
         upper: upperBandSeries,
-        middle: middleBandSeries,
         lower: lowerBandSeries,
       };
       seriesRef.current = series;
@@ -112,16 +97,13 @@ export function useBollingerBandsChart({
       time: d.time as UTCTimestamp,
       value: d.upper,
     }));
-    const middleData = bbData.map((d) => ({
-      time: d.time as UTCTimestamp,
-      value: d.middle,
-    }));
+
     const lowerData = bbData.map((d) => ({
       time: d.time as UTCTimestamp,
       value: d.lower,
     }));
 
-    return { upperData, middleData, lowerData };
+    return { upperData, lowerData };
   }, []);
 
   const updateBollingerBandsData = useCallback(
@@ -137,7 +119,7 @@ export function useBollingerBandsChart({
 
       if (bbData.length === 0) return;
 
-      const { upperData, middleData, lowerData } = formatBBDataForChart(bbData);
+      const { upperData, lowerData } = formatBBDataForChart(bbData);
 
       if (isUpdate && bbData.length > 0) {
         // Update only the latest data point
@@ -146,10 +128,7 @@ export function useBollingerBandsChart({
           time: latestBB.time as UTCTimestamp,
           value: latestBB.upper,
         });
-        series.middle?.update({
-          time: latestBB.time as UTCTimestamp,
-          value: latestBB.middle,
-        });
+
         series.lower?.update({
           time: latestBB.time as UTCTimestamp,
           value: latestBB.lower,
@@ -157,7 +136,7 @@ export function useBollingerBandsChart({
       } else {
         // Set all data
         series.upper?.setData(upperData);
-        series.middle?.setData(middleData);
+
         series.lower?.setData(lowerData);
       }
     },
@@ -167,7 +146,7 @@ export function useBollingerBandsChart({
   const clearBollingerBandsData = useCallback(
     (series: BollingerBandsSeries) => {
       series.upper?.setData([]);
-      series.middle?.setData([]);
+
       series.lower?.setData([]);
     },
     []
@@ -176,7 +155,7 @@ export function useBollingerBandsChart({
   const destroyBollingerBandsSeries = useCallback(
     (chart: IChartApi, series: BollingerBandsSeries) => {
       if (series.upper) chart.removeSeries(series.upper);
-      if (series.middle) chart.removeSeries(series.middle);
+
       if (series.lower) chart.removeSeries(series.lower);
       seriesRef.current = null;
     },
