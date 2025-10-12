@@ -7,7 +7,6 @@ import { type BollingerBandsConfig } from "@/types/indicators/bollingerBands";
 import { type DonchianConfig } from "@/types/indicators/donchian";
 import { type StochasticConfig } from "@/types/indicators/stochastic";
 import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
-import { type RSIConfig } from "@/types/indicators/rsi";
 
 export const MAX_ASSETS = 5;
 

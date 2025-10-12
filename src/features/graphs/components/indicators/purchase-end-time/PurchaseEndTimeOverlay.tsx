@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { IconClock } from "@tabler/icons-react";
 import { useAssetStore } from "@/stores/assetStore";
 import { getFirstAvailableInstrument } from "@/utils/tradingUtil";
