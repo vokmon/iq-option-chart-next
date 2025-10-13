@@ -25,7 +25,10 @@ export function BollingerBandsComponent() {
           size="xs"
           onClick={() => setOpened(true)}
         >
-          <ThemeIcon color="bollinger.4" size="sm">
+          <ThemeIcon
+            color={showBollingerBands ? "bollinger.4" : "gray"}
+            size="sm"
+          >
             <IconChartLine size={16} />
           </ThemeIcon>
         </Button>

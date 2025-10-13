@@ -24,7 +24,7 @@ export function DonchianComponent() {
           size="xs"
           onClick={() => setOpened(true)}
         >
-          <ThemeIcon color="donchian.4" size="sm">
+          <ThemeIcon color={showDonchian ? "donchian.4" : "gray"} size="sm">
             <IconChartBar size={16} />
           </ThemeIcon>
         </Button>

@@ -24,7 +24,10 @@ export function SupportResistanceComponent() {
           size="xs"
           onClick={() => setOpened(true)}
         >
-          <ThemeIcon color="supportResistance.4" size="sm">
+          <ThemeIcon
+            color={showSupportResistance ? "supportResistance.4" : "gray"}
+            size="sm"
+          >
             <IconChartDots size={16} />
           </ThemeIcon>
         </Button>
