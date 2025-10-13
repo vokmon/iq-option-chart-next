@@ -320,6 +320,8 @@
   "Expires in days": "Expires in {days} days",
   "Expires today": "Expires today",
   "Expires tomorrow": "Expires tomorrow",
+  "loss limit reached": "You've hit your loss limit for today. Time to take a break and come back fresh tomorrow!",
+  "goal fulfillment reached": "Congrats! You hit your target. Time to withdraw and secure your profits!",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",

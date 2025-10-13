@@ -69,9 +69,29 @@ export default function LossFulfillmentDialog({
       withCloseButton={false}
     >
       <Stack gap="md">
-        <Text size="md" fw={500} c="gray.7">
-          {t("Daily loss limit reached")}
-        </Text>
+        <div className="relative p-6 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/40 dark:to-orange-950/40 rounded-xl border-2 border-red-200 dark:border-red-800 shadow-sm">
+          <div className="flex justify-center">
+            <ThemeIcon
+              size="xl"
+              radius="xl"
+              variant="filled"
+              color="red"
+              className="shadow-md"
+            >
+              <IconShield size={24} />
+            </ThemeIcon>
+          </div>
+          <Group justify="center" gap="sm" className="mt-4">
+            <Text
+              size="md"
+              c="red.7"
+              fw={600}
+              className="text-center leading-relaxed"
+            >
+              {t("loss limit reached")}
+            </Text>
+          </Group>
+        </div>
 
         <Stack gap="xs">
           {lossFulfillments.map((fulfillment) => (

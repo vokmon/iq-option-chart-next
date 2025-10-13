@@ -232,18 +232,6 @@ export function ThemeCSSInjector() {
       theme.colors["supportResistanceSupport" as keyof typeof theme.colors][900]
     );
 
-    // Update RSI colors
-    root.style.setProperty("--color-rsi-50", theme.colors.rsi[50]);
-    root.style.setProperty("--color-rsi-100", theme.colors.rsi[100]);
-    root.style.setProperty("--color-rsi-200", theme.colors.rsi[200]);
-    root.style.setProperty("--color-rsi-300", theme.colors.rsi[300]);
-    root.style.setProperty("--color-rsi-400", theme.colors.rsi[400]);
-    root.style.setProperty("--color-rsi-500", theme.colors.rsi[500]);
-    root.style.setProperty("--color-rsi-600", theme.colors.rsi[600]);
-    root.style.setProperty("--color-rsi-700", theme.colors.rsi[700]);
-    root.style.setProperty("--color-rsi-800", theme.colors.rsi[800]);
-    root.style.setProperty("--color-rsi-900", theme.colors.rsi[900]);
-
     // Update other theme colors
     root.style.setProperty("--color-primary-50", theme.colors.primary[50]);
     root.style.setProperty("--color-primary-100", theme.colors.primary[100]);

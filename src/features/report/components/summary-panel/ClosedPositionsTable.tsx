@@ -84,14 +84,16 @@ export default function ClosedPositionsTable({
                   </Table.Td>
                   <Table.Td>
                     <Badge
-                      color={position.direction === "call" ? "green" : "red"}
-                      variant="light"
+                      color={
+                        position.direction === "call" ? "green.5" : "red.5"
+                      }
+                      variant="outline"
                       size="lg"
                       w="80px"
                       style={{ textTransform: "none" }}
                     >
                       <div className="flex flex-row justify-start items-center gap-2">
-                        {position.direction?.toUpperCase()}
+                        {t(position.direction?.toUpperCase() || "")}
                       </div>
                     </Badge>
                   </Table.Td>
@@ -115,7 +117,7 @@ export default function ClosedPositionsTable({
                           : "red"
                       }
                       w="80px"
-                      variant="light"
+                      variant="filled"
                       style={{ textTransform: "none" }}
                     >
                       <div className="flex flex-row justify-start items-center gap-1">

@@ -1,10 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import {
-  BalanceGoalFulfillment,
-  useGoalFulfillmentStore,
-} from "@/stores/notifications/goalFulfillmentStore";
+import { useState, useEffect } from "react";
+import { useGoalFulfillmentStore } from "@/stores/notifications/goalFulfillmentStore";
 import { GoalFulfillmentType } from "@/stores/notifications/goalFulfillmentStore";
 import { formatDate } from "@/utils/dateTime";
 
@@ -12,34 +9,25 @@ export function useGoalNotificationState() {
   const { getAllFulfillments, hasUnacknowledgedFulfillment } =
     useGoalFulfillmentStore();
 
+  const today = formatDate(new Date());
   const [isProfitModalOpen, setIsProfitModalOpen] = useState(false);
   const [isLossModalOpen, setIsLossModalOpen] = useState(false);
-  const hasUnacknowledgedRef = useRef(false);
-  const profitFulfillmentsRef = useRef<BalanceGoalFulfillment[]>([]);
-  const lossFulfillmentsRef = useRef<BalanceGoalFulfillment[]>([]);
-  const unacknowledgedFulfillmentsRef = useRef<BalanceGoalFulfillment[]>([]);
+
+  const fulfillments = getAllFulfillments();
+  const hasUnacknowledged = hasUnacknowledgedFulfillment();
+
+  const unacknowledgedFulfillments = fulfillments.filter(
+    (f) => !f.acknowledged && f.date === today
+  );
+
+  const profitFulfillments = unacknowledgedFulfillments.filter(
+    (f) => f.type === GoalFulfillmentType.PROFIT
+  );
+  const lossFulfillments = unacknowledgedFulfillments.filter(
+    (f) => f.type === GoalFulfillmentType.LOSS
+  );
 
   useEffect(() => {
-    const today = formatDate(new Date());
-    const fulfillments = getAllFulfillments();
-    const hasUnacknowledged = hasUnacknowledgedFulfillment();
-
-    const unacknowledgedFulfillments = fulfillments.filter(
-      (f) => !f.acknowledged && f.date === today
-    );
-
-    const profitFulfillments = unacknowledgedFulfillments.filter(
-      (f) => f.type === GoalFulfillmentType.PROFIT
-    );
-    const lossFulfillments = unacknowledgedFulfillments.filter(
-      (f) => f.type === GoalFulfillmentType.LOSS
-    );
-
-    hasUnacknowledgedRef.current = hasUnacknowledged;
-    profitFulfillmentsRef.current = profitFulfillments;
-    lossFulfillmentsRef.current = lossFulfillments;
-    unacknowledgedFulfillmentsRef.current = unacknowledgedFulfillments;
-
     if (hasUnacknowledged) {
       if (profitFulfillments.length > 0) {
         setIsProfitModalOpen(true);
@@ -48,16 +36,16 @@ export function useGoalNotificationState() {
         setIsLossModalOpen(true);
       }
     }
-  }, [getAllFulfillments, hasUnacknowledgedFulfillment]);
+  }, [hasUnacknowledged, profitFulfillments.length, lossFulfillments.length]);
 
   return {
     isProfitModalOpen,
     setIsProfitModalOpen,
     isLossModalOpen,
     setIsLossModalOpen,
-    hasUnacknowledged: hasUnacknowledgedRef.current,
-    unacknowledgedFulfillments: unacknowledgedFulfillmentsRef.current,
-    profitFulfillments: profitFulfillmentsRef.current,
-    lossFulfillments: lossFulfillmentsRef.current,
+    hasUnacknowledged,
+    unacknowledgedFulfillments,
+    profitFulfillments,
+    lossFulfillments,
   };
 }

@@ -158,12 +158,12 @@ export function MainChart({
       lastValueVisible: true,
       priceLineWidth: 4,
       priceLineStyle: 2, // 0 = solid, 1 = dotted, 2 = dashed
-      upColor: "#10b981", // Rich emerald green for bullish candles
-      downColor: "#dc2626", // Saturated red for bearish candles
-      borderUpColor: "#10b981",
-      borderDownColor: "#dc2626",
-      wickUpColor: "#10b981",
-      wickDownColor: "#dc2626",
+      upColor: "#009a2d", // Green for bullish candles
+      downColor: "#c14331", // Red for bearish candles
+      borderUpColor: "#009a2d",
+      borderDownColor: "#c14331",
+      wickUpColor: "#009a2d",
+      wickDownColor: "#c14331",
     });
 
     // Create Bollinger Bands series

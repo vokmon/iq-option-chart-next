@@ -118,19 +118,6 @@ const supportResistanceSupportColor: MantineColorsTuple = [
   "#450a0a", // 9 - darkest (dark red)
 ];
 
-const rsiColor: MantineColorsTuple = [
-  "#fef3c7", // 0 - lightest
-  "#fde68a", // 1
-  "#fcd34d", // 2
-  "#fbbf24", // 3
-  "#f59e0b", // 4 - primary (RSI line)
-  "#d97706", // 5
-  "#b45309", // 6
-  "#92400e", // 7
-  "#78350f", // 8
-  "#451a03", // 9 - darkest
-];
-
 // Candle size colors - different colors for different timeframes
 const candleSize1MinColor: MantineColorsTuple = [
   "#fef2f2", // 0 - lightest
@@ -222,7 +209,6 @@ export const theme = createTheme({
     stochasticSecondary: stochasticSecondaryColor,
     supportResistance: supportResistanceColor,
     supportResistanceSupport: supportResistanceSupportColor,
-    rsi: rsiColor,
     candleSize1Min: candleSize1MinColor,
     candleSize5Min: candleSize5MinColor,
     candleSize15Min: candleSize15MinColor,
@@ -400,19 +386,6 @@ export const themeColors = {
     800: "#7f1d1d",
     900: "#450a0a",
   },
-  // RSI colors
-  rsi: {
-    50: "#fef3c7",
-    100: "#fde68a",
-    200: "#fcd34d",
-    300: "#fbbf24",
-    400: "#f59e0b", // primary (RSI line)
-    500: "#d97706",
-    600: "#b45309",
-    700: "#92400e",
-    800: "#78350f",
-    900: "#451a03",
-  },
 
   // Semantic colors
   success: "#10b981",
@@ -531,18 +504,6 @@ export const cssVariables = `
     --color-supportResistanceSupport-700: ${themeColors.supportResistanceSupport[700]};
     --color-supportResistanceSupport-800: ${themeColors.supportResistanceSupport[800]};
     --color-supportResistanceSupport-900: ${themeColors.supportResistanceSupport[900]};
-    
-    /* RSI colors */
-    --color-rsi-50: ${themeColors.rsi[50]};
-    --color-rsi-100: ${themeColors.rsi[100]};
-    --color-rsi-200: ${themeColors.rsi[200]};
-    --color-rsi-300: ${themeColors.rsi[300]};
-    --color-rsi-400: ${themeColors.rsi[400]};
-    --color-rsi-500: ${themeColors.rsi[500]};
-    --color-rsi-600: ${themeColors.rsi[600]};
-    --color-rsi-700: ${themeColors.rsi[700]};
-    --color-rsi-800: ${themeColors.rsi[800]};
-    --color-rsi-900: ${themeColors.rsi[900]};
     
     /* Semantic colors */
     --color-success: ${themeColors.success};

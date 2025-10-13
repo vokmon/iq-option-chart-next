@@ -50,6 +50,26 @@ export default function GoalFulfillmentNotificationItem({
                 ? t("Profit Target Reached")
                 : t("Loss Limit Reached")}
             </Text>
+            <Box
+              mt={6}
+              p={6}
+              className={`rounded-md border ${
+                fulfillment.type === "profit"
+                  ? "bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-green-300 dark:border-green-700"
+                  : "bg-gradient-to-r from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30 border-red-300 dark:border-red-700"
+              }`}
+            >
+              <Text
+                size="xs"
+                fw={500}
+                c={getNotificationColor(fulfillment.type)}
+                className="text-center"
+              >
+                {fulfillment.type === "profit"
+                  ? t("goal fulfillment reached")
+                  : t("loss limit reached")}
+              </Text>
+            </Box>
             <Group gap="xs" mt={4}>
               <Text size="xs" c="dimmed">
                 {t("Balance")}:

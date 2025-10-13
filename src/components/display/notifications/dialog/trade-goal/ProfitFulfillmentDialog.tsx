@@ -69,9 +69,27 @@ export default function ProfitFulfillmentDialog({
       withCloseButton={false}
     >
       <Stack gap="md">
-        <Text size="md" fw={500} c="gray.7">
-          {t("Congratulations! Daily profit target reached!")}
-        </Text>
+        <div className="relative p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 rounded-xl border-2 border-green-200 dark:border-green-800 shadow-sm">
+          <div className="flex justify-center">
+            <ThemeIcon
+              size="xl"
+              radius="xl"
+              variant="filled"
+              color="green.6"
+              className="shadow-md"
+            >
+              <IconTarget size={24} />
+            </ThemeIcon>
+          </div>
+          <Text
+            size="md"
+            c="green.7"
+            fw={600}
+            className="text-center leading-relaxed mt-2"
+          >
+            {t("goal fulfillment reached")}
+          </Text>
+        </div>
 
         <Stack gap="xs">
           {profitFulfillments.map((fulfillment) => (

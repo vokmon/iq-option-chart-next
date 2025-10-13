@@ -69,6 +69,12 @@ export function useSupportResistanceChart({
           precision: 3,
           minMove: 0.00001,
         },
+        autoscaleInfoProvider: () => ({
+          priceRange: {
+            min: 0,
+            max: 1,
+          },
+        }),
       });
 
       const supportSeries = chart.addSeries(LineSeries, {
@@ -81,6 +87,12 @@ export function useSupportResistanceChart({
           precision: 3,
           minMove: 0.00001,
         },
+        autoscaleInfoProvider: () => ({
+          priceRange: {
+            min: 0,
+            max: 1,
+          },
+        }),
       });
 
       const series = {
