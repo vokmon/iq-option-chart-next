@@ -26,7 +26,7 @@ export default function OpenPositionTableController() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-1">
       <OpenPositionsPanel
         openPositions={openPositionsForSelectedBalance}
         activeInformation={activeInformation}

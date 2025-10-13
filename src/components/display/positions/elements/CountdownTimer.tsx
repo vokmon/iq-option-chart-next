@@ -3,6 +3,7 @@
 import { Text } from "@mantine/core";
 import { useSdk } from "@/hooks/useSdk";
 import { useEffect, useState } from "react";
+import { formatSecondsToMMSS } from "@/utils/dateTime";
 
 interface CountdownTimerProps {
   endTime: Date;
@@ -49,33 +50,18 @@ export default function CountdownTimer({
     return (
       <div className={className}>
         <Text size="sm" fw={500} c="red">
-          Expired
+          00:00
         </Text>
       </div>
     );
   }
 
-  // Calculate time components
-  const days = Math.floor(timeLeft / (24 * 60 * 60));
-  const hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
-  const minutes = Math.floor((timeLeft % (60 * 60)) / 60);
-  const seconds = Math.floor(timeLeft % 60);
-
-  // Format the countdown display
-  let display = "";
-  if (days > 0) {
-    display = `${days}d ${hours}h ${minutes}m`;
-  } else if (hours > 0) {
-    display = `${hours}h ${minutes}m ${seconds}s`;
-  } else if (minutes > 0) {
-    display = `${minutes}m ${seconds}s`;
-  } else {
-    display = `${seconds}s`;
-  }
+  // Format the countdown display using utility function
+  const display = formatSecondsToMMSS(timeLeft);
 
   return (
     <div className={className}>
-      <Text size="sm" fw={500} c="blue">
+      <Text size="sm" fw={500} c="gray.9">
         {display}
       </Text>
     </div>

@@ -1,3 +1,4 @@
+import LoadDailyBalanceComponent from "@/components/initializeation/LoadDailyBalanceComponent";
 import LoadDigitalOptionsComponent from "@/components/initializeation/LoadDigitalOptionsComponent";
 import LoadPositionsDataComponent from "@/components/initializeation/LoadPositionsDataComponent";
 import AppToolbar from "@/components/layout/navigation/AppToolbar";
@@ -10,6 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SdkProvider>
       <LoadDigitalOptionsComponent />
       <LoadPositionsDataComponent />
+      <LoadDailyBalanceComponent />
       <Flex w="100%" h="100%" direction="column">
         <AppToolbar />
         <Flex

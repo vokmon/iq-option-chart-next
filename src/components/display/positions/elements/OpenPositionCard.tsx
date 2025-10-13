@@ -32,7 +32,7 @@ export default function OpenPositionCard({
       <div className="flex flex-row justify-between items-center gap-2 w-full">
         <Indicator inline processing color="orange" offset={-2} size={12}>
           <div className="flex flex-row justify-start items-center gap-2">
-            <div className="w-6 h-6">
+            <div className="w-5 h-5">
               {activeInfo?.imageUrl && (
                 <Image
                   src={activeInfo?.imageUrl || ""}
@@ -42,7 +42,7 @@ export default function OpenPositionCard({
                 />
               )}
             </div>
-            <Text size="sm" fw={500} c={textColor}>
+            <Text size="xs" fw={500} c={textColor}>
               {activeInfo?.name || position.active?.name}
             </Text>
           </div>
@@ -57,7 +57,7 @@ export default function OpenPositionCard({
         <Badge
           color={position.direction === "call" ? "green" : "red"}
           variant="light"
-          size="md"
+          size="sm"
           w="80px"
           style={{ textTransform: "none" }}
         >
@@ -71,14 +71,14 @@ export default function OpenPositionCard({
           </div>
         </Badge>
 
-        <Text size="md" fw={600}>
+        <Text size="xs" fw={600}>
           {formatAmount(position.invest || 0, balance?.currency)}
         </Text>
       </div>
 
       <div className="flex justify-between items-center gap-2 w-full">
         <Text
-          size="lg"
+          size="md"
           fw={600}
           c={
             position.pnl === 0
@@ -112,12 +112,16 @@ export default function OpenPositionCard({
       chevronPosition="right"
       key={position.externalId}
       className={`${className} bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200`}
+      p={0}
     >
       <Accordion.Item
         value={String(position.externalId)}
         className="border-none"
       >
-        <Accordion.Control className="bg-transparent hover:bg-blue-100/50 transition-colors duration-200">
+        <Accordion.Control
+          py={0}
+          className="bg-transparent hover:bg-blue-100/50 transition-colors duration-200"
+        >
           {renderPositionSummary(position, activeInfo)}
         </Accordion.Control>
         <Accordion.Panel className="backdrop-blur-sm">

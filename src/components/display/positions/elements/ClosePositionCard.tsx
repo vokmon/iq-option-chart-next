@@ -27,7 +27,7 @@ export default function ClosePositionCard({
     <div className={`flex flex-col justify-center items-start w-full gap-1`}>
       <div className="flex flex-row justify-between items-center gap-2 w-full">
         <div className="flex flex-row justify-start items-center gap-2">
-          <div className="w-6 h-6">
+          <div className="w-5 h-5">
             {activeInfo?.imageUrl && (
               <Image
                 src={activeInfo?.imageUrl || ""}
@@ -37,7 +37,7 @@ export default function ClosePositionCard({
               />
             )}
           </div>
-          <Text size="sm" fw={500} c={textColor}>
+          <Text size="xs" fw={500} c={textColor}>
             {activeInfo?.name || position.active?.name}
           </Text>
         </div>
@@ -60,7 +60,7 @@ export default function ClosePositionCard({
             </div>
           </Badge>
 
-          <Text size="sm" fw={600} c={textColor}>
+          <Text size="xs" fw={600} c={textColor}>
             {formatAmount(position.invest || 0, balance?.currency, {
               noDecimals: true,
             })}
@@ -70,7 +70,7 @@ export default function ClosePositionCard({
 
       <div className="flex flex-row justify-start items-center gap-2">
         <Badge
-          size="md"
+          size="xs"
           color={
             position.pnl === 0
               ? "gray"
@@ -98,7 +98,7 @@ export default function ClosePositionCard({
           </div>
         </Badge>
         <Text
-          size="lg"
+          size="sm"
           fw={600}
           c={
             position.pnl === 0
@@ -110,7 +110,7 @@ export default function ClosePositionCard({
         >
           {formatAmount(
             (position?.pnl ?? 0) > 0
-              ? position.closeProfit ?? 0
+              ? (position.pnl ?? 0) + (position.invest ?? 0)
               : position.pnl ?? 0,
             balance?.currency
           )}
@@ -125,6 +125,7 @@ export default function ClosePositionCard({
       chevronPosition="right"
       key={position.externalId}
       className={className}
+      py={0}
     >
       <Accordion.Item value={String(position.externalId)}>
         <Accordion.Control>
