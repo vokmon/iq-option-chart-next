@@ -20,6 +20,7 @@ export interface DonchianSeries {
   middle: ISeriesApi<"Line"> | null;
   lower: ISeriesApi<"Line"> | null;
   area: ISeriesApi<"Area"> | null;
+  areaBottom: ISeriesApi<"Area"> | null;
 }
 
 export interface UseDonchianChartProps {
@@ -56,6 +57,7 @@ export function useDonchianChart({
           middle: null,
           lower: null,
           area: null,
+          areaBottom: null,
         };
       }
 
@@ -119,8 +121,8 @@ export function useDonchianChart({
       });
 
       const areaSeries = chart.addSeries(AreaSeries, {
-        topColor: "rgba(206, 147, 216, 0.3)",
-        bottomColor: "rgba(34, 40, 58, 0.1)",
+        topColor: "rgba(206, 147, 216, 0.2)",
+        bottomColor: "rgba(34, 40, 58, 0)",
         lineColor: "transparent", // Hide the boundary lines
         priceLineVisible: false,
         lastValueVisible: false,
@@ -133,11 +135,28 @@ export function useDonchianChart({
         }),
       });
 
+      const areaBottomSeries = chart.addSeries(AreaSeries, {
+        topColor: "rgba(34, 40, 58, 0)",
+        bottomColor: "rgba(206, 147, 216, 0.2)",
+        lineColor: "transparent", // Hide the boundary lines
+        priceLineVisible: false,
+        lastValueVisible: false,
+        visible: true, // Keep the area visible but hide labels
+        autoscaleInfoProvider: () => ({
+          priceRange: {
+            min: 0,
+            max: 1,
+          },
+        }),
+        invertFilledArea: true,
+      });
+
       const series = {
         upper: upperChannelSeries,
         middle: middleChannelSeries,
         lower: lowerChannelSeries,
         area: areaSeries,
+        areaBottom: areaBottomSeries,
       };
       seriesRef.current = series;
       return series;
@@ -167,7 +186,12 @@ export function useDonchianChart({
         bottomValue: d.lower, // Bottom line (lower channel)
       }));
 
-      return { upperData, middleData, lowerData, areaData };
+      const areaBottomData = donchianData.map((d) => ({
+        time: d.time as UTCTimestamp,
+        value: d.lower,
+      }));
+
+      return { upperData, middleData, lowerData, areaData, areaBottomData };
     },
     []
   );
@@ -182,7 +206,7 @@ export function useDonchianChart({
 
       if (donchianData.length === 0) return;
 
-      const { upperData, middleData, lowerData, areaData } =
+      const { upperData, middleData, lowerData, areaData, areaBottomData } =
         formatDonchianDataForChart(donchianData);
 
       if (isUpdate && donchianData.length > 0) {
@@ -205,12 +229,18 @@ export function useDonchianChart({
           value: latestDonchian.upper,
           bottomValue: latestDonchian.lower,
         } as { time: UTCTimestamp; value: number; bottomValue: number });
+
+        series.areaBottom?.update({
+          time: latestDonchian.time as UTCTimestamp,
+          value: latestDonchian.lower,
+        });
       } else {
         // Set all data
         series.upper?.setData(upperData);
         series.middle?.setData(middleData);
         series.lower?.setData(lowerData);
         series.area?.setData(areaData);
+        series.areaBottom?.setData(areaBottomData);
       }
     },
     [showDonchian, donchianConfig, formatDonchianDataForChart]
@@ -221,6 +251,7 @@ export function useDonchianChart({
     series.middle?.setData([]);
     series.lower?.setData([]);
     series.area?.setData([]);
+    series.areaBottom?.setData([]);
   }, []);
 
   const destroyDonchianSeries = useCallback(
@@ -229,6 +260,7 @@ export function useDonchianChart({
       if (series.middle) chart.removeSeries(series.middle);
       if (series.lower) chart.removeSeries(series.lower);
       if (series.area) chart.removeSeries(series.area);
+      if (series.areaBottom) chart.removeSeries(series.areaBottom);
       seriesRef.current = null;
     },
     []

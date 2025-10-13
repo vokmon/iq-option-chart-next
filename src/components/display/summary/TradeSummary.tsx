@@ -12,11 +12,15 @@ import EmptyTradingSummary from "./EmptyTradingSummary";
 type TradeSummaryProps = {
   closedPositions: Position[];
   balance?: Balance;
+  dailyProfitTarget?: number;
+  dailyLossLimit?: number;
 };
 
 export default function TradeSummary({
   closedPositions,
   balance,
+  dailyProfitTarget,
+  dailyLossLimit,
 }: TradeSummaryProps) {
   const t = useTranslations();
 
@@ -33,6 +37,16 @@ export default function TradeSummary({
   // Calculate win rate
   const winRate = totalTrades > 0 ? (winCount / totalTrades) * 100 : 0;
 
+  // Calculate progress towards daily goals
+
+  const progressData = calculateProgress({
+    totalPnL,
+    dailyProfitTarget: dailyProfitTarget || 0,
+    dailyLossLimit: dailyLossLimit || 0,
+    profitTargetLabel: t("of profit target"),
+    lossLimitLabel: t("of loss limit"),
+  });
+
   // Determine PnL state and styling
   const isProfit = totalPnL > 0;
   const isLoss = totalPnL < 0;
@@ -45,49 +59,17 @@ export default function TradeSummary({
     : IconChartArea;
   const PnLIcon = pnlIcon;
 
-  // Determine background color and border based on PnL
-  const getBackgroundClass = () => {
-    if (isProfit) {
-      return "bg-gradient-to-r from-green-50 to-emerald-50";
-    } else if (isLoss) {
-      return "bg-gradient-to-r from-red-50 to-rose-50";
-    } else {
-      return "bg-gradient-to-r from-slate-50 to-blue-50";
-    }
-  };
-
-  const getBorderStyle = () => {
-    if (isProfit) {
-      return {
-        border: "1px solid rgba(34, 197, 94, 0.15)",
-        boxShadow:
-          "0 0 12px rgba(34, 197, 94, 0.08), inset 0 0 12px rgba(34, 197, 94, 0.03)",
-      };
-    } else if (isLoss) {
-      return {
-        border: "1px solid rgba(239, 68, 68, 0.15)",
-        boxShadow:
-          "0 0 12px rgba(239, 68, 68, 0.08), inset 0 0 12px rgba(239, 68, 68, 0.03)",
-      };
-    } else {
-      return {
-        border: "1px solid rgba(100, 116, 139, 0.15)",
-        boxShadow:
-          "0 0 12px rgba(100, 116, 139, 0.08), inset 0 0 12px rgba(100, 116, 139, 0.03)",
-      };
-    }
-  };
-
   return (
     <Card
       shadow="xs"
       padding="6px"
       radius="sm"
-      className={`${getBackgroundClass()} hover:shadow-sm transition-all duration-200`}
+      className={`${getBackgroundClass({
+        isProfit,
+        isLoss,
+      })} hover:shadow-sm transition-all duration-200 w-full`}
       style={{
-        width: "388px",
-        height: "60px",
-        ...getBorderStyle(),
+        ...getBorderStyle({ isProfit, isLoss }),
       }}
     >
       {totalTrades === 0 ? (
@@ -112,6 +94,45 @@ export default function TradeSummary({
               </div>
             </Group>
           </div>
+          {progressData && (
+            <div className="w-full px-1 py-1">
+              <div className="relative w-full h-2 bg-gray-200 rounded-sm overflow-hidden">
+                {/* Center line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gray-400 z-10" />
+
+                {/* Loss bar (grows left from center) */}
+                {totalPnL < 0 && (
+                  <div
+                    className="absolute top-0 bottom-0 right-1/2 transition-all duration-300"
+                    style={{
+                      width: `${progressData.percentage / 2}%`,
+                      background:
+                        progressData.percentage < 100
+                          ? "repeating-linear-gradient(45deg, rgba(239, 68, 68, 0.8), rgba(239, 68, 68, 0.8) 10px, rgba(239, 68, 68, 0.6) 10px, rgba(239, 68, 68, 0.6) 20px)"
+                          : "rgb(239, 68, 68)",
+                    }}
+                  />
+                )}
+
+                {/* Profit bar (grows right from center) */}
+                {totalPnL > 0 && (
+                  <div
+                    className="absolute top-0 bottom-0 left-1/2 transition-all duration-300"
+                    style={{
+                      width: `${progressData.percentage / 2}%`,
+                      background:
+                        progressData.percentage < 100
+                          ? "repeating-linear-gradient(45deg, rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.8) 10px, rgba(34, 197, 94, 0.6) 10px, rgba(34, 197, 94, 0.6) 20px)"
+                          : "rgb(34, 197, 94)",
+                    }}
+                  />
+                )}
+              </div>
+              <Text size="xs" c="dimmed" mt={2} className="text-center">
+                {progressData.label}
+              </Text>
+            </div>
+          )}
           <div className="flex flex-row justify-between items-center gap-2 w-full">
             <Badge
               size="sm"
@@ -169,3 +190,79 @@ export default function TradeSummary({
     </Card>
   );
 }
+
+// Determine background color and border based on PnL
+const getBackgroundClass = ({
+  isProfit,
+  isLoss,
+}: {
+  isProfit: boolean;
+  isLoss: boolean;
+}) => {
+  if (isProfit) {
+    return "bg-gradient-to-r from-green-50 to-emerald-50";
+  } else if (isLoss) {
+    return "bg-gradient-to-r from-red-50 to-rose-50";
+  } else {
+    return "bg-gradient-to-r from-slate-50 to-blue-50";
+  }
+};
+
+const getBorderStyle = ({
+  isProfit,
+  isLoss,
+}: {
+  isProfit: boolean;
+  isLoss: boolean;
+}) => {
+  if (isProfit) {
+    return {
+      border: "1px solid rgba(34, 197, 94, 0.15)",
+      boxShadow:
+        "0 0 12px rgba(34, 197, 94, 0.08), inset 0 0 12px rgba(34, 197, 94, 0.03)",
+    };
+  } else if (isLoss) {
+    return {
+      border: "1px solid rgba(239, 68, 68, 0.15)",
+      boxShadow:
+        "0 0 12px rgba(239, 68, 68, 0.08), inset 0 0 12px rgba(239, 68, 68, 0.03)",
+    };
+  } else {
+    return {
+      border: "1px solid rgba(100, 116, 139, 0.15)",
+      boxShadow:
+        "0 0 12px rgba(100, 116, 139, 0.08), inset 0 0 12px rgba(100, 116, 139, 0.03)",
+    };
+  }
+};
+
+const calculateProgress = ({
+  totalPnL,
+  dailyProfitTarget,
+  dailyLossLimit,
+  profitTargetLabel,
+  lossLimitLabel,
+}: {
+  totalPnL: number;
+  dailyProfitTarget: number;
+  dailyLossLimit: number;
+  profitTargetLabel: string;
+  lossLimitLabel: string;
+}) => {
+  if (totalPnL > 0 && dailyProfitTarget) {
+    const percentage = (totalPnL / dailyProfitTarget) * 100;
+    return {
+      percentage: Math.min(percentage, 100),
+      label: `${percentage.toFixed(0)}% ${profitTargetLabel}`,
+      color: "green",
+    };
+  } else if (totalPnL < 0 && dailyLossLimit) {
+    const percentage = (Math.abs(totalPnL) / dailyLossLimit) * 100;
+    return {
+      percentage: Math.min(percentage, 100),
+      label: `${percentage.toFixed(0)}% ${lossLimitLabel}`,
+      color: "red",
+    };
+  }
+  return null;
+};

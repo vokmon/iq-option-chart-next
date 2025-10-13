@@ -57,7 +57,7 @@ export default function ChartSidebar() {
           </div>
         </div>
       </Flex>
-      <Flex className="h-15">
+      <Flex className="">
         <TodayTradeSummary />
       </Flex>
     </Flex>

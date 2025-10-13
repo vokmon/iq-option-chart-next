@@ -326,6 +326,8 @@
   "goal fulfillment reached": "ยินดีด้วย! คุณสำเร็จตามเป้าหมายของวันนี้ กรุณาถอนเงินและรักษากำไรของคุณ!",
   "Time to celebrate and secure your profits!": "กรุณาถอนเงินและรักษากำไรของคุณ!",
   "Secure Your Profits Now": "ถอนเงินและรักษากำไรของคุณ!",
+  "of profit target": "ของเป้าหมายกำไร",
+  "of loss limit": "ของขีดจำกัดขาดทุน",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",
