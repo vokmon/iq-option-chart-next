@@ -18,6 +18,12 @@ import { useMemo } from "react";
 import { formatDateTime } from "@/utils/dateTime";
 import { formatAmount } from "@/utils/currency";
 import { useSettingsStore } from "@/stores/settingsStore";
+import { useDailyBalanceSnapshot } from "@/hooks/useDailyBalanceSnapshot";
+import { useDailyBalanceStore } from "@/stores/dailyBalanceStore";
+import {
+  calculateDailyLossLimit,
+  calculateDailyProfitTarget,
+} from "@/utils/dailySettingUtils";
 
 interface PnLLineChartProps {
   balance: Balance | null;
@@ -31,8 +37,9 @@ export default function PnLLineChart({
   const t = useTranslations();
 
   const { tradingGoals } = useSettingsStore();
+  const { getStartingBalance } = useDailyBalanceStore();
 
-  const { dailyProfitTarget, dailyLossLimit } = tradingGoals;
+  const { profitTargetPercentage, lossLimitPercentage } = tradingGoals;
 
   // Transform data for the chart
   const chartData = useMemo(() => {
@@ -55,13 +62,25 @@ export default function PnLLineChart({
         closeTime: index + (position.closeTime?.getTime() ?? 0),
         cumulativePnL: cumulativePnL,
         pnl: position.pnl,
-        profitTarget: dailyProfitTarget,
-        lossLimit: -dailyLossLimit,
+        profitTarget: calculateDailyProfitTarget(
+          getStartingBalance(balance!.id!)?.startingAmount ?? 0,
+          profitTargetPercentage
+        ),
+        lossLimit: -calculateDailyLossLimit(
+          getStartingBalance(balance!.id!)?.startingAmount ?? 0,
+          lossLimitPercentage
+        ),
       };
     });
 
     return result;
-  }, [closedPositions, dailyLossLimit, dailyProfitTarget]);
+  }, [
+    closedPositions,
+    getStartingBalance,
+    balance,
+    profitTargetPercentage,
+    lossLimitPercentage,
+  ]);
 
   return (
     <fieldset className="mx-auto w-[100%] border border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 dark:from-slate-900/40 dark:via-blue-900/10 dark:to-indigo-900/15 shadow-sm">

@@ -35,13 +35,13 @@ export function useSettingsUI() {
       setDraftTradingGoals((prev) => ({
         ...prev,
         ...settings,
-        dailyProfitTarget: Math.max(
+        profitTargetPercentage: Math.max(
           0,
-          settings.dailyProfitTarget ?? prev.dailyProfitTarget
+          settings.profitTargetPercentage ?? prev.profitTargetPercentage
         ),
-        dailyLossLimit: Math.max(
+        lossLimitPercentage: Math.max(
           0,
-          settings.dailyLossLimit ?? prev.dailyLossLimit
+          settings.lossLimitPercentage ?? prev.lossLimitPercentage
         ),
       }));
     },

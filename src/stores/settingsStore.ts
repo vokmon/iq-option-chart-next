@@ -9,8 +9,8 @@ import { TimeWindow, PauseDuration } from "@/types/time";
 // ============================================================================
 
 const DEFAULT_TRADING_GOALS = {
-  dailyProfitTarget: 0,
-  dailyLossLimit: 0,
+  profitTargetPercentage: 10,
+  lossLimitPercentage: 10,
 } as const;
 
 const DEFAULT_BREAK_WARNING = {
@@ -36,8 +36,8 @@ const DEFAULT_SETTINGS = {
 // ============================================================================
 
 export interface TradingGoalsSettings {
-  dailyProfitTarget: number;
-  dailyLossLimit: number;
+  profitTargetPercentage: number;
+  lossLimitPercentage: number;
 }
 
 export interface BreakWarningSettings {
@@ -90,13 +90,15 @@ export const useSettingsStore = create<SettingsStore>()(
             ...state.tradingGoals,
             ...settings,
             // Ensure non-negative values
-            dailyProfitTarget: Math.max(
+            profitTargetPercentage: Math.max(
               0,
-              settings.dailyProfitTarget ?? state.tradingGoals.dailyProfitTarget
+              settings.profitTargetPercentage ??
+                state.tradingGoals.profitTargetPercentage
             ),
-            dailyLossLimit: Math.max(
+            lossLimitPercentage: Math.max(
               0,
-              settings.dailyLossLimit ?? state.tradingGoals.dailyLossLimit
+              settings.lossLimitPercentage ??
+                state.tradingGoals.lossLimitPercentage
             ),
           },
         }));

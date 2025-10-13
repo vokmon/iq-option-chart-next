@@ -10,7 +10,7 @@ import {
   Button,
 } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { IconCheck, IconTarget } from "@tabler/icons-react";
+import { IconCheck, IconCash, IconTrophy } from "@tabler/icons-react";
 import { formatDateTime } from "@/utils/dateTime";
 import { formatAmount } from "@/utils/currency";
 import { getBalanceTypeColor, getBalanceTypeLabel } from "@/utils/balanceType";
@@ -18,6 +18,7 @@ import {
   BalanceGoalFulfillment,
   GoalFulfillmentType,
 } from "@/stores/notifications/goalFulfillmentStore";
+import { IQ_OPTION } from "@/constants/app";
 interface ProfitFulfillmentDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -51,117 +52,154 @@ export default function ProfitFulfillmentDialog({
           <ThemeIcon
             size="lg"
             radius="xl"
-            variant="light"
-            color="green"
-            className="animate-pulse"
+            variant="gradient"
+            gradient={{ from: "yellow.5", to: "orange.5", deg: 135 }}
           >
-            <IconTarget size={20} />
+            <IconTrophy size={20} />
           </ThemeIcon>
-          <Text size="lg" fw={600} c="green.5">
+          <Text size="lg" fw={700} c="dark.9">
             {t("Profit Target Reached")}
           </Text>
         </Group>
       }
       centered
-      size="md"
+      size="lg"
       closeOnClickOutside={false}
       closeOnEscape={false}
       withCloseButton={false}
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
     >
-      <Stack gap="md">
-        <div className="relative p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 rounded-xl border-2 border-green-200 dark:border-green-800 shadow-sm">
-          <div className="flex justify-center">
-            <ThemeIcon
+      <Stack gap="lg">
+        {/* Celebratory Hero Section */}
+        <div className="relative overflow-hidden p-8 bg-white bg-gradient-to-b from-green-50 to-green-100 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+          {/* Subtle Decorative Elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100/20 to-transparent dark:from-green-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-100/20 to-transparent dark:from-yellow-500/10 rounded-full blur-3xl" />
+
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="flex justify-center mb-4">
+              <div className="relative">
+                <ThemeIcon
+                  size={80}
+                  radius="xl"
+                  variant="gradient"
+                  gradient={{ from: "yellow.5", to: "orange.5", deg: 135 }}
+                  className="shadow-xl"
+                >
+                  <IconTrophy size={48} />
+                </ThemeIcon>
+              </div>
+            </div>
+
+            <Text
               size="xl"
-              radius="xl"
-              variant="filled"
-              color="green.6"
-              className="shadow-md"
+              fw={700}
+              className="text-center leading-relaxed mb-2"
+              c="dark.9"
             >
-              <IconTarget size={24} />
-            </ThemeIcon>
+              🎉 {t("goal fulfillment reached")}
+            </Text>
+
+            <Text size="sm" c="dimmed" fw={500} className="text-center">
+              {t("Time to celebrate and secure your profits!")}
+            </Text>
           </div>
-          <Text
-            size="md"
-            c="green.7"
-            fw={600}
-            className="text-center leading-relaxed mt-2"
-          >
-            {t("goal fulfillment reached")}
-          </Text>
         </div>
 
-        <Stack gap="xs">
+        {/* Achievement Cards */}
+        <Stack gap="sm">
           {profitFulfillments.map((fulfillment) => (
             <div
               key={fulfillment.id}
-              className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700"
+              className="relative p-5 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
             >
-              <Group justify="space-between" align="flex-start" mb="sm">
+              <Group justify="space-between" align="flex-start" mb="md">
                 <Group gap="sm">
-                  <Text size="sm" fw={500} c="gray.7">
+                  <Text size="sm" fw={600} c="dimmed">
                     Account
                   </Text>
                   <Badge
                     color={getBalanceTypeColor(fulfillment.balance.balanceType)}
                     variant="light"
-                    size="sm"
+                    size="md"
+                    className="font-semibold"
                   >
                     {getBalanceTypeLabel(fulfillment.balance.balanceType)}
                   </Badge>
                 </Group>
-                <ThemeIcon size="sm" radius="xl" variant="light" color="green">
-                  <IconCheck size={12} />
+                <ThemeIcon size="md" radius="xl" variant="light" color="green">
+                  <IconCheck size={16} />
                 </ThemeIcon>
               </Group>
 
-              <Stack gap="xs">
-                <div>
-                  <Text size="sm" fw={600} c="gray.6" mb={2}>
-                    {t("Target")}
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="p-3 bg-white dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                  <Text size="xs" fw={600} c="dimmed" mb={1}>
+                    {t("Target")} 🎯
                   </Text>
-                  <Text size="lg" fw={700} c="green.6">
+                  <Text size="lg" fw={700} c="dark.9">
                     {formatAmount(fulfillment.targetValue, "USD")}
                   </Text>
                 </div>
 
-                <div>
-                  <Text size="sm" fw={600} c="gray.8" mb={2}>
-                    {t("Actual")}
+                <div className="p-3 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                  <Text size="xs" fw={600} c="green.7" mb={1}>
+                    {t("Actual")} ✨
                   </Text>
-                  <Text size="lg" fw={700} c="green.6">
+                  <Text size="lg" fw={800} c="green.7">
                     {formatAmount(fulfillment.actualValue, "USD")}
                   </Text>
                 </div>
+              </div>
 
-                <Text size="xs" c="dimmed" mt="xs">
-                  {formatDateTime(fulfillment.createdAt)}
-                </Text>
-              </Stack>
+              <Text size="xs" c="dimmed" className="italic">
+                {formatDateTime(fulfillment.createdAt)}
+              </Text>
             </div>
           ))}
         </Stack>
 
-        <Group justify="center" mt="md" gap="sm">
+        {/* Call to Action Buttons */}
+        <Stack gap="sm" mt="lg">
           <Button
-            variant="outline"
-            onClick={onGoToReports}
-            size="md"
-            radius="xl"
-            className="px-6"
+            component="a"
+            href={IQ_OPTION.withdraw}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            radius="md"
+            color="green"
+            leftSection={<IconCash size={20} />}
+            className="shadow-md hover:shadow-lg transition-all"
+            fullWidth
           >
-            {t("Go to Reports")}
+            {t("Withdraw")} - {t("Secure Your Profits Now")}
           </Button>
-          <Button
-            onClick={onClose}
-            leftSection={<IconCheck size={16} />}
-            size="md"
-            radius="xl"
-            className="px-6"
-          >
-            {t("Continue Trading")}
-          </Button>
-        </Group>
+
+          <Group justify="center" gap="sm" mt="xs">
+            <Button
+              variant="filled"
+              onClick={onGoToReports}
+              size="md"
+              radius="md"
+            >
+              {t("Go to Reports")}
+            </Button>
+            <Button
+              variant="light"
+              onClick={onClose}
+              leftSection={<IconCheck size={16} />}
+              size="md"
+              radius="md"
+            >
+              {t("Continue Trading")}
+            </Button>
+          </Group>
+        </Stack>
       </Stack>
     </Modal>
   );

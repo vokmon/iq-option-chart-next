@@ -57,18 +57,20 @@ export default function TradingGoalsSection({
               </div>
             </Group>
             <NumberInput
-              placeholder="0"
-              value={draftTradingGoals.dailyProfitTarget}
+              placeholder={t(
+                "Celebrate and take profit at % gain of starting balance"
+              )}
+              value={draftTradingGoals.profitTargetPercentage}
               onChange={(value) =>
                 updateDraftTradingGoals({
-                  dailyProfitTarget: Number(value) || 0,
+                  profitTargetPercentage: Number(value) || 10,
                 })
               }
               min={0}
               step={10}
               size="md"
               radius="md"
-              leftSection="$"
+              leftSection="%"
               styles={{
                 input: {
                   borderColor: "var(--mantine-color-green-3)",
@@ -99,16 +101,20 @@ export default function TradingGoalsSection({
               </div>
             </Group>
             <NumberInput
-              placeholder="0"
-              value={draftTradingGoals.dailyLossLimit}
+              placeholder={t(
+                "Rest at % loss to preserve capital and return fresh tomorrow"
+              )}
+              value={draftTradingGoals.lossLimitPercentage}
               onChange={(value) =>
-                updateDraftTradingGoals({ dailyLossLimit: Number(value) || 0 })
+                updateDraftTradingGoals({
+                  lossLimitPercentage: Number(value) || 10,
+                })
               }
               min={0}
               step={10}
               size="md"
               radius="md"
-              leftSection="$"
+              leftSection="%"
               styles={{
                 input: {
                   borderColor: "var(--mantine-color-red-3)",

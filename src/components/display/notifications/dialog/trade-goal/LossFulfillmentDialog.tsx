@@ -48,81 +48,94 @@ export default function LossFulfillmentDialog({
       onClose={onClose}
       title={
         <Group gap="sm">
-          <ThemeIcon
-            size="lg"
-            radius="xl"
-            variant="light"
-            color="red"
-            className="animate-pulse"
-          >
+          <ThemeIcon size="lg" radius="xl" variant="light" color="orange">
             <IconShield size={20} />
           </ThemeIcon>
-          <Text size="lg" fw={600} c="red.5">
+          <Text size="lg" fw={700} c="dark.9">
             {t("Loss Limit Reached")}
           </Text>
         </Group>
       }
       centered
-      size="md"
+      size="lg"
       closeOnClickOutside={false}
       closeOnEscape={false}
       withCloseButton={false}
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
     >
-      <Stack gap="md">
-        <div className="relative p-6 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/40 dark:to-orange-950/40 rounded-xl border-2 border-red-200 dark:border-red-800 shadow-sm">
-          <div className="flex justify-center">
-            <ThemeIcon
-              size="xl"
-              radius="xl"
-              variant="filled"
-              color="red"
-              className="shadow-md"
-            >
-              <IconShield size={24} />
-            </ThemeIcon>
-          </div>
-          <Group justify="center" gap="sm" className="mt-4">
+      <Stack gap="lg">
+        {/* Protection Alert Section */}
+        <div className="relative overflow-hidden p-8 bg-white bg-gradient-to-b from-red-50 to-red-100 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+          {/* Subtle Decorative Elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-100/20 to-transparent dark:from-orange-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-red-100/20 to-transparent dark:from-red-500/10 rounded-full blur-3xl" />
+
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="flex justify-center mb-4">
+              <div className="relative">
+                <ThemeIcon
+                  size={80}
+                  radius="xl"
+                  variant="light"
+                  color="orange"
+                  className="shadow-xl"
+                >
+                  <IconShield size={48} />
+                </ThemeIcon>
+              </div>
+            </div>
+
             <Text
-              size="md"
-              c="red.7"
-              fw={600}
-              className="text-center leading-relaxed"
+              size="xl"
+              fw={700}
+              className="text-center leading-relaxed mb-2"
+              c="dark.9"
             >
-              {t("loss limit reached")}
+              ⚠️ {t("loss limit reached")}
             </Text>
-          </Group>
+
+            <Text size="sm" c="dimmed" fw={500} className="text-center">
+              Take a break and come back fresh tomorrow
+            </Text>
+          </div>
         </div>
 
-        <Stack gap="xs">
+        {/* Alert Cards */}
+        <Stack gap="sm">
           {lossFulfillments.map((fulfillment) => (
             <div
               key={fulfillment.id}
-              className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-700"
+              className="relative p-5 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
             >
-              <Group justify="space-between" align="flex-start" mb="sm">
+              <Group justify="space-between" align="flex-start" mb="md">
                 <Group gap="sm">
-                  <Text size="sm" fw={500} c="gray.7">
+                  <Text size="sm" fw={600} c="dimmed">
                     Account
                   </Text>
                   <Badge
                     color={getBalanceTypeColor(fulfillment.balance.balanceType)}
                     variant="light"
-                    size="sm"
+                    size="md"
+                    className="font-semibold"
                   >
                     {getBalanceTypeLabel(fulfillment.balance.balanceType)}
                   </Badge>
                 </Group>
-                <ThemeIcon size="sm" radius="xl" variant="light" color="red">
-                  <IconShield size={12} />
+                <ThemeIcon size="md" radius="xl" variant="light" color="orange">
+                  <IconShield size={16} />
                 </ThemeIcon>
               </Group>
 
-              <Stack gap="xs">
-                <div>
-                  <Text size="sm" fw={600} c="gray.8" mb={2}>
-                    {t("Limit")}
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="p-3 bg-white dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                  <Text size="xs" fw={600} c="dimmed" mb={1}>
+                    {t("Limit")} ⚠️
                   </Text>
-                  <Text size="lg" fw={600} c="red.5">
+                  <Text size="lg" fw={700} c="dark.9">
                     {formatAmount(
                       -fulfillment.targetValue,
                       fulfillment.balance.balanceCurrency
@@ -130,42 +143,41 @@ export default function LossFulfillmentDialog({
                   </Text>
                 </div>
 
-                <div>
-                  <Text size="sm" fw={600} c="gray.5" mb={2}>
-                    {t("Actual")}
+                <div className="p-3 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-700">
+                  <Text size="xs" fw={600} c="orange.7" mb={1}>
+                    {t("Actual")} 📉
                   </Text>
-                  <Text size="lg" fw={600} c="red.5">
+                  <Text size="lg" fw={800} c="red.7">
                     {formatAmount(
-                      fulfillment.actualValue,
+                      -fulfillment.actualValue,
                       fulfillment.balance.balanceCurrency
                     )}
                   </Text>
                 </div>
+              </div>
 
-                <Text size="xs" c="dimmed" mt="xs">
-                  {formatDateTime(fulfillment.createdAt)}
-                </Text>
-              </Stack>
+              <Text size="xs" c="dimmed" className="italic">
+                {formatDateTime(fulfillment.createdAt)}
+              </Text>
             </div>
           ))}
         </Stack>
 
-        <Group justify="center" mt="md" gap="sm">
+        <Group justify="center" mt="lg" gap="sm">
           <Button
-            variant="outline"
+            variant="filled"
             onClick={onGoToReports}
             size="md"
-            radius="xl"
-            className="px-6"
+            radius="md"
           >
             {t("Go to Reports")}
           </Button>
           <Button
+            variant="light"
             onClick={onClose}
             leftSection={<IconCheck size={16} />}
             size="md"
-            radius="xl"
-            className="px-6"
+            radius="md"
           >
             {t("Continue Trading")}
           </Button>

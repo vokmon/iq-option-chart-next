@@ -10,6 +10,11 @@ import { Balance } from "@quadcode-tech/client-sdk-js";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTradingStore } from "@/stores/tradingStore";
 import { formatDate } from "@/utils/dateTime";
+import {
+  calculateDailyLossLimit,
+  calculateDailyProfitTarget,
+} from "@/utils/dailySettingUtils";
+import { useDailyBalanceStore } from "@/stores/dailyBalanceStore";
 
 const useCalculateGoalFulfillment = () => {
   const balancesRef = useRef<Balance[]>([]);
@@ -25,6 +30,7 @@ const useCalculateGoalFulfillment = () => {
     getFulfillmentForBalance,
   } = useGoalFulfillmentStore();
   const { tradingGoals } = useSettingsStore();
+  const { getStartingBalance } = useDailyBalanceStore();
 
   useEffect(() => {
     sdk.balances().then((balances) => {
@@ -35,13 +41,19 @@ const useCalculateGoalFulfillment = () => {
   useEffect(() => {
     const allBalances = balancesRef.current;
 
-    const dailyProfitTarget = tradingGoals.dailyProfitTarget;
-    const dailyLossLimit = tradingGoals.dailyLossLimit;
-    if (dailyProfitTarget === 0 && dailyLossLimit === 0) {
-      return;
-    }
+    const profitTargetPercentage = tradingGoals.profitTargetPercentage;
+    const lossLimitPercentage = tradingGoals.lossLimitPercentage;
 
     for (const balance of allBalances) {
+      const dailyProfitTarget = calculateDailyProfitTarget(
+        getStartingBalance(balance!.id!)?.startingAmount ?? 0,
+        profitTargetPercentage
+      );
+      const dailyLossLimit = calculateDailyLossLimit(
+        getStartingBalance(balance!.id!)?.startingAmount ?? 0,
+        lossLimitPercentage
+      );
+
       // Check if there's already a fulfillment for this balance today
       const existingFulfillment = getFulfillmentForBalance(
         balance.id.toString()
@@ -54,6 +66,10 @@ const useCalculateGoalFulfillment = () => {
       const closedPositionsForBalance = closedPositions.filter(
         (position) => position.balanceId === balance.id
       );
+
+      if (closedPositionsForBalance.length === 0) {
+        continue;
+      }
 
       const sum = closedPositionsForBalance.reduce(
         (acc, position) => acc + (position.pnl ?? 0),
@@ -99,11 +115,12 @@ const useCalculateGoalFulfillment = () => {
     getAllFulfillments,
     recordGoalFulfillment,
     getFulfillmentForBalance,
-    tradingGoals.dailyLossLimit,
-    tradingGoals.dailyProfitTarget,
     assets,
     updateAutoTrade,
     getAutoTrade,
+    tradingGoals.profitTargetPercentage,
+    tradingGoals.lossLimitPercentage,
+    getStartingBalance,
   ]);
   return {};
 };
