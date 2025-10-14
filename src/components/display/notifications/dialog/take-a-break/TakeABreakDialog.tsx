@@ -46,24 +46,8 @@ export default function TakeABreakDialog({
     <Modal
       opened={isOpen}
       onClose={handleAcknowledge}
-      title={
-        <Group gap="sm">
-          <ThemeIcon
-            size="lg"
-            radius="xl"
-            variant="light"
-            color="orange"
-            className="animate-pulse"
-          >
-            <IconAlertTriangle size={20} />
-          </ThemeIcon>
-          <Text size="lg" fw={600} c="orange.5">
-            {t("Trading Break Recommended")}
-          </Text>
-        </Group>
-      }
       centered
-      size="md"
+      size="lg"
       closeOnClickOutside={false}
       closeOnEscape={false}
       withCloseButton={false}

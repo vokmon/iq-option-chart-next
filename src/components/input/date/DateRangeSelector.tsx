@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IconCalendar, IconX } from "@tabler/icons-react";
-import { formatSelectedDates } from "@/utils/dateTime";
+import { formatSelectedDates, isDateInRange } from "@/utils/dateTime";
 import { Popover, Button, ActionIcon, Stack } from "@mantine/core";
 import PresetSelector from "./PresetSelector";
 import CustomCalendar from "./CustomCalendar";
 import DateSummary from "./DateSummary";
 import { useTranslations } from "next-intl";
+import { PresetType } from "./type";
 
 interface DateRangeSelectorProps {
-  selectedDates: Date[];
-  onDatesChange: (dates: Date[]) => void;
+  selectedDates: { dates: Date[]; preset: PresetType } | null;
+  onDatesChange: (dates: { dates: Date[]; preset: PresetType }) => void;
   className?: string;
   minDate?: Date;
   maxDate?: Date;
@@ -19,7 +20,7 @@ interface DateRangeSelectorProps {
 
 interface PresetOption {
   label: string;
-  value: string;
+  value: PresetType;
   getDates: () => Date[];
 }
 
@@ -31,78 +32,26 @@ export default function DateRangeSelector({
   maxDate,
 }: DateRangeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPreset, setSelectedPreset] = useState<string>("today");
   const t = useTranslations();
-  const presets = getPresets(selectedDates, minDate, maxDate);
-
-  // Sync selectedPreset with actual selected dates
-  useEffect(() => {
-    if (selectedDates.length === 0) {
-      setSelectedPreset("today");
-      return;
-    }
-
-    // Check if current dates match any preset
-    const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    // Normalize dates for comparison (remove time)
-    const normalizeDate = (date: Date) => {
-      const normalized = new Date(date);
-      normalized.setHours(0, 0, 0, 0);
-      return normalized;
-    };
-
-    const normalizedSelected = selectedDates.map(normalizeDate);
-    const normalizedToday = normalizeDate(today);
-    const normalizedYesterday = normalizeDate(yesterday);
-
-    if (normalizedSelected.length === 1) {
-      if (normalizedSelected[0].getTime() === normalizedToday.getTime()) {
-        setSelectedPreset("today");
-      } else if (
-        normalizedSelected[0].getTime() === normalizedYesterday.getTime()
-      ) {
-        setSelectedPreset("yesterday");
-      } else {
-        setSelectedPreset("custom");
-      }
-    } else if (normalizedSelected.length > 1) {
-      // Check if it's this week or this month
-      const isThisWeek = checkIfThisWeek(normalizedSelected);
-      const isThisMonth = checkIfThisMonth(normalizedSelected);
-
-      if (isThisWeek) {
-        setSelectedPreset("thisWeek");
-      } else if (isThisMonth) {
-        setSelectedPreset("thisMonth");
-      } else {
-        setSelectedPreset("custom");
-      }
-    }
-  }, [selectedDates]);
+  const presets = getPresets(selectedDates?.dates || [], minDate, maxDate);
 
   const handlePresetSelect = (preset: PresetOption) => {
-    setSelectedPreset(preset.value);
     if (preset.value !== "custom") {
-      onDatesChange(preset.getDates());
+      onDatesChange({ dates: preset.getDates(), preset: preset.value });
       setIsOpen(false);
+    } else {
+      onDatesChange({ dates: selectedDates?.dates || [], preset: "custom" });
     }
     // For custom, keep the dropdown open
   };
 
-  const handleDateClick = (date: Date) => {
-    // Check if date is within allowed range
-    if (isDateInRange(date, minDate, maxDate)) {
-      onDatesChange([date]);
-      setIsOpen(false);
-    }
+  const handleApplyCustomDates = (dates: Date[]) => {
+    onDatesChange({ dates: dates, preset: "custom" });
+    setIsOpen(false);
   };
 
   const clearSelection = () => {
-    onDatesChange([]);
-    setSelectedPreset("today");
+    onDatesChange({ dates: [], preset: "today" });
   };
 
   return (
@@ -124,7 +73,9 @@ export default function DateRangeSelector({
             className={`min-w-50 text-gray-800 ${className}`}
           >
             {(() => {
-              const displayText = formatSelectedDates(selectedDates);
+              const displayText = formatSelectedDates(
+                selectedDates?.dates || []
+              );
               // Check if it's a translation key (not a date string)
               if (
                 displayText === "Today" ||
@@ -133,14 +84,14 @@ export default function DateRangeSelector({
                 displayText === "dates selected"
               ) {
                 return t(displayText, {
-                  daysCount: selectedDates.length,
+                  daysCount: selectedDates?.dates.length || 0,
                 });
               }
               // If it's a date string, return it directly
               return displayText;
             })()}
           </Button>
-          {selectedDates.length > 0 && (
+          {selectedDates?.dates && selectedDates?.dates.length > 0 && (
             <ActionIcon
               size="sm"
               variant="subtle"
@@ -168,15 +119,15 @@ export default function DateRangeSelector({
           {/* Preset Options */}
           <PresetSelector
             presets={presets}
-            selectedPreset={selectedPreset}
+            selectedPreset={selectedDates?.preset || "today"}
             onPresetSelect={handlePresetSelect}
           />
 
           {/* Custom Date Picker */}
-          {selectedPreset === "custom" && (
+          {selectedDates?.preset === "custom" && (
             <CustomCalendar
-              selectedDates={selectedDates}
-              onDateClick={handleDateClick}
+              selectedDates={selectedDates?.dates || []}
+              onApply={handleApplyCustomDates}
               minDate={minDate}
               maxDate={maxDate}
             />
@@ -184,10 +135,11 @@ export default function DateRangeSelector({
 
           {/* Selected Dates Summary */}
           <DateSummary
-            selectedDates={selectedDates}
+            selectedDates={selectedDates?.dates || []}
             onDateRemove={(index) => {
-              const newDates = selectedDates.filter((_, i) => i !== index);
-              onDatesChange(newDates);
+              const newDates =
+                selectedDates?.dates.filter((_, i) => i !== index) || [];
+              onDatesChange({ dates: newDates, preset: "custom" });
             }}
           />
         </Stack>
@@ -195,55 +147,6 @@ export default function DateRangeSelector({
     </Popover>
   );
 }
-
-// Helper functions to check if dates match preset patterns
-const checkIfThisWeek = (dates: Date[]): boolean => {
-  const today = new Date();
-  const start = new Date(today);
-  const day = start.getDay();
-  const diff = start.getDate() - day + (day === 0 ? -6 : 1); // Monday
-  start.setDate(diff);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(start);
-  end.setDate(start.getDate() + 6); // Sunday
-  end.setHours(23, 59, 59, 999);
-
-  const expectedDates: Date[] = [];
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    expectedDates.push(new Date(d));
-  }
-
-  if (dates.length !== expectedDates.length) return false;
-
-  return dates.every((date) =>
-    expectedDates.some((expected) => expected.getTime() === date.getTime())
-  );
-};
-
-const checkIfThisMonth = (dates: Date[]): boolean => {
-  const today = new Date();
-  const start = new Date(today.getFullYear(), today.getMonth(), 1);
-  const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-  const expectedDates: Date[] = [];
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    expectedDates.push(new Date(d));
-  }
-
-  if (dates.length !== expectedDates.length) return false;
-
-  return dates.every((date) =>
-    expectedDates.some((expected) => expected.getTime() === date.getTime())
-  );
-};
-
-// Helper function to check if date is within allowed range
-const isDateInRange = (date: Date, minDate?: Date, maxDate?: Date): boolean => {
-  if (minDate && date < minDate) return false;
-  if (maxDate && date > maxDate) return false;
-  return true;
-};
 
 // Helper function to filter dates within range
 const filterDatesInRange = (
@@ -265,6 +168,7 @@ const getPresets = (
       value: "today",
       getDates: () => {
         const today = new Date();
+
         return isDateInRange(today, minDate, maxDate) ? [today] : [];
       },
     },

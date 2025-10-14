@@ -7,9 +7,12 @@
  * @param date - The date to format
  * @returns Formatted date string in 24-hour format
  */
-export function formatDateTime(date: Date | string | number): string {
+export function formatDateTime(
+  date: Date | string | number,
+  locale = "en-UK"
+): string {
   const dateObj = new Date(date);
-  return dateObj.toLocaleString("en-UK", {
+  return dateObj.toLocaleString(locale, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
@@ -25,9 +28,12 @@ export function formatDateTime(date: Date | string | number): string {
  * @param date - The date to format
  * @returns Formatted date string
  */
-export function formatDate(date: Date | string | number): string {
+export function formatDate(
+  date: Date | string | number,
+  locale = "en-UK"
+): string {
   const dateObj = new Date(date);
-  return dateObj.toLocaleDateString(undefined, {
+  return dateObj.toLocaleDateString(locale, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
@@ -39,9 +45,12 @@ export function formatDate(date: Date | string | number): string {
  * @param date - The date to format
  * @returns Formatted time string in 24-hour format
  */
-export function formatTime(date: Date | string | number): string {
+export function formatTime(
+  date: Date | string | number,
+  locale = "en-UK"
+): string {
   const dateObj = new Date(date);
-  return dateObj.toLocaleTimeString(undefined, {
+  return dateObj.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -143,4 +152,31 @@ export const formatSecondsToMMSS = (seconds: number) => {
   return `${minutes.toString().padStart(2, "0")}:${secs
     .toString()
     .padStart(2, "0")}`;
+};
+
+export const isDateInRange = (
+  date: Date,
+  minDate?: Date,
+  maxDate?: Date
+): boolean => {
+  const dateWithoutTime = new Date(date);
+  dateWithoutTime.setHours(0, 0, 0, 0);
+
+  const minDateWithoutTime = minDate ? new Date(minDate) : undefined;
+  minDateWithoutTime?.setHours(0, 0, 0, 0);
+
+  const maxDateWithoutTime = maxDate ? new Date(maxDate) : undefined;
+  maxDateWithoutTime?.setHours(0, 0, 0, 0);
+
+  if (
+    minDateWithoutTime &&
+    dateWithoutTime.getTime() < minDateWithoutTime.getTime()
+  )
+    return false;
+  if (
+    maxDateWithoutTime &&
+    dateWithoutTime.getTime() > maxDateWithoutTime.getTime()
+  )
+    return false;
+  return true;
 };

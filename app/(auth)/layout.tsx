@@ -2,7 +2,7 @@ import LoadDailyBalanceComponent from "@/components/initializeation/LoadDailyBal
 import LoadDigitalOptionsComponent from "@/components/initializeation/LoadDigitalOptionsComponent";
 import LoadPositionsDataComponent from "@/components/initializeation/LoadPositionsDataComponent";
 import AppToolbar from "@/components/layout/navigation/AppToolbar";
-import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+// import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { SdkProvider } from "@/provider/SdkProvider";
 import { Flex } from "@mantine/core";
 

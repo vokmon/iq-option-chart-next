@@ -11,13 +11,17 @@ import AssetSummaryPanel from "./components/asset-panel/AssetSummaryPanel";
 import { useGetActiveInformation } from "@/hooks/assets/useGetActiveInformation";
 import ReportLoader from "./components/loading/ReportLoader";
 import ReportEmpty from "./components/loading/ReportEmpty";
+import { PresetType } from "@/components/input/date/type";
 
 export default function ReportPage() {
-  const [selectedDates, setSelectedDates] = useState<Date[]>([new Date()]);
+  const [selectedDates, setSelectedDates] = useState<{
+    dates: Date[];
+    preset: PresetType;
+  }>({ dates: [new Date()], preset: "today" });
   const [balance, setBalance] = useState<Balance | null>(null);
 
   const { data: closedPositions, isLoading } = useGetClosedPositionsByDate({
-    dates: selectedDates,
+    dates: selectedDates.dates,
     balanceId: balance?.id,
   });
 
@@ -39,7 +43,7 @@ export default function ReportPage() {
           <DateRangeSelector
             selectedDates={selectedDates}
             onDatesChange={setSelectedDates}
-            className="w-64 min-h-14 shadow-xl"
+            className="w-64 min-h-11 shadow-xl"
             minDate={minDate}
             maxDate={maxDate}
           />

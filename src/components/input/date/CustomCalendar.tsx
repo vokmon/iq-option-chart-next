@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { checkSameDay } from "@/utils/dateTime";
+import { checkSameDay, isDateInRange } from "@/utils/dateTime";
 import { useTranslations } from "next-intl";
 import {
   ActionIcon,
@@ -17,19 +17,21 @@ import {
 
 interface CustomCalendarProps {
   selectedDates: Date[];
-  onDateClick: (date: Date) => void;
+  onApply: (dates: Date[]) => void;
   minDate?: Date;
   maxDate?: Date;
 }
 
 export default function CustomCalendar({
   selectedDates,
-  onDateClick,
+  onApply,
   minDate,
   maxDate,
 }: CustomCalendarProps) {
   const t = useTranslations();
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [initialSelectedDates, setInitialSelectedDates] =
+    useState<Date[]>(selectedDates);
 
   const navigateMonth = (direction: "prev" | "next") => {
     setCurrentMonth((prev) => {
@@ -72,13 +74,27 @@ export default function CustomCalendar({
   };
 
   const isDateSelected = (date: Date) => {
-    return selectedDates.some((d) => checkSameDay(d, date));
+    return initialSelectedDates.some((d) => checkSameDay(d, date));
   };
 
-  const isDateInRange = (date: Date): boolean => {
-    if (minDate && date < minDate) return false;
-    if (maxDate && date > maxDate) return false;
-    return true;
+  const handleDateClick = (date: Date) => {
+    if (!isDateInRange(date, minDate, maxDate)) return;
+
+    const isAlreadySelected = initialSelectedDates.some((d) =>
+      checkSameDay(d, date)
+    );
+
+    if (isAlreadySelected) {
+      setInitialSelectedDates(
+        initialSelectedDates.filter((d) => !checkSameDay(d, date))
+      );
+    } else {
+      setInitialSelectedDates([...initialSelectedDates, date]);
+    }
+  };
+
+  const handleApply = () => {
+    onApply(initialSelectedDates);
   };
 
   return (
@@ -145,8 +161,8 @@ export default function CustomCalendar({
                   variant={isDateSelected(date) ? "filled" : "subtle"}
                   color={isDateSelected(date) ? "blue" : "gray"}
                   size="xs"
-                  onClick={() => onDateClick(date)}
-                  disabled={!isDateInRange(date)}
+                  onClick={() => handleDateClick(date)}
+                  disabled={!isDateInRange(date, minDate, maxDate)}
                   className={
                     isDateSelected(date) ? "text-white" : "text-gray-800"
                   }
@@ -158,14 +174,14 @@ export default function CustomCalendar({
                     fontWeight: isToday(date) ? 700 : 400,
                     color: isDateSelected(date)
                       ? "white"
-                      : isDateInRange(date)
+                      : isDateInRange(date, minDate, maxDate)
                       ? "#1f2937"
                       : "#9ca3af",
                     border:
                       isToday(date) && !isDateSelected(date)
                         ? "1px solid var(--mantine-color-blue-5)"
                         : "none",
-                    opacity: isDateInRange(date) ? 1 : 0.5,
+                    opacity: isDateInRange(date, minDate, maxDate) ? 1 : 0.5,
                   }}
                 >
                   {date.getDate()}
@@ -177,6 +193,11 @@ export default function CustomCalendar({
           ))}
         </SimpleGrid>
       </Paper>
+
+      {/* Apply Button */}
+      <Button fullWidth color="blue" onClick={handleApply}>
+        {t("Done")}
+      </Button>
     </Stack>
   );
 }

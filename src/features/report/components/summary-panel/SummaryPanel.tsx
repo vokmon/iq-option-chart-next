@@ -6,6 +6,7 @@ import PnLLineChart from "./PnLLineChart";
 import ClosedPositionsTable from "./ClosedPositionsTable";
 import { Balance, Position } from "@quadcode-tech/client-sdk-js";
 import { useTranslations } from "next-intl";
+import PnlLineChartGroupByDay from "./PnlLineChartGroupByDay";
 
 interface SummaryPanelProps {
   balance: Balance | null;
@@ -33,6 +34,12 @@ export default function SummaryPanel({
 
         {/* P&L Line Chart */}
         <PnLLineChart balance={balance} closedPositions={closedPositions} />
+
+        {/* P&L Line Chart Group By Day */}
+        <PnlLineChartGroupByDay
+          balance={balance}
+          closedPositions={closedPositions}
+        />
 
         {/* Closed Positions Table */}
         <ClosedPositionsTable

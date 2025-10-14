@@ -2,10 +2,11 @@
 
 import { Button, Grid, Text, Stack } from "@mantine/core";
 import { useTranslations } from "next-intl";
+import { PresetType } from "./type";
 
 interface PresetOption {
   label: string;
-  value: string;
+  value: PresetType;
   getDates: () => Date[];
 }
 
@@ -21,6 +22,7 @@ export default function PresetSelector({
   onPresetSelect,
 }: PresetSelectorProps) {
   const t = useTranslations();
+
   return (
     <Stack gap="xs">
       <Text size="sm" fw={500} className="text-gray-800">

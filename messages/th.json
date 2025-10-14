@@ -222,7 +222,6 @@
   "60 minutes": "60 นาที",
   "Notifications": "การแจ้งเตือน",
   "No new notifications": "ไม่มีการแจ้งเตือนใหม่",
-  "Trading Break Recommended": "แนะนำให้หยุดเทรด",
   "You've experienced consecutive losses over the past {timeWindow} minutes": "คุณประสบกับการขาดทุนติดต่อกันในช่วง {timeWindow} นาทีที่ผ่านมา",
   "This is a good moment to pause, analyze what went wrong, and adjust your approach before continuing": "นี่เป็นช่วงเวลาที่ดีในการหยุดพัก วิเคราะห์สิ่งที่ผิดพลาด และปรับแนวทางของคุณก่อนดำเนินการต่อ",
   "Here's what happened on your accounts": "นี่คือสิ่งที่เกิดขึ้นในบัญชีของคุณ",
@@ -246,6 +245,7 @@
   "dates selected": "เลือก {daysCount} วัน",
   "date": "วันที่",
   "dates": "วันที่",
+  "Done": "เสร็จสิ้น",
   "Today": "วันนี้",
   "Yesterday": "เมื่อวาน",
   "This Week": "สัปดาห์นี้",
@@ -328,6 +328,7 @@
   "Secure Your Profits Now": "ถอนเงินและรักษากำไรของคุณ!",
   "of profit target": "ของเป้าหมายกำไร",
   "of loss limit": "ของขีดจำกัดขาดทุน",
+  "Daily Performance Tracker": "ติดตามประสิทธิภาพรายวัน",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",

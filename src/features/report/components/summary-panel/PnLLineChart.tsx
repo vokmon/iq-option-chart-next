@@ -18,7 +18,6 @@ import { useMemo } from "react";
 import { formatDateTime } from "@/utils/dateTime";
 import { formatAmount } from "@/utils/currency";
 import { useSettingsStore } from "@/stores/settingsStore";
-import { useDailyBalanceSnapshot } from "@/hooks/useDailyBalanceSnapshot";
 import { useDailyBalanceStore } from "@/stores/dailyBalanceStore";
 import {
   calculateDailyLossLimit,
