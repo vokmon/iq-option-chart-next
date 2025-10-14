@@ -81,6 +81,7 @@ export function AssetSelector({
           fontWeight: 700,
           color: "var(--mantine-color-text) !important",
           opacity: "1 !important",
+          fontSize: "0.8rem",
         },
       }}
       classNames={{
@@ -89,7 +90,7 @@ export function AssetSelector({
       leftSectionWidth={40}
       leftSection={
         activeInformation[selectedActiveId as unknown as number]?.imageUrl && (
-          <div className="w-6 h-6">
+          <div className="w-4 h-4">
             <Image
               src={activeData.imageUrl}
               alt={activeData.name}
@@ -106,12 +107,12 @@ export function AssetSelector({
         return (
           <Box style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {activeInfo?.imageUrl && (
-              <div className="w-7 h-7">
+              <div className="w-4 h-4">
                 <Image
                   src={activeInfo.imageUrl}
                   alt={activeInfo.name || option.label}
-                  width={5}
-                  height={5}
+                  width={4}
+                  height={4}
                   style={{ borderRadius: "4px" }}
                 />
               </div>

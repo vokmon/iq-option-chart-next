@@ -37,7 +37,7 @@ export default function ClosePositionCard({
               />
             )}
           </div>
-          <Text size="xs" fw={500} c={textColor}>
+          <Text className="!text-xs" fw={500} c={textColor}>
             {activeInfo?.name || position.active?.name}
           </Text>
         </div>
@@ -46,17 +46,12 @@ export default function ClosePositionCard({
           <Badge
             color={position.direction === "call" ? "green" : "red"}
             variant="light"
-            size="sm"
-            w="50px"
+            size="xs"
+            // w="50px"
             style={{ textTransform: "none" }}
           >
             <div className="flex flex-row justify-start items-center gap-2">
-              {/* {position.direction === "call" ? (
-                <IconTrendingUp size={20} color="green" />
-              ) : (
-                <IconTrendingDown size={20} color="red" />
-              )} */}
-              {position.direction?.toUpperCase()}
+              {t(position.direction?.toUpperCase() || "")}
             </div>
           </Badge>
 

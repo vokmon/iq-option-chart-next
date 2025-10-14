@@ -25,7 +25,7 @@ export default function ChartSidebar() {
 
   return (
     <Flex w="100%" h="100%" direction="column" gap={3} style={{ minHeight: 0 }}>
-      <Flex direction="row" gap="md">
+      <Flex direction="row" gap={2}>
         <div className="relative w-full">
           {!activeAsset?.asset && <AssetSelectorAttentions />}
           <AssetSelector

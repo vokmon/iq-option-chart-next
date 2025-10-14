@@ -139,7 +139,7 @@ export default function BalanceSelector({
 
   if (loading) {
     return (
-      <Paper p="md" withBorder>
+      <Paper p="sm" withBorder>
         <Text size="sm" c="dimmed">
           {t("Loading balances")}
         </Text>
@@ -159,7 +159,7 @@ export default function BalanceSelector({
 
   // Create detailed balance info for tooltip
   const balanceInfo = selectedBalance ? (
-    <Stack gap="xs" p="xs">
+    <Stack gap="xs" p={"xs"}>
       <Group justify="space-between">
         <Text size="sm" fw={500}>
           {t("Available")}
@@ -182,7 +182,7 @@ export default function BalanceSelector({
 
   return (
     <>
-      <Paper p="sm" withBorder>
+      <Paper p="xs" withBorder>
         <Stack gap="sm">
           {/* Balance Display with Clickable Account Selector */}
           {selectedBalance && (
@@ -195,7 +195,7 @@ export default function BalanceSelector({
                   )}
                   variant="filled"
                   size="lg"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", textTransform: "none" }}
                   onClick={() => setModalOpened(true)}
                   rightSection={
                     <ActionIcon
@@ -226,7 +226,6 @@ export default function BalanceSelector({
                     />
                   )}
                   <Text
-                    size="lg"
                     fw={700}
                     c={
                       selectedBalance.amount === 0
@@ -235,6 +234,7 @@ export default function BalanceSelector({
                             selectedBalance.type?.toString() || ""
                           )
                     }
+                    className="!text-sm"
                   >
                     {formatAmount(
                       selectedBalance.amount,

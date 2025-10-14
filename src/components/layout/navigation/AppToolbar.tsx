@@ -41,7 +41,7 @@ export default function AppToolbar() {
       {/* Left side - App title or logo */}
       <Group>
         <AppDrawer />
-        <div className="w-10 h-10">
+        <div className="w-10 h-10 hidden sm:block">
           <Image
             src="/icons/icon.svg"
             alt={APP_METADATA.name}
@@ -57,6 +57,7 @@ export default function AppToolbar() {
             textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
             letterSpacing: "0.5px",
           }}
+          className="hidden sm:block"
         >
           {APP_METADATA.name}
         </Text>
@@ -66,7 +67,9 @@ export default function AppToolbar() {
       <Group>
         <NewsComponents />
         <NotificationPanel />
-        <TimePanel />
+        <div className="hidden lg:block">
+          <TimePanel />
+        </div>
         <Menu shadow="md" width={300} position="bottom-end">
           <Menu.Target>
             <UserMenuButton

@@ -105,8 +105,8 @@ export function TabBar() {
           {/* Left scroll button */}
           {canScrollLeft && (
             <ActionIcon
-              variant="subtle"
-              color="gray"
+              variant="gradient"
+              color="blue.3"
               onClick={scrollLeft}
               style={{
                 position: "absolute",
@@ -126,8 +126,8 @@ export function TabBar() {
           {/* Right scroll button */}
           {canScrollRight && (
             <ActionIcon
-              variant="subtle"
-              color="gray"
+              variant="gradient"
+              color="blue.3"
               onClick={scrollRight}
               style={{
                 position: "absolute",

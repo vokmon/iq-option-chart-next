@@ -121,6 +121,7 @@ const UserMenuButton = forwardRef<HTMLButtonElement, UserMenuButtonProps>(
             maxWidth: "200px",
             textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
           }}
+          className="hidden sm:block"
         >
           {user?.email}
         </Text>

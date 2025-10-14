@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className="bg-gradient-to-r from-[rgba(28,34,51,1)] to-[rgba(18,22,33,0.85)]"
         >
           {children}
-          <InstallPrompt />
+          {/* <InstallPrompt /> */}
         </Flex>
       </Flex>
     </SdkProvider>
