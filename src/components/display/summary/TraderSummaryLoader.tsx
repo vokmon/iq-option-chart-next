@@ -7,9 +7,8 @@ export default function TraderSummaryLoader() {
       shadow="xs"
       padding="6px"
       radius="sm"
-      className="bg-gradient-to-r from-slate-50 to-blue-50 hover:shadow-sm transition-all duration-200"
+      className="bg-gradient-to-r from-slate-50 to-blue-50 hover:shadow-sm transition-all duration-200 w-full"
       style={{
-        width: "388px",
         height: "60px",
         border: "1px solid rgba(100, 116, 139, 0.15)",
         boxShadow:

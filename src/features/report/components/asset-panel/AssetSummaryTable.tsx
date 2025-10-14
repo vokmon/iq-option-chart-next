@@ -77,7 +77,7 @@ export default function AssetSummaryTable({
                 <Table.Tr key={summary.activeId}>
                   <Table.Td>
                     <div className="flex flex-row items-center gap-2">
-                      {active && (
+                      {active && active.imageUrl && (
                         <Image
                           src={active.imageUrl}
                           alt={active.name}

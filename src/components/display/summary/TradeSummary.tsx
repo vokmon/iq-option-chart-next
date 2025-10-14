@@ -43,8 +43,12 @@ export default function TradeSummary({
     totalPnL,
     dailyProfitTarget: dailyProfitTarget || 0,
     dailyLossLimit: dailyLossLimit || 0,
-    profitTargetLabel: t("of profit target"),
-    lossLimitLabel: t("of loss limit"),
+    profitTargetLabel: t("of profit target", {
+      amount: formatAmount(dailyProfitTarget || 0, balance?.currency),
+    }),
+    lossLimitLabel: t("of loss limit", {
+      amount: formatAmount(dailyLossLimit || 0, balance?.currency),
+    }),
   });
 
   // Determine PnL state and styling
@@ -96,7 +100,15 @@ export default function TradeSummary({
           </div>
           {progressData && (
             <div className="w-full px-1 py-1">
-              <div className="relative w-full h-2 bg-gray-200 rounded-sm overflow-hidden">
+              <div className="flex flex-row justify-between items-center w-full mt-1">
+                <Text size="xs" c="red.6" fw={500}>
+                  {formatAmount(dailyLossLimit || 0, balance?.currency)}
+                </Text>
+                <Text size="xs" c="green.6" fw={500}>
+                  {formatAmount(dailyProfitTarget || 0, balance?.currency)}
+                </Text>
+              </div>
+              <div className="relative w-full h-5 bg-gray-200 rounded-sm overflow-hidden">
                 {/* Center line */}
                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gray-400 z-10" />
 
@@ -127,10 +139,23 @@ export default function TradeSummary({
                     }}
                   />
                 )}
+
+                {/* Percentage badge inside the bar */}
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <Badge
+                    size="sm"
+                    variant="filled"
+                    color={
+                      totalPnL > 0 ? "green" : totalPnL < 0 ? "red" : "gray"
+                    }
+                    className="px-2"
+                  >
+                    <Text size="xs" fw={600} c="gray.1">
+                      {progressData.percentage.toFixed(0)}%
+                    </Text>
+                  </Badge>
+                </div>
               </div>
-              <Text size="xs" c="dimmed" mt={2} className="text-center">
-                {progressData.label}
-              </Text>
             </div>
           )}
           <div className="flex flex-row justify-between items-center gap-2 w-full">

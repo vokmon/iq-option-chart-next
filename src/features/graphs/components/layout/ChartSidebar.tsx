@@ -49,6 +49,9 @@ export default function ChartSidebar() {
       <Flex className="h-10">
         <AutoTradeSelectorController />
       </Flex>
+      <Flex className="">
+        <TodayTradeSummary />
+      </Flex>
       <Flex className="flex-1 flex-col w-full relative gap-1">
         <div className="h-full w-full relative overflow-y-auto ">
           <div className="h-full w-full absolute">
@@ -56,9 +59,6 @@ export default function ChartSidebar() {
             <ClosedPositionTableController />
           </div>
         </div>
-      </Flex>
-      <Flex className="">
-        <TodayTradeSummary />
       </Flex>
     </Flex>
   );

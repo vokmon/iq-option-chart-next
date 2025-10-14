@@ -1,7 +1,6 @@
 "use client";
 
 import { DonutChart } from "@mantine/charts";
-import "@mantine/charts/styles.css";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { formatAmount } from "@/utils/currency";
@@ -141,12 +140,14 @@ export default function AssetDonutChart({
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: item.color }}
               />
-              <Image
-                src={asset?.imageUrl}
-                alt={asset?.name}
-                width={20}
-                height={20}
-              />
+              {asset?.imageUrl && (
+                <Image
+                  src={asset?.imageUrl}
+                  alt={asset?.name}
+                  width={20}
+                  height={20}
+                />
+              )}
               {asset?.name}
             </div>
           );

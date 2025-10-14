@@ -2,7 +2,6 @@
 
 import { ThemeIcon } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
-import "@mantine/charts/styles.css";
 import { Balance, Position } from "@quadcode-tech/client-sdk-js";
 import { GroupedPositions } from "./type/groupPositionType";
 
@@ -86,10 +85,26 @@ export default function AssetLineChart({
       const asset = activeInformation[parseInt(activeId)];
       const assetName = asset?.name || `Asset ${activeId}`;
 
+      const color = `hsl(${(parseInt(activeId) * 137.5) % 360}, 70%, 50%)`;
       return {
         name: `asset_${activeId}`,
-        color: `hsl(${(parseInt(activeId) * 137.5) % 360}, 70%, 50%)`, // Generate unique colors
-        label: assetName,
+        color: color, // Generate unique colors
+        label: (
+          <span
+            className="text-sm flex items-center gap-2 px-4 py-1 rounded-xl text-gray-200 shadow-md cursor-pointer"
+            style={{ backgroundColor: color }}
+          >
+            {asset?.imageUrl && (
+              <Image
+                src={asset?.imageUrl}
+                alt={assetName}
+                width={20}
+                height={20}
+              />
+            )}
+            {assetName}
+          </span>
+        ) as unknown as string,
       };
     });
   }, [groupedPositions, activeInformation]);
@@ -185,36 +200,36 @@ export default function AssetLineChart({
           legendProps={{
             layout: "vertical",
             verticalAlign: "bottom",
-            content: ({ payload }) => {
-              return (
-                <div className="flex flex-row items-center gap-7 mt-3 flex-wrap">
-                  {payload?.map((item, index) => {
-                    const asset =
-                      activeInformation[
-                        parseInt(
-                          (item.dataKey as string)?.replace("asset_", "") || ""
-                        )
-                      ];
-                    const assetName = asset?.name || `Asset ${item.dataKey}`;
-                    return (
-                      <div
-                        key={index}
-                        className="text-sm flex items-center gap-2 px-4 py-1 rounded-xl text-gray-200 shadow-md"
-                        style={{ backgroundColor: item.color }}
-                      >
-                        <Image
-                          src={asset?.imageUrl}
-                          alt={assetName}
-                          width={20}
-                          height={20}
-                        />
-                        {assetName}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            },
+            // content: ({ payload }) => {
+            //   return (
+            //     <div className="flex flex-row items-center gap-7 mt-3 flex-wrap">
+            //       {payload?.map((item, index) => {
+            //         const asset =
+            //           activeInformation[
+            //             parseInt(
+            //               (item.dataKey as string)?.replace("asset_", "") || ""
+            //             )
+            //           ];
+            //         const assetName = asset?.name || `Asset ${item.dataKey}`;
+            //         return (
+            //           <div
+            //             key={index}
+            //             className="text-sm flex items-center gap-2 px-4 py-1 rounded-xl text-gray-200 shadow-md"
+            //             style={{ backgroundColor: item.color }}
+            //           >
+            //             <Image
+            //               src={asset?.imageUrl}
+            //               alt={assetName}
+            //               width={20}
+            //               height={20}
+            //             />
+            //             {assetName}
+            //           </div>
+            //         );
+            //       })}
+            //     </div>
+            //   );
+            // },
           }}
         />
       </div>

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 export default function EmptyTradingSummary() {
   const t = useTranslations();
   return (
-    <Group justify="center" align="center" h="100%" className="w-full gap-3">
+    <Group justify="center" align="center" h="50px" className="w-full gap-3">
       <Box
         className="flex items-center justify-center w-8 h-8 rounded-full"
         style={{

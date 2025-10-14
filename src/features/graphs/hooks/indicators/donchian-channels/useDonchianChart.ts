@@ -65,13 +65,13 @@ export function useDonchianChart({
 
       const upperChannelSeries = chart.addSeries(LineSeries, {
         color: colors.primary,
-        lineWidth: 4,
+        lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Upper",
         lastValueVisible: false,
         priceFormat: {
           type: "price",
-          precision: 3,
+          precision: 1,
           minMove: 0.00001,
         },
         autoscaleInfoProvider: () => ({
@@ -84,7 +84,7 @@ export function useDonchianChart({
 
       const middleChannelSeries = chart.addSeries(LineSeries, {
         color: colors.secondary,
-        lineWidth: 2,
+        lineWidth: 1,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Middle",
         lastValueVisible: false,
@@ -103,7 +103,7 @@ export function useDonchianChart({
 
       const lowerChannelSeries = chart.addSeries(LineSeries, {
         color: colors.primary,
-        lineWidth: 4,
+        lineWidth: 2,
         lineStyle: LineStyle.Solid,
         // title: "Donchian Lower",
         lastValueVisible: false,
