@@ -1,6 +1,6 @@
 import { SignalType } from "@/types/signal/Signal";
 import {
-  IconCategory,
+  IconClockPause,
   IconMinus,
   IconTrendingDown,
   IconTrendingUp,
@@ -30,7 +30,7 @@ export const useGetSignalConfig = (signalType: SignalType) => {
     case SignalType.HOLD:
       return {
         color: "orange",
-        icon: IconCategory,
+        icon: IconClockPause,
         text: t("HOLD"),
         classes: "bg-orange-50 border-orange-300 text-orange-800",
         iconGradient: "bg-gradient-to-br from-orange-400 to-orange-600",

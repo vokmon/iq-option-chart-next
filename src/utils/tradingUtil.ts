@@ -2,9 +2,10 @@ import { DigitalOptionsUnderlyingInstruments } from "@quadcode-tech/client-sdk-j
 
 export const getFirstAvailableInstrument = (
   instruments: DigitalOptionsUnderlyingInstruments,
-  period: number
+  period: number,
+  date: Date = new Date()
 ) => {
-  const instrument = instruments?.getAvailableForBuyAt(new Date());
+  const instrument = instruments?.getAvailableForBuyAt(date);
   const firstInstrument = instrument?.find(
     (instrument) => instrument.period === period
   );

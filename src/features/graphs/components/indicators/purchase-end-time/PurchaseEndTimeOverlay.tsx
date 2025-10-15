@@ -3,6 +3,7 @@ import { IconClock } from "@tabler/icons-react";
 import { useAssetStore } from "@/stores/assetStore";
 import { getFirstAvailableInstrument } from "@/utils/tradingUtil";
 import { formatTime } from "@/utils/dateTime";
+import { useSdk } from "@/hooks/useSdk";
 
 interface PurchaseEndTimeData {
   formattedDuration: string;
@@ -14,6 +15,7 @@ export function PurchaseEndTimeOverlay() {
   const [data, setData] = useState<PurchaseEndTimeData | null>(null);
   const [durationRemaining, setDurationRemaining] = useState<number>(0);
   const activeAsset = getActiveAsset();
+  const { sdk } = useSdk();
 
   useEffect(() => {
     const updateData = async () => {
@@ -26,7 +28,8 @@ export function PurchaseEndTimeOverlay() {
         const instruments = await activeAsset.asset.instruments();
         const firstInstrument = getFirstAvailableInstrument(
           instruments,
-          activeAsset.candleSize
+          activeAsset.candleSize,
+          sdk.currentTime()
         );
 
         if (!firstInstrument) {
@@ -76,7 +79,7 @@ export function PurchaseEndTimeOverlay() {
   if (!data) return null;
 
   return (
-    <div className="absolute flex items-center justify-center top-2.5 right-[80px] px-3 py-2 bg-blue-900/90 text-white rounded-lg text-[13px] font-semibold shadow-md z-[10] pointer-events-none flex items-center gap-2">
+    <div className="absolute flex items-center justify-center -top-5.5 right-[10px] px-3 py-2 bg-blue-900/90 text-white rounded-lg text-[13px] font-semibold shadow-md z-[10] pointer-events-none flex items-center gap-2">
       <div className="flex flex-row items-center gap-2 justify-center">
         <IconClock className="w-4 h-4" />
         <div className="font-bold">Purchase Time</div>

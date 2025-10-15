@@ -70,11 +70,14 @@ export function AssetSelector({
       label={t("Asset")}
       placeholder={t("Choose an asset")}
       value={selectedActiveId}
-      onChange={(value) => onAssetSelect?.(value || "none")}
+      onChange={(value) => {
+        if (value === null) return;
+        onAssetSelect?.(value || "none");
+      }}
       data={selectData}
       searchable
       className={className}
-      disabled={selectedActiveId !== "none"}
+      // disabled={selectedActiveId !== "none"}
       maxDropdownHeight={600}
       styles={{
         input: {

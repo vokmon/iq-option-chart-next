@@ -57,7 +57,11 @@ export function useTradingActions({
         sdk.digitalOptions(),
       ]);
 
-      const firstInstrument = getFirstAvailableInstrument(instruments, period);
+      const firstInstrument = getFirstAvailableInstrument(
+        instruments,
+        period,
+        sdk.currentTime()
+      );
 
       if (!firstInstrument) {
         throw new Error("No available instruments for trading");

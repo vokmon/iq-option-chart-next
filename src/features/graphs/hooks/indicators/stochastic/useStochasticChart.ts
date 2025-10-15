@@ -81,8 +81,8 @@ export function useStochasticChart({
 
       const upperSeries = chart.addSeries(LineSeries, {
         color: colors.upper,
-        lineWidth: 2,
-        lineStyle: LineStyle.Dashed,
+        lineWidth: 1,
+        lineStyle: LineStyle.Solid,
         // title: "Overbought (80)",
         lastValueVisible: false,
         priceFormat: {
@@ -94,8 +94,8 @@ export function useStochasticChart({
 
       const lowerSeries = chart.addSeries(LineSeries, {
         color: colors.lower,
-        lineWidth: 2,
-        lineStyle: LineStyle.Dashed,
+        lineWidth: 1,
+        lineStyle: LineStyle.Solid,
         // title: "Oversold (20)",
         lastValueVisible: false,
         priceFormat: {
