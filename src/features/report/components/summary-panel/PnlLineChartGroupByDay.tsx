@@ -8,7 +8,7 @@ import { IconChartLine, IconCalendar } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { formatAmount } from "@/utils/currency";
-import { formatTime, formatDate } from "@/utils/dateTime";
+import { formatDate } from "@/utils/dateTime";
 
 type PnlLineChartGroupByDayProps = {
   balance: Balance | null;
@@ -20,6 +20,17 @@ export default function PnlLineChartGroupByDay({
   closedPositions,
 }: PnlLineChartGroupByDayProps) {
   const t = useTranslations();
+
+  // Helper function to format milliseconds since midnight as HH:MM:SS
+  const formatTimeOfDay = (milliseconds: number): string => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   // Group positions by day and calculate cumulative P&L for each day
   const { chartData, daySeries } = useMemo(() => {
@@ -52,12 +63,18 @@ export default function PnlLineChartGroupByDay({
     // Get sorted day keys
     const dayKeys = Object.keys(positionsByDay).sort();
 
-    // Collect all time points within a day and map each day's data
-    const allTimePointsSet = new Set<number>();
+    // Collect time points for each day separately and find the first/last time for each day
+    const dayTimePoints: Record<string, number[]> = {};
+    const firstTimeByDay: Record<string, number> = {};
+    const lastTimeByDay: Record<string, number> = {};
 
-    // First pass: collect all unique time-of-day points across all days
+    // First pass: collect time points for each day and find the first/last time
     dayKeys.forEach((dayKey) => {
       const positions = positionsByDay[dayKey];
+      const timePoints = new Set<number>();
+      let firstTime = Infinity;
+      let lastTime = 0;
+
       positions.forEach((position) => {
         if (position.closeTime) {
           const date = new Date(position.closeTime);
@@ -67,9 +84,21 @@ export default function PnlLineChartGroupByDay({
             date.getMinutes() * 60000 +
             date.getSeconds() * 1000 +
             date.getMilliseconds();
-          allTimePointsSet.add(timeOfDay);
+          timePoints.add(timeOfDay);
+          firstTime = Math.min(firstTime, timeOfDay);
+          lastTime = Math.max(lastTime, timeOfDay);
         }
       });
+
+      dayTimePoints[dayKey] = Array.from(timePoints).sort((a, b) => a - b);
+      firstTimeByDay[dayKey] = firstTime;
+      lastTimeByDay[dayKey] = lastTime;
+    });
+
+    // Collect all unique time points across all days for the x-axis
+    const allTimePointsSet = new Set<number>();
+    Object.values(dayTimePoints).forEach((timePoints) => {
+      timePoints.forEach((time) => allTimePointsSet.add(time));
     });
 
     // Sort all time points
@@ -83,29 +112,35 @@ export default function PnlLineChartGroupByDay({
 
       // For each day, calculate cumulative P&L up to this time point
       dayKeys.forEach((dayKey) => {
-        const positions = positionsByDay[dayKey];
-        let cumulativePnL = 0;
+        // Only add data if this time is between the first and last trade time for this day
+        if (
+          timeOfDay >= firstTimeByDay[dayKey] &&
+          timeOfDay <= lastTimeByDay[dayKey]
+        ) {
+          const positions = positionsByDay[dayKey];
+          let cumulativePnL = 0;
 
-        positions.forEach((position) => {
-          if (position.closeTime) {
-            const date = new Date(position.closeTime);
-            const posTimeOfDay =
-              date.getHours() * 3600000 +
-              date.getMinutes() * 60000 +
-              date.getSeconds() * 1000 +
-              date.getMilliseconds();
+          positions.forEach((position) => {
+            if (position.closeTime) {
+              const date = new Date(position.closeTime);
+              const posTimeOfDay =
+                date.getHours() * 3600000 +
+                date.getMinutes() * 60000 +
+                date.getSeconds() * 1000 +
+                date.getMilliseconds();
 
-            // Only include positions up to this time point
-            if (posTimeOfDay <= timeOfDay) {
-              cumulativePnL += position.pnl ?? 0;
+              // Only include positions up to this time point
+              if (posTimeOfDay <= timeOfDay) {
+                cumulativePnL += position.pnl ?? 0;
+              }
             }
-          }
-        });
+          });
 
-        // Only set the value if there are positions at or before this time
-        if (cumulativePnL !== 0) {
+          // Set the value
           dataPoint[dayKey] = cumulativePnL;
         }
+        // If timeOfDay is outside this day's trading range, don't set any value (undefined)
+        // This will cause the line to only show during actual trading times
       });
 
       return dataPoint;
@@ -155,9 +190,8 @@ export default function PnlLineChartGroupByDay({
           xAxisProps={{
             label: "",
             tickFormatter: (value) => {
-              // Convert timeOfDay (ms since midnight) to a Date and format it
-              const date = new Date(value);
-              return formatTime(date);
+              // Convert timeOfDay (ms since midnight) to HH:MM:SS
+              return formatTimeOfDay(Number(value));
             },
           }}
           yAxisProps={{
@@ -177,8 +211,7 @@ export default function PnlLineChartGroupByDay({
             content: ({ label, payload }) => {
               if (payload && payload.length > 0) {
                 // Convert label (timeOfDay in ms) to formatted time
-                const date = new Date(Number(label));
-                const timeStr = formatTime(date);
+                const timeStr = formatTimeOfDay(Number(label));
 
                 return (
                   <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-200 dark:border-slate-600 backdrop-blur-sm">
