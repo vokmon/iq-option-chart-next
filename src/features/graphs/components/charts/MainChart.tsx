@@ -314,15 +314,14 @@ export function MainChart({
       }
 
       // Set the height of the stochastic pane after chart is fully initialized
-      setTimeout(() => {
-        if (showStochastic && !isDisposed) {
-          const panes = chart.panes();
-          if (panes.length > 1) {
-            const stochasticPane = panes[1]; // Second pane (index 1)
-            stochasticPane.setHeight(stochasticPaneHeight);
-          }
+
+      if (showStochastic && !isDisposed) {
+        const panes = chart.panes();
+        if (panes.length > 1) {
+          const stochasticPane = panes[1]; // Second pane (index 1)
+          stochasticPane.setHeight(stochasticPaneHeight);
         }
-      }, 100); // Small delay to ensure chart is fully rendered
+      }
 
       // Subscribe to candle changes
       chartLayer.subscribeOnLastCandleChanged(async (candle: Candle) => {

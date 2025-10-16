@@ -10,6 +10,8 @@ import { Position } from "@quadcode-tech/client-sdk-js";
 import { getPositionColor } from "@/utils/positionColors";
 import { formatAmount } from "@/utils/currency";
 import { useOrderReferenceLines } from "./useOrderReferenceLines";
+import { formatSecondsToMMSS, formatTime } from "@/utils/dateTime";
+import { useSdk } from "@/hooks/useSdk";
 
 export interface PositionReferenceLine {
   series: ISeriesApi<"Line"> | null;
@@ -42,19 +44,35 @@ export function usePositionReferenceLines({
   const positions = useOrderReferenceLines({
     activeId,
   });
+  const { sdk } = useSdk();
   const referenceLinesRef = useRef<PositionReferenceLine[]>([]);
   const lastPositionsRef = useRef<Position[]>([]);
 
-  const getPositionTitle = useCallback((position: Position) => {
-    const direction = position.direction?.toUpperCase() || "UNKNOWN";
-    const directionEmoji =
-      direction === "CALL" ? "⬆️" : direction === "PUT" ? "⬇️" : "";
-    const pnlIcon =
-      (position?.pnl || 0) > 0 ? `🟢` : (position?.pnl || 0) < 0 ? `🔴` : `⚪`;
+  const getPositionTitle = useCallback(
+    (position: Position) => {
+      const direction = position.direction?.toUpperCase() || "UNKNOWN";
+      const directionEmoji =
+        direction === "CALL" ? "⬆️" : direction === "PUT" ? "⬇️" : "";
+      const pnlIcon =
+        (position?.pnl || 0) > 0
+          ? `🟢`
+          : (position?.pnl || 0) < 0
+          ? `🔴`
+          : `⚪`;
 
-    const pnl = formatAmount(position.pnl || 0);
-    return `${direction} ${directionEmoji} (${position.openQuote}) ${pnlIcon} ${pnl}`;
-  }, []);
+      const pnl = formatAmount(position.pnl || 0);
+
+      const remainingTime = formatSecondsToMMSS(
+        Math.round(
+          (position.expirationTime!.getTime() - sdk.currentTime().getTime()) /
+            1000
+        )
+      );
+
+      return `${direction} ${directionEmoji} (${position.openQuote}) ${pnlIcon} ${pnl} ${remainingTime}`;
+    },
+    [sdk]
+  );
 
   const createPositionReferenceLines = useCallback(
     (chart: IChartApi): PositionReferenceLine[] => {
@@ -110,7 +128,7 @@ export function usePositionReferenceLines({
           lineWidth: 4,
           lineStyle: LineStyle.Solid,
           title,
-          lastValueVisible: true,
+          lastValueVisible: false,
           priceFormat: {
             type: "price",
             precision: 6,

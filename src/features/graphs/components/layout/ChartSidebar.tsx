@@ -52,14 +52,6 @@ export default function ChartSidebar() {
       <Flex className="">
         <TodayTradeSummary />
       </Flex>
-      <Flex className="flex-1 flex-col w-full relative gap-1">
-        <div className="h-full w-full relative overflow-y-auto ">
-          <div className="h-full w-full absolute">
-            <OpenPositionTableController />
-            <ClosedPositionTableController />
-          </div>
-        </div>
-      </Flex>
     </Flex>
   );
 }

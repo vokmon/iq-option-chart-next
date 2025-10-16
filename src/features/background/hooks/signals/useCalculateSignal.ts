@@ -5,7 +5,7 @@ import { useSdk } from "@/hooks/useSdk";
 import { calculateSignal } from "@/utils/indicators/signalCalculator";
 
 const CANDLE_NUMBER = 100;
-const SIGNAL_INTERVAL_SECONDS = 3;
+const SIGNAL_INTERVAL_SECONDS = 2;
 
 export function useCalculateSignal() {
   const { sdk } = useSdk();

@@ -22,7 +22,7 @@ export default function ClosedPositionTableController() {
         closedPositions={closedPositionsForSelectedBalance}
         activeInformation={activeInformation}
         balance={selectedBalance}
-        itemsPerPage={20}
+        itemsPerPage={15}
         cardClassName="bg-gray-200 rounded-lg border-gray-500"
         // textColor="gray"
       />
