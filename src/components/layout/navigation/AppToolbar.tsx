@@ -41,7 +41,7 @@ export default function AppToolbar() {
       {/* Left side - App title or logo */}
       <Group>
         <AppDrawer />
-        <div className="w-10 h-10 hidden sm:block">
+        <div className="w-20 h-[auto] hidden sm:block">
           <Image
             src="/icons/icon.svg"
             alt={APP_METADATA.name}

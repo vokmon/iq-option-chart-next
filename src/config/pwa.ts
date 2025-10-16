@@ -20,7 +20,7 @@ export const pwaMetadata: Metadata = {
     description: APP_METADATA.description,
   },
   icons: {
-    icon: "/icons/icon-192x192.svg",
+    icon: "/icons/icon.svg",
     shortcut: "/icons/icon-192x192.svg",
     apple: "/icons/icon-192x192.svg",
   },

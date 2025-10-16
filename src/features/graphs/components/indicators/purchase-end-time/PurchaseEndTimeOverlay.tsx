@@ -19,7 +19,7 @@ export function PurchaseEndTimeOverlay() {
 
   useEffect(() => {
     const updateData = async () => {
-      if (!activeAsset?.asset) {
+      if (!activeAsset?.asset?.instruments) {
         setData(null);
         return;
       }
