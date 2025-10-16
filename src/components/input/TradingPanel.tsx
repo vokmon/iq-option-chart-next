@@ -78,6 +78,7 @@ export default function TradingPanel({
           leftSection={getCurrencySymbol(selectedBalance?.currency)}
           quickAmounts={quickAmounts}
           size="xs"
+          balance={selectedBalance || undefined}
         />
 
         {/* Order Direction Selector or Disabled Message */}

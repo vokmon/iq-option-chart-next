@@ -4,6 +4,8 @@ import React from "react";
 import { NumberInput, ActionIcon, Menu } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
+import { Balance } from "@quadcode-tech/client-sdk-js";
+import { formatAmount } from "@/utils/currency";
 
 interface AmountInputProps {
   value?: number;
@@ -13,6 +15,7 @@ interface AmountInputProps {
   quickAmounts?: number[];
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   placeholder?: string;
+  balance?: Balance;
 }
 
 export default function AmountInput({
@@ -23,6 +26,7 @@ export default function AmountInput({
   quickAmounts = [1, 10, 100, 1000, 10000],
   size = "xs",
   placeholder,
+  balance,
 }: AmountInputProps) {
   const t = useTranslations();
 
@@ -62,7 +66,7 @@ export default function AmountInput({
                       : undefined,
                 }}
               >
-                {quickAmount.toLocaleString()}
+                {formatAmount(quickAmount, balance?.currency)}
               </Menu.Item>
             ))}
           </Menu.Dropdown>

@@ -5,6 +5,8 @@ import { DigitalOptionsDirection } from "@quadcode-tech/client-sdk-js";
 import { useAssetStore } from "@/stores/assets/assetStore";
 import { notifications } from "@mantine/notifications";
 import { OrderSuccessNotification } from "@/components/notifications/OrderSuccessNotification";
+import { useAmountHistoryStore } from "@/stores/assets/amountHistoryStore";
+import { useAmountHistory } from "../../hooks/trading/useAmountHistory";
 
 export default function TradingPanelController() {
   const { getActiveAsset } = useAssetStore();
@@ -28,6 +30,13 @@ export default function TradingPanelController() {
   });
 
   const { isPending, mutate: createOrder } = createOrderMutation;
+  const { addAmount } = useAmountHistoryStore();
+
+  // Use the custom hook to get amount history and handle lastActive updates
+  const amountHistory = useAmountHistory(
+    activeAsset?.asset?.activeId,
+    selectedBalanceId
+  );
 
   return (
     <TradingPanel
@@ -36,7 +45,9 @@ export default function TradingPanelController() {
       amount={amount}
       onAmountChange={onAmountChange}
       disabled={isPending}
+      quickAmounts={amountHistory}
       onCall={async (balance, amount) => {
+        addAmount(activeAsset!.asset!.activeId!, balance.id, amount);
         createOrder({
           asset: asset!,
           balance,
@@ -46,6 +57,7 @@ export default function TradingPanelController() {
         });
       }}
       onPut={async (balance, amount) => {
+        addAmount(activeAsset!.asset!.activeId!, balance.id, amount);
         createOrder({
           asset: asset!,
           balance,
