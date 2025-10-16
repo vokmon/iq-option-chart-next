@@ -10,7 +10,7 @@ import { Position } from "@quadcode-tech/client-sdk-js";
 import { getPositionColor } from "@/utils/positionColors";
 import { formatAmount } from "@/utils/currency";
 import { useOrderReferenceLines } from "./useOrderReferenceLines";
-import { formatSecondsToMMSS, formatTime } from "@/utils/dateTime";
+import { formatSecondsToMMSS } from "@/utils/dateTime";
 import { useSdk } from "@/hooks/useSdk";
 
 export interface PositionReferenceLine {

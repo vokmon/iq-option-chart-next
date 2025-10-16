@@ -9,8 +9,6 @@ import TodayTradeSummary from "../displays/TodayTradeSummary";
 import AssetSelectorAttentions from "@/components/cta/AssetSelectorAttentions";
 import SignalPanelController from "../displays/SignalPanelController";
 import AutoTradeSelectorController from "../input/AutoTradeSelectorController";
-import OpenPositionTableController from "../displays/OpenPositionTableController";
-import ClosedPositionTableController from "../displays/ClosedPositionTableController";
 
 export default function ChartSidebar() {
   // Use custom hooks for asset selection and candle size management
