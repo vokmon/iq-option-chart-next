@@ -28,8 +28,6 @@ export default function TradingPanel({
   disabled = false,
   selectedBalanceId,
   amount,
-  minAmount = 1,
-  maxAmount = 10000,
 }: TradingPanelProps) {
   const t = useTranslations();
   const [selectedBalance, setSelectedBalance] = useState<Balance | null>(null);
@@ -52,6 +50,8 @@ export default function TradingPanel({
     if (!amount) return t("Please enter an amount");
     if (!selectedBalance) return t("No balance");
     if (selectedBalance?.amount === 0) return t("Insufficient balance");
+    if (selectedBalance?.amount - (amount || 0) < 0)
+      return t("Insufficient balance");
     return null;
   };
 
@@ -76,11 +76,10 @@ export default function TradingPanel({
             onAmountChange?.(newAmount);
           }}
           leftSection={getCurrencySymbol(selectedBalance?.currency)}
-          min={minAmount}
-          max={maxAmount}
+          min={1}
           step={1}
           disabled={disabled}
-          size="sm"
+          size="xs"
           styles={{
             input: {
               fontWeight: 600,
@@ -93,7 +92,8 @@ export default function TradingPanel({
         {disabled ||
         !amount ||
         !selectedBalance ||
-        selectedBalance?.amount === 0 ? (
+        selectedBalance?.amount === 0 ||
+        selectedBalance?.amount - (amount || 0) < 0 ? (
           <Center
             style={{
               minHeight: 36,
@@ -120,7 +120,7 @@ export default function TradingPanel({
           <OrderDirectionSelector
             onCall={handleCall}
             onPut={handlePut}
-            size="sm"
+            size="xs"
             fullWidth
           />
         )}

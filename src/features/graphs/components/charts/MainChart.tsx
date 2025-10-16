@@ -551,6 +551,8 @@ export function MainChart({
     initializeMarker,
     updateCandle,
     cleanupMarker,
+    minimumBarSpacing,
+    rightOffset,
   ]);
 
   return (

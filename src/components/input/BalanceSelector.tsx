@@ -17,6 +17,8 @@ import {
   IconChevronDown,
   IconAlertTriangle,
   IconCheck,
+  IconEye,
+  IconEyeOff,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useSdk } from "@/hooks/useSdk";
@@ -40,6 +42,7 @@ export default function BalanceSelector({
   const [loading, setLoading] = useState(true);
   const [modalOpened, setModalOpened] = useState(false);
   const onBalanceChangeRef = useRef(onBalanceChange);
+  const [showBalance, setShowBalance] = useState(false);
 
   // Update ref when callback changes
   useEffect(() => {
@@ -236,11 +239,22 @@ export default function BalanceSelector({
                     }
                     className="!text-sm"
                   >
-                    {formatAmount(
-                      selectedBalance.amount,
-                      selectedBalance.currency
-                    )}
+                    {showBalance
+                      ? formatAmount(
+                          selectedBalance.amount,
+                          selectedBalance.currency
+                        )
+                      : "********"}
                   </Text>
+                  {showBalance ? (
+                    <ActionIcon size="xs" onClick={() => setShowBalance(false)}>
+                      <IconEyeOff size={12} />
+                    </ActionIcon>
+                  ) : (
+                    <ActionIcon size="xs" onClick={() => setShowBalance(true)}>
+                      <IconEye size={12} />
+                    </ActionIcon>
+                  )}
                 </Group>
               </Group>
             </Tooltip>
@@ -271,9 +285,13 @@ export default function BalanceSelector({
                 )
               }
               rightSection={
-                <Text size="sm" fw={500}>
-                  {formatAmount(balance.amount, balance.currency)}
-                </Text>
+                <div className="flex items-center gap-1">
+                  <Text size="sm" fw={500}>
+                    {showBalance
+                      ? formatAmount(balance.amount, balance.currency)
+                      : "********"}
+                  </Text>
+                </div>
               }
               onClick={() => handleBalanceChange(balance)}
               fullWidth
