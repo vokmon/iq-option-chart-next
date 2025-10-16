@@ -16,7 +16,7 @@ import {
   IconChevronRight,
   // IconGripVertical,
 } from "@tabler/icons-react";
-import { useAssetStore, MAX_ASSETS } from "@/stores/assetStore";
+import { useAssetStore, MAX_ASSETS } from "@/stores/assets/assetStore";
 import { getCandleSizeLabel, getCandleColor } from "@/utils/candleColors";
 import { useTranslations } from "next-intl";
 import { useTabScroll } from "../../hooks/tab/useTabScroll";
@@ -29,7 +29,7 @@ import { useSignalStore } from "@/stores/signalStore";
 import SmallSignalIndicatorLabel from "@/components/display/signal/SmallSignalIndicatorLabel";
 import NumberOfOpenPositionCard from "@/components/display/positions/NumberOfOpenPositionCard";
 import { useTabDragDrop } from "../../hooks/chart/useTabDragDrop";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import SmallAutoTradeLabel from "@/components/display/auto-trade/SmallAutoTradeLabel";
 
 export function TabBar() {

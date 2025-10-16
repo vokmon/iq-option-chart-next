@@ -1,4 +1,4 @@
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 
 const MINIMUM_BAR_SPACING_FOR_ONE_MINUTE = 70 * 15;
 const RIGHT_OFFSET = 2 * 15;

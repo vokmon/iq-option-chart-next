@@ -1,4 +1,4 @@
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { useSignalStore } from "@/stores/signalStore";
 import SignalIndicatorLabel from "@/components/display/signal/SignalIndicatorLabel";
 import EmptySignalIndicator from "@/components/display/signal/EmptySignalIndicator";

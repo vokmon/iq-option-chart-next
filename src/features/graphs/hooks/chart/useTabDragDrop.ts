@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 
 export function useTabDragDrop() {
   const { reorderAssets } = useAssetStore();

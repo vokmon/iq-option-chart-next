@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IconClock } from "@tabler/icons-react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { getFirstAvailableInstrument } from "@/utils/tradingUtil";
 import { formatTime } from "@/utils/dateTime";
 import { useSdk } from "@/hooks/useSdk";

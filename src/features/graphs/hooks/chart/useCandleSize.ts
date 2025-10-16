@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 
 export function useCandleSize() {
   const { activeAssetId, getActiveAsset, updateCandleSize } = useAssetStore();

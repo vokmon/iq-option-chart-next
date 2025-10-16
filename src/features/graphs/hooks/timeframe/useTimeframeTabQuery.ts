@@ -1,4 +1,4 @@
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 
 export interface UseTimeframeTabQueryReturn {
   timeframeInMinute: number;

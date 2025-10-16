@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Paper, Stack, NumberInput, Text, Center } from "@mantine/core";
+import { Paper, Stack, Text, Center } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import type { Balance } from "@quadcode-tech/client-sdk-js";
 import BalanceSelector from "./BalanceSelector";
 import OrderDirectionSelector from "./OrderDirectionSelector";
+import AmountInput from "./AmountInput";
 import { getCurrencySymbol } from "@/utils/currency";
 
 interface TradingPanelProps {
@@ -18,6 +19,7 @@ interface TradingPanelProps {
   amount?: number;
   minAmount?: number;
   maxAmount?: number;
+  quickAmounts?: number[];
 }
 
 export default function TradingPanel({
@@ -28,6 +30,7 @@ export default function TradingPanel({
   disabled = false,
   selectedBalanceId,
   amount,
+  quickAmounts = [1, 10, 100, 1000, 10000],
 }: TradingPanelProps) {
   const t = useTranslations();
   const [selectedBalance, setSelectedBalance] = useState<Balance | null>(null);
@@ -68,24 +71,13 @@ export default function TradingPanel({
         />
 
         {/* Amount Input Field */}
-        <NumberInput
-          placeholder={t("Enter amount")}
+        <AmountInput
           value={amount}
-          onChange={(value) => {
-            const newAmount = typeof value === "number" ? value : 0;
-            onAmountChange?.(newAmount);
-          }}
-          leftSection={getCurrencySymbol(selectedBalance?.currency)}
-          min={1}
-          step={1}
+          onChange={onAmountChange}
           disabled={disabled}
+          leftSection={getCurrencySymbol(selectedBalance?.currency)}
+          quickAmounts={quickAmounts}
           size="xs"
-          styles={{
-            input: {
-              fontWeight: 600,
-              textAlign: "center",
-            },
-          }}
         />
 
         {/* Order Direction Selector or Disabled Message */}

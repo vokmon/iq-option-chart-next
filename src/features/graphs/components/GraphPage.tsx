@@ -2,7 +2,7 @@ import { TabBar } from "./layout/TabBar";
 import { ChartTab } from "./layout/ChartTab";
 import { Flex } from "@mantine/core";
 import { useEffect, useRef } from "react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import ChartSidebar from "./layout/ChartSidebar";
 
 export default function GraphPage() {

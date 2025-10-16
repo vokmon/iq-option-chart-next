@@ -1,4 +1,4 @@
-import { AssetState, useAssetStore } from "@/stores/assetStore";
+import { AssetState, useAssetStore } from "@/stores/assets/assetStore";
 import { useSignalStore } from "@/stores/signalStore";
 import { useEffect, useRef } from "react";
 import { useSdk } from "@/hooks/useSdk";

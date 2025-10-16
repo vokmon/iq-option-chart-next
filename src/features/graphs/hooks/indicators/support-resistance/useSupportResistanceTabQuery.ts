@@ -1,4 +1,4 @@
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { type SupportResistanceConfig } from "@/types/indicators/supportResistance";
 
 export interface UseSupportResistanceTabQueryReturn {

@@ -3,7 +3,7 @@ import { useSdk } from "../useSdk";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import { Active } from "@quadcode-tech/client-sdk-js";
 import { useTransition } from "react";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 
 export function useGetActiveInformation(additonalIds: number[] = []) {

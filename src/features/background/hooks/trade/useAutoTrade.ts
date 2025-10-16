@@ -1,5 +1,5 @@
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { useEffect } from "react";
 import { tradeEvent } from "../../events/tradeEvent";
 import { useOpenPositionsStore } from "@/stores/positions/openPositionsStore";

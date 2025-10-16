@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSdk } from "@/hooks/useSdk";
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { useClosedPositionsStore } from "@/stores/positions/closedPositionsStore";
 import { Balance } from "@quadcode-tech/client-sdk-js";
 import { useSettingsStore } from "@/stores/settingsStore";

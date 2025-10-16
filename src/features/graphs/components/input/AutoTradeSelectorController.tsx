@@ -1,8 +1,8 @@
 "use client";
 
 import AutoTradeSelector from "@/components/input/AutoTradeSelector";
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { useSelectedBalance } from "../../hooks/positions/useSelectedBalance";
 
 export default function AutoTradeSelectorController() {

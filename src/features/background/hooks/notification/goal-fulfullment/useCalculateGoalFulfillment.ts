@@ -7,8 +7,8 @@ import { useSettingsStore } from "@/stores/settingsStore";
 import { useSdk } from "@/hooks/useSdk";
 import { useEffect, useRef } from "react";
 import { Balance } from "@quadcode-tech/client-sdk-js";
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { formatDate } from "@/utils/dateTime";
 import {
   calculateDailyLossLimit,

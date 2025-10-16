@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Balance } from "@quadcode-tech/client-sdk-js";
 import { useSdk } from "@/hooks/useSdk";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { useAssetSelection } from "@/features/graphs/hooks/chart";
 
 export function useSelectedBalance() {

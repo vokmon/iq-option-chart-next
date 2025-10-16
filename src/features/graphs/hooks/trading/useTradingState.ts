@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import type { Balance } from "@quadcode-tech/client-sdk-js";
 
 export function useTradingState() {

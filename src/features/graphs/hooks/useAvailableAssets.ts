@@ -1,4 +1,4 @@
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 
 export function useAvailableAssets() {

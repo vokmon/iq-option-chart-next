@@ -2,7 +2,7 @@ import TradingPanel from "@/components/input/TradingPanel";
 import { useTradingState } from "../../hooks/trading/useTradingState";
 import { useTradingActions } from "@/hooks/useTradingActions";
 import { DigitalOptionsDirection } from "@quadcode-tech/client-sdk-js";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { notifications } from "@mantine/notifications";
 import { OrderSuccessNotification } from "@/components/notifications/OrderSuccessNotification";
 

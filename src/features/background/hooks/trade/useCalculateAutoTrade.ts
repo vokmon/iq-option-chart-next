@@ -1,5 +1,5 @@
-import { AssetState, useAssetStore } from "@/stores/assetStore";
-import { useTradingStore } from "@/stores/tradingStore";
+import { AssetState, useAssetStore } from "@/stores/assets/assetStore";
+import { useTradingStore } from "@/stores/assets/tradingStore";
 import { RealTimeChartDataLayer, Candle } from "@quadcode-tech/client-sdk-js";
 import { useEffect, useRef } from "react";
 import { useSdk } from "@/hooks/useSdk";

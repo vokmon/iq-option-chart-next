@@ -1,7 +1,7 @@
 import { Flex, Text, Center, Stack } from "@mantine/core";
 import { IconChartLine } from "@tabler/icons-react";
 import { MainChart } from "../charts/MainChart";
-import { useAssetStore } from "@/stores/assetStore";
+import { useAssetStore } from "@/stores/assets/assetStore";
 import { useTranslations } from "next-intl";
 
 export function ChartTab() {
