@@ -1,7 +1,6 @@
 import { Flex, Text, Center, Stack } from "@mantine/core";
 import { IconChartLine } from "@tabler/icons-react";
 import { MainChart } from "../charts/MainChart";
-import { SecondaryChart } from "../charts/SecondaryChart";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTranslations } from "next-intl";
 
@@ -31,12 +30,6 @@ export function ChartTab() {
       {activeAsset.asset && activeAsset.asset !== null ? (
         <>
           <MainChart
-            activeId={activeAsset.asset.activeId}
-            candleSize={activeAsset.candleSize}
-            chartMinutesBack={60}
-          />
-          <div className="my-4" />
-          <SecondaryChart
             activeId={activeAsset.asset.activeId}
             candleSize={activeAsset.candleSize}
             chartMinutesBack={60}

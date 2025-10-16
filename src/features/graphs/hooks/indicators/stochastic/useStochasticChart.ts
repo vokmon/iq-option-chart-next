@@ -55,55 +55,71 @@ export function useStochasticChart({
 
       const colors = getStochasticColors();
 
-      const kSeries = chart.addSeries(LineSeries, {
-        color: colors.k,
-        lineWidth: 3,
-        lineStyle: LineStyle.Solid,
-        // title: "Stochastic %K",
-        priceFormat: {
-          type: "price",
-          precision: 1,
-          minMove: 0.1,
+      const kSeries = chart.addSeries(
+        LineSeries,
+        {
+          color: colors.k,
+          lineWidth: 3,
+          lineStyle: LineStyle.Solid,
+          // title: "Stochastic %K",
+          priceFormat: {
+            type: "price",
+            precision: 1,
+            minMove: 0.1,
+          },
         },
-      });
+        1
+      ); // Add to pane index 1
 
-      const dSeries = chart.addSeries(LineSeries, {
-        color: colors.d,
-        lineWidth: 3,
-        lineStyle: LineStyle.Solid,
-        // title: "Stochastic %D",
-        priceFormat: {
-          type: "price",
-          precision: 1,
-          minMove: 0.1,
+      const dSeries = chart.addSeries(
+        LineSeries,
+        {
+          color: colors.d,
+          lineWidth: 3,
+          lineStyle: LineStyle.Solid,
+          // title: "Stochastic %D",
+          priceFormat: {
+            type: "price",
+            precision: 1,
+            minMove: 0.1,
+          },
         },
-      });
+        1
+      ); // Add to pane index 1
 
-      const upperSeries = chart.addSeries(LineSeries, {
-        color: colors.upper,
-        lineWidth: 1,
-        lineStyle: LineStyle.Solid,
-        // title: "Overbought (80)",
-        lastValueVisible: false,
-        priceFormat: {
-          type: "price",
-          precision: 1,
-          minMove: 0.1,
+      const upperSeries = chart.addSeries(
+        LineSeries,
+        {
+          color: colors.upper,
+          lineWidth: 1,
+          lineStyle: LineStyle.Solid,
+          // title: "Overbought (80)",
+          lastValueVisible: false,
+          priceFormat: {
+            type: "price",
+            precision: 1,
+            minMove: 0.1,
+          },
         },
-      });
+        1
+      ); // Add to pane index 1
 
-      const lowerSeries = chart.addSeries(LineSeries, {
-        color: colors.lower,
-        lineWidth: 1,
-        lineStyle: LineStyle.Solid,
-        // title: "Oversold (20)",
-        lastValueVisible: false,
-        priceFormat: {
-          type: "price",
-          precision: 1,
-          minMove: 0.1,
+      const lowerSeries = chart.addSeries(
+        LineSeries,
+        {
+          color: colors.lower,
+          lineWidth: 1,
+          lineStyle: LineStyle.Solid,
+          // title: "Oversold (20)",
+          lastValueVisible: false,
+          priceFormat: {
+            type: "price",
+            precision: 1,
+            minMove: 0.1,
+          },
         },
-      });
+        1
+      ); // Add to pane index 1
 
       const series = {
         k: kSeries,

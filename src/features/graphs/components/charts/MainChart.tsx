@@ -13,11 +13,14 @@ import { useSupportResistanceChart } from "@/features/graphs/hooks/indicators/su
 import { useBollingerBandsTabQuery } from "@/features/graphs/hooks/indicators/bollinger-bands/useBollingerBandsTabQuery";
 import { useDonchianTabQuery } from "@/features/graphs/hooks/indicators/donchian-channels/useDonchianTabQuery";
 import { useSupportResistanceTabQuery } from "@/features/graphs/hooks/indicators/support-resistance/useSupportResistanceTabQuery";
+import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stochastic/useStochasticTabQuery";
+import { useStochasticChart } from "@/features/graphs/hooks/indicators/stochastic/useStochasticChart";
 import { usePositionReferenceLines } from "@/features/graphs/hooks/trading/usePositionReferenceLines";
 import { useLastCandleMarker } from "@/features/graphs/hooks/chart/useLastCandleMarker";
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { BollingerBandsComponent } from "../indicators/bollinger/BollingerBandsComponent";
 import { DonchianComponent } from "../indicators/donchian/DonchianComponent";
+import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
 import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
 import { Text } from "@mantine/core";
@@ -31,6 +34,8 @@ interface MainChartProps {
   chartMinutesBack?: number;
 }
 
+const stochasticPaneHeight = 120;
+
 export function MainChart({
   activeId,
   candleSize,
@@ -40,7 +45,7 @@ export function MainChart({
   const containerRef = useRef<HTMLDivElement>(null);
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
-  const chartHeight = useWindowHeight(300);
+  const chartHeight = useWindowHeight(stochasticPaneHeight + 30);
   useWindowWidth();
 
   // Query parameter hooks for indicators
@@ -48,6 +53,7 @@ export function MainChart({
   const { showDonchian, donchianConfig } = useDonchianTabQuery();
   const { showSupportResistance, supportResistanceConfig } =
     useSupportResistanceTabQuery();
+  const { showStochastic, stochasticConfig } = useStochasticTabQuery();
 
   // Order reference lines hook
 
@@ -84,6 +90,17 @@ export function MainChart({
     supportResistanceConfig,
   });
 
+  // Stochastic Oscillator hook
+  const {
+    createStochasticSeries,
+    updateStochasticData,
+    destroyStochasticSeries,
+    recreateStochasticSeries,
+  } = useStochasticChart({
+    showStochastic,
+    stochasticConfig,
+  });
+
   // Position reference lines hook
   const {
     createPositionReferenceLines,
@@ -116,6 +133,11 @@ export function MainChart({
         textColor: "gray",
         attributionLogo: false,
         background: { color: "transparent" },
+        panes: {
+          separatorColor: "rgba(255, 255, 255, 1)",
+          separatorHoverColor: "rgba(128, 128, 128, 0.5)",
+          enableResize: true,
+        },
       },
       height: chartHeight,
       grid: {
@@ -180,6 +202,9 @@ export function MainChart({
     // Create Position reference lines
     let positionReferenceLines = createPositionReferenceLines(chart);
 
+    // Create Stochastic Oscillator series in a new pane
+    let stochasticSeries = createStochasticSeries(chart);
+
     // Handle theme changes by recreating series
     const cleanupThemeChange = onThemeChange(() => {
       if (isDisposed) return;
@@ -228,6 +253,16 @@ export function MainChart({
           positionReferenceLines
         );
 
+        // Recreate Stochastic Oscillator series
+        if (showStochastic) {
+          stochasticSeries = recreateStochasticSeries(chart, stochasticSeries);
+          // Re-update data with current candles
+          if (chartLayer) {
+            updateStochasticData(stochasticSeries, allCandles);
+          }
+          // Height is already set during initialization, no need to set it again
+        }
+
         // Note: Purchase end time indicator will be recreated when data updates
       }, 100); // 100ms delay to ensure CSS variables are updated
     });
@@ -267,12 +302,26 @@ export function MainChart({
       // Update Position reference lines
       updatePositionReferenceLines(positionReferenceLines, chart);
 
+      // Update Stochastic Oscillator data
+      updateStochasticData(stochasticSeries, candles);
+
       if (candles.length > 0) {
         earliestLoadedRef.current = candles[0].from as number;
         // Initialize the last candle marker
         const lastCandle = candles[candles.length - 1];
         initializeMarker(series, lastCandle);
       }
+
+      // Set the height of the stochastic pane after chart is fully initialized
+      setTimeout(() => {
+        if (showStochastic && !isDisposed) {
+          const panes = chart.panes();
+          if (panes.length > 1) {
+            const stochasticPane = panes[1]; // Second pane (index 1)
+            stochasticPane.setHeight(stochasticPaneHeight);
+          }
+        }
+      }, 100); // Small delay to ensure chart is fully rendered
 
       // Subscribe to candle changes
       chartLayer.subscribeOnLastCandleChanged(async (candle: Candle) => {
@@ -303,6 +352,9 @@ export function MainChart({
             allCandles,
             true
           );
+
+          // Update Stochastic Oscillator with the latest data
+          updateStochasticData(stochasticSeries, allCandles, true);
         } catch (error) {
           console.warn("Error updating candle data:", error);
         }
@@ -328,6 +380,9 @@ export function MainChart({
 
           // Recalculate Support & Resistance after consistency recovery
           updateSupportResistanceData(supportResistanceSeries, all);
+
+          // Recalculate Stochastic Oscillator after consistency recovery
+          updateStochasticData(stochasticSeries, all);
         } catch (error) {
           console.warn("Error handling consistency recovery:", error);
         }
@@ -371,6 +426,9 @@ export function MainChart({
 
                 // Update Support & Resistance with new historical data
                 updateSupportResistanceData(supportResistanceSeries, moreData);
+
+                // Update Stochastic Oscillator with new historical data
+                updateStochasticData(stochasticSeries, moreData);
               } catch (error) {
                 console.warn("Error fetching historical data:", error);
               }
@@ -439,6 +497,13 @@ export function MainChart({
         console.warn("Error destroying Position reference lines:", error);
       }
 
+      // Clean up Stochastic Oscillator series
+      try {
+        destroyStochasticSeries(chart, stochasticSeries);
+      } catch (error) {
+        console.warn("Error destroying Stochastic Oscillator series:", error);
+      }
+
       // Remove the chart (this will also clean up the markers plugin)
       try {
         chart.remove();
@@ -468,6 +533,12 @@ export function MainChart({
     createSupportResistanceSeries,
     updateSupportResistanceData,
     destroySupportResistanceSeries,
+    showStochastic,
+    stochasticConfig,
+    createStochasticSeries,
+    updateStochasticData,
+    destroyStochasticSeries,
+    recreateStochasticSeries,
     onThemeChange,
     recreateBollingerBandsSeries,
     recreateDonchianSeries,
@@ -530,6 +601,7 @@ const GraphSidebar = () => {
       <BollingerBandsComponent />
       <DonchianComponent />
       <SupportResistanceComponent />
+      <StochasticComponent />
     </div>
   );
 };
