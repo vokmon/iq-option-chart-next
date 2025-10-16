@@ -23,6 +23,7 @@ import Image from "next/image";
 import { Text } from "@mantine/core";
 import { SupportResistanceComponent } from "../indicators/support-resistance/SupportResistanceComponent";
 import { PurchaseEndTimeOverlay } from "../indicators/purchase-end-time/PurchaseEndTimeOverlay";
+import { useWindowWidth } from "@/features/graphs/hooks/chart/useWindowWidth";
 
 interface MainChartProps {
   activeId: number;
@@ -40,6 +41,7 @@ export function MainChart({
   const earliestLoadedRef = useRef<number | null>(null);
   const fetchingRef = useRef<boolean>(false);
   const chartHeight = useWindowHeight(300);
+  useWindowWidth();
 
   // Query parameter hooks for indicators
   const { showBollingerBands, bollingerConfig } = useBollingerBandsTabQuery();

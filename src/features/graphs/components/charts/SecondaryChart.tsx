@@ -7,6 +7,7 @@ import { useStochasticTabQuery } from "@/features/graphs/hooks/indicators/stocha
 import { useThemeChange } from "@/hooks/useThemeChange";
 import { StochasticComponent } from "../indicators/stochastic/StochasticComponent";
 import { useWindowHeight } from "@/features/graphs/hooks/chart/useWindowHeight";
+import { useWindowWidth } from "@/features/graphs/hooks/chart/useWindowWidth";
 
 interface SecondaryChartProps {
   activeId: number;
@@ -31,6 +32,7 @@ export function SecondaryChart({
   const { showStochastic, stochasticConfig } = useStochasticTabQuery();
 
   useWindowHeight();
+  useWindowWidth();
   // Stochastic Oscillator hook
   const {
     createStochasticSeries,
