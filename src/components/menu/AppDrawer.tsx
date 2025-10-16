@@ -26,6 +26,7 @@ import {
   IconShield,
   IconLock,
 } from "@tabler/icons-react";
+import Martingale from "../apps/martingale/Martingale";
 
 export default function AppDrawer() {
   const [opened, setOpened] = useState(false);
@@ -128,7 +129,7 @@ export default function AppDrawer() {
                   onClick={() => setOpened(false)}
                 >
                   <Card
-                    padding="md"
+                    padding="xs"
                     radius="lg"
                     withBorder
                     className={`relative backdrop-blur-lg cursor-pointer !transition-all !duration-100 !ease-in-out group ${
@@ -181,7 +182,24 @@ export default function AppDrawer() {
                 </Link>
               );
             })}
+
+            {/* Apps */}
+            <div className="flex flex-col gap-3">
+              <Card
+                padding="xs"
+                radius="lg"
+                withBorder
+                className={`relative backdrop-blur-lg cursor-pointer !transition-all !duration-100 !ease-in-out group ${"!bg-gradient-to-r from-gray-800/90 to-gray-700/90 !border-gray-600/50 hover:-translate-y-1"}`}
+                style={{
+                  transitionProperty:
+                    "background-color, background-image, border-color, color, box-shadow, transform",
+                }}
+              >
+                <Martingale onClose={() => setOpened(false)} />
+              </Card>
+            </div>
           </div>
+
           {/* Navigation Links */}
           <Stack gap="xs">
             {navigationLinks.map((link, index) => (
