@@ -21,8 +21,8 @@ export const pwaMetadata: Metadata = {
   },
   icons: {
     icon: "/icons/icon.svg",
-    shortcut: "/icons/icon-192x192.svg",
-    apple: "/icons/icon-192x192.svg",
+    shortcut: "/icons/icon-192x192.png",
+    apple: "/icons/icon-192x192.png",
   },
 };
 

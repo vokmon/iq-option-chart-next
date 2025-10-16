@@ -344,6 +344,11 @@
   "Recommended Investment": "ควรลงทุน",
   "of portfolio": "{amount}% ของพอร์ต",
   "Portfolio Balance": "ยอดเงินในพอร์ต",
+  "No signals available": "ไม่มีสัญญาณการเทรด",
+  "oneMinute": "1 นาที",
+  "fiveMinutes": "5 นาที",
+  "reversal": "Reversal",
+  "otc_reversal": "OTC Reversal",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",

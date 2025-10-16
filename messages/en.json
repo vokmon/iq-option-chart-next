@@ -344,6 +344,11 @@
   "Recommended Investment": "Recommended Investment",
   "of portfolio": "{amount}% of portfolio",
   "Portfolio Balance": "Portfolio Balance",
+  "No signals available": "No signals available",
+  "oneMinute": "1 Min",
+  "fiveMinutes": "5 Min",
+  "reversal": "Reversal",
+  "otc_reversal": "OTC Reversal",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",
