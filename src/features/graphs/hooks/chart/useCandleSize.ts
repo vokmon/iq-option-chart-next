@@ -7,7 +7,14 @@ export function useCandleSize() {
   const handleCandleSizeChange = useCallback(
     (candleSize: string | null) => {
       if (!activeAssetId || !candleSize) return;
-      updateCandleSize(activeAssetId, parseInt(candleSize));
+
+      let timeframeInMinute = 60;
+      if (candleSize === "60") {
+        timeframeInMinute = 15;
+      } else if (candleSize === "300") {
+        timeframeInMinute = 60;
+      }
+      updateCandleSize(activeAssetId, parseInt(candleSize), timeframeInMinute);
     },
     [activeAssetId, updateCandleSize]
   );

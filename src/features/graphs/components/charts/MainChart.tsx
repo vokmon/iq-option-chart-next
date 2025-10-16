@@ -25,8 +25,11 @@ import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 import Image from "next/image";
 import { Text } from "@mantine/core";
 import { SupportResistanceComponent } from "../indicators/support-resistance/SupportResistanceComponent";
+import { TimeframeComponent } from "../timeframe/TimeframeComponent";
 import { PurchaseEndTimeOverlay } from "../indicators/purchase-end-time/PurchaseEndTimeOverlay";
 import { useWindowWidth } from "@/features/graphs/hooks/chart/useWindowWidth";
+import { formatTime } from "@/utils/dateTime";
+import { useTimeframeChart } from "../../hooks/timeframe/useTimeframeChart";
 
 interface MainChartProps {
   activeId: number;
@@ -121,6 +124,8 @@ export function MainChart({
   // Theme change detection
   const { onThemeChange } = useThemeChange();
 
+  const { minimumBarSpacing, rightOffset } = useTimeframeChart();
+
   useEffect(() => {
     if (!sdk || !containerRef.current) return;
 
@@ -136,7 +141,7 @@ export function MainChart({
         panes: {
           separatorColor: "rgba(255, 255, 255, 1)",
           separatorHoverColor: "rgba(128, 128, 128, 0.5)",
-          enableResize: true,
+          enableResize: false,
         },
       },
       height: chartHeight,
@@ -151,16 +156,12 @@ export function MainChart({
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        barSpacing: 70, // Extremely thin bars
-        minBarSpacing: 40, // Minimum bar spacing
-        rightOffset: 2, // Add space at the end of the chart
+        // barSpacing: 70, // Extremely thin bars
+        minBarSpacing: minimumBarSpacing, // Minimum bar spacing
+        rightOffset: rightOffset, // Add space at the end of the chart
         tickMarkFormatter: (time: number) => {
           const date = new Date(time * 1000);
-          return date.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          });
+          return formatTime(date);
         },
       },
       rightPriceScale: {
@@ -168,7 +169,7 @@ export function MainChart({
         borderVisible: false,
         scaleMargins: {
           top: 0.1,
-          bottom: 0.1,
+          bottom: 0.05,
         },
       },
     });
@@ -602,6 +603,7 @@ const GraphSidebar = () => {
       <DonchianComponent />
       <SupportResistanceComponent />
       <StochasticComponent />
+      <TimeframeComponent />
     </div>
   );
 };

@@ -331,6 +331,8 @@
   "of loss limit": "of {amount}",
   "Daily Performance Tracker": "Daily Performance Tracker",
   "Trading Break Recommended": "Trading Break Recommended",
+  "Timeframe": "Timeframe",
+  "Select chart timeframe": "Select chart timeframe",
   "disclaimer": {
     "title": "Trading Disclaimer",
     "lastUpdated": "Last updated",

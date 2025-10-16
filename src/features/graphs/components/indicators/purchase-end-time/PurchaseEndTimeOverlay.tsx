@@ -51,7 +51,7 @@ export function PurchaseEndTimeOverlay() {
         // Format duration as MM:SS
         const totalSeconds = Math.floor(durationRemaining / 1000);
         const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
+        const seconds = Math.max(0, totalSeconds % 60);
         const formattedDuration = `${minutes
           .toString()
           .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
@@ -74,7 +74,7 @@ export function PurchaseEndTimeOverlay() {
     const interval = setInterval(updateData, 1000);
 
     return () => clearInterval(interval);
-  }, [activeAsset]);
+  }, [activeAsset, sdk]);
 
   if (!data) return null;
 
@@ -91,8 +91,6 @@ export function PurchaseEndTimeOverlay() {
       >
         {data.formattedDuration}
       </div>
-      <span className="opacity-80">|</span>
-      <span className="text-xs">{data.formattedEndTime}</span>
     </div>
   );
 }

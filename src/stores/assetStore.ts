@@ -34,6 +34,7 @@ export interface AssetState {
   name: string;
   asset: DigitalOptionsUnderlying | null;
   candleSize: number;
+  timeframeInMinute: number;
   indicators: AssetIndicatorSettings;
   isEmpty: boolean;
 }
@@ -52,7 +53,12 @@ interface AssetStore {
     assetId: string,
     asset: DigitalOptionsUnderlying | null
   ) => void;
-  updateCandleSize: (assetId: string, candleSize: number) => void;
+  updateCandleSize: (
+    assetId: string,
+    candleSize: number,
+    timeframeInMinute: number
+  ) => void;
+  updateTimeframe: (assetId: string, timeframeInMinute: number) => void;
   updateIndicators: (
     assetId: string,
     indicators: Partial<AssetIndicatorSettings>
@@ -89,6 +95,7 @@ const createEmptyAsset = (): AssetState => ({
   name: "New Asset",
   asset: null,
   candleSize: 60,
+  timeframeInMinute: 15, // Default to 15 minutes
   indicators: JSON.parse(JSON.stringify(defaultIndicators)), // Deep clone
   isEmpty: true,
 });
@@ -98,6 +105,7 @@ const createAssetWithData = (asset: DigitalOptionsUnderlying): AssetState => ({
   name: (asset.name ?? `Asset ${asset.activeId}`).replace(/-op$/i, ""),
   asset,
   candleSize: 60,
+  timeframeInMinute: 15, // Default to 15 minutes
   indicators: JSON.parse(JSON.stringify(defaultIndicators)), // Deep clone
   isEmpty: false,
 });
@@ -222,11 +230,25 @@ export const useAssetStore = create<AssetStore>()(
         }));
       },
 
-      updateCandleSize: (assetId: string, candleSize: number) => {
+      updateCandleSize: (
+        assetId: string,
+        candleSize: number,
+        timeframeInMinute: number
+      ) => {
         set((state) => ({
           assets: state.assets.map((assetState) =>
             assetState.id === assetId
-              ? { ...assetState, candleSize }
+              ? { ...assetState, candleSize, timeframeInMinute }
+              : assetState
+          ),
+        }));
+      },
+
+      updateTimeframe: (assetId: string, timeframeInMinute: number) => {
+        set((state) => ({
+          assets: state.assets.map((assetState) =>
+            assetState.id === assetId
+              ? { ...assetState, timeframeInMinute }
               : assetState
           ),
         }));
