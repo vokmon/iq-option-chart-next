@@ -8,13 +8,18 @@ import {
 } from "@tabler/icons-react";
 import { TradingSignal } from "@/types/signal/FireStoreSignal";
 import { formatDateTime } from "@/utils/dateTime";
+import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 
 interface SignalFirestoreTableProps {
   signals: TradingSignal[];
+  onSignalClick?: (signal: DigitalOptionsUnderlying) => void;
+  actives?: DigitalOptionsUnderlying[];
 }
 
 export default function SignalFirestoreTable({
   signals,
+  onSignalClick,
+  actives,
 }: SignalFirestoreTableProps) {
   return (
     <Table striped stripedColor="gray.1" bg="gray.2">
@@ -24,6 +29,11 @@ export default function SignalFirestoreTable({
           const isNew =
             new Date().getTime() - signal.timestamp.getTime() <
             1000 * 60 * minutes;
+
+          const active = actives?.find(
+            (active) => active.name === signal.currencyPair
+          );
+
           return (
             <Table.Tr key={signal.id}>
               <Table.Td pr={1}>
@@ -49,7 +59,18 @@ export default function SignalFirestoreTable({
                 <Stack gap={4}>
                   <Group gap="xs" wrap="nowrap" justify="space-between">
                     <Group>
-                      <Text fw={600} size="sm">
+                      <Text
+                        fw={600}
+                        className={
+                          active
+                            ? "cursor-pointer !underline hover:!text-orange-400"
+                            : ""
+                        }
+                        size="sm"
+                        onClick={
+                          active ? () => onSignalClick?.(active) : undefined
+                        }
+                      >
                         {signal.currencyPair}
                       </Text>
                       <Text size="sm" c="dimmed">

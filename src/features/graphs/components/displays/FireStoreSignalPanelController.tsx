@@ -8,6 +8,8 @@ import { useTranslations } from "next-intl";
 import { useFirestoreSignal } from "../../hooks/firestore-signal/useFirestoreSignal";
 import { useFirestoreSignalStore } from "@/stores/firestoreSignalStore";
 import { SignalType } from "@/types/signal/FireStoreSignal";
+import { useSelectFirestoreSignal } from "../../hooks/firestore-signal/useSelectFirestoreSignal";
+import { useDigitalOptionsStore } from "@/stores/digitalOptionsStore";
 
 export default function FireStoreSignalPanelController() {
   const t = useTranslations();
@@ -19,6 +21,9 @@ export default function FireStoreSignalPanelController() {
     setSelectedTimeframe,
     setSelectedSignalType,
   } = useFirestoreSignalStore();
+
+  const { actives } = useDigitalOptionsStore();
+  const { handleSelectSignal } = useSelectFirestoreSignal();
 
   return (
     <div className="h-full flex flex-col">
@@ -44,7 +49,11 @@ export default function FireStoreSignalPanelController() {
           <SignalFirestoreEmptyState message={t("No signals available")} />
         ) : (
           <ScrollArea className="h-full" scrollbarSize={6}>
-            <SignalFirestoreTable signals={filteredSignals} />
+            <SignalFirestoreTable
+              signals={filteredSignals}
+              onSignalClick={handleSelectSignal}
+              actives={actives}
+            />
           </ScrollArea>
         )}
       </Box>
