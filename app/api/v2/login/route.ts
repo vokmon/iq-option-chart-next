@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const { data: user } = await supabase
       .from("users")
       .select("*")
-      .eq("email", identifier)
+      .eq("email", identifier.toLowerCase())
       .single();
 
     if (user === null) {
