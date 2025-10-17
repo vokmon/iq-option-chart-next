@@ -349,6 +349,20 @@
   "fiveMinutes": "5 นาที",
   "reversal": "Reversal",
   "otc_reversal": "OTC Reversal",
+  "Martingale Strategy": "กลยุทธ์มาร์ติงเกล",
+  "Configure your martingale levels and multipliers": "กำหนดระดับมาร์ติงเกลและตัวคูณของคุณ",
+  "Number of Martingale Levels": "จำนวนระดับมาร์ติงเกล",
+  "Set how many martingale levels you want": "กำหนดจำนวนระดับมาร์ติงเกลที่คุณต้องการ",
+  "Multiplier Configuration": "การกำหนดตัวคูณ",
+  "Set individual multipliers for each martingale level": "กำหนดตัวคูณแต่ละระดับมาร์ติงเกล ({min}x - {max}x)",
+  "M Multiplier": "ตัวคูณ M{level}",
+  "Strategy Summary": "สรุปกลยุทธ์",
+  "levels": "ระดับ",
+  "Multipliers": "ตัวคูณ",
+  "Enable Martingale Strategy": "เปิดใช้งานกลยุทธ์มาร์ติงเกล",
+  "Turn on/off the martingale strategy": "เปิด/ปิดกลยุทธ์มาร์ติงเกล",
+  "1 Level": "1 ระดับ",
+  "levels Levels": "{levels} ระดับ",
   "disclaimer": {
     "title": "ข้อจำกัดความรับผิดชอบการเทรด",
     "lastUpdated": "อัปเดตล่าสุด",
@@ -506,10 +520,6 @@
     "contactText": "หากคุณมีคำถามเกี่ยวกับข้อกำหนดการใช้งานเหล่านี้ กรุณาติดต่อเรา:",
     "contactEmail": "อีเมล: {supportEmail}",
     "contactResponse": "เวลาตอบกลับ: ภายใน 24-48 ชั่วโมง",
-    "footerText": "การใช้งานบริการนี้ คุณยอมรับว่าคุณได้อ่าน เข้าใจ และตกลงที่จะผูกพันตามข้อกำหนดการใช้งานเหล่านี้",
-    "Daily profit targets and loss limits reached": "ถึงเป้าหมายกำไรรายวันและขีดจำกัดการขาดทุนแล้ว",
-    "Daily profit target reached!": "ถึงเป้าหมายกำไรรายวันแล้ว!",
-    "Daily loss limit reached": "ถึงขีดจำกัดการขาดทุนรายวันแล้ว",
-    "Daily trading goals reached": "ถึงเป้าหมายการเทรดรายวันแล้ว"
+    "footerText": "การใช้งานบริการนี้ คุณยอมรับว่าคุณได้อ่าน เข้าใจ และตกลงที่จะผูกพันตามข้อกำหนดการใช้งานเหล่านี้"
   }
 }
