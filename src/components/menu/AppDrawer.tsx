@@ -35,7 +35,7 @@ export default function AppDrawer() {
 
   const appLinks = [
     {
-      href: "/",
+      href: "/trade-room",
       title: t("Trade Room"),
       icon: IconHome,
     },

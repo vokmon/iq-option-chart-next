@@ -109,10 +109,10 @@ export default function AppToolbar() {
             <Menu.Divider />
 
             {/* Theme Switcher */}
-            <Menu.Label>{t("Theme")}</Menu.Label>
+            {/* <Menu.Label>{t("Theme")}</Menu.Label>
             <Box px="md" py="xs">
               <ThemeSwitcher />
-            </Box>
+            </Box> */}
 
             <Menu.Divider />
 

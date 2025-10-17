@@ -8,7 +8,7 @@ import VerifyStep from "./VerifyStep";
 import { VerifyResponse } from "../types/AuthTypes";
 
 const DEFAULT_STEP = "login";
-const DEFAULT_ROUTE = "/";
+const DEFAULT_ROUTE = "/trade-room";
 
 export default function LoginPage() {
   const router = useRouter();

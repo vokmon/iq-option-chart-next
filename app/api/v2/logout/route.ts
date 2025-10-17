@@ -27,11 +27,10 @@ export async function POST(request: NextRequest) {
 
     // Clear the SSID cookie
     response.cookies.set(COOKIES.ssid, "", {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "strict",
       expires: new Date(0), // Set to past date to delete
-      path: "/",
     });
 
     // Clear the JWT cookie
