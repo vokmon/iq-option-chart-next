@@ -53,7 +53,7 @@ export default function ChartSidebar() {
       </Flex>
       <Flex className="flex-1 flex-col w-full relative gap-1 overflow-y-auto">
         <div className="h-full w-full absolute">
-          {/* <FireStoreSignalPanelController /> */}
+          <FireStoreSignalPanelController />
         </div>
       </Flex>
     </Flex>
