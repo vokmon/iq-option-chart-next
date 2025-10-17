@@ -24,7 +24,8 @@ export const useAutoTrade = ({
 }) => {
   const { sdk } = useSdk();
   const { actives } = useDigitalOptions();
-  const { getAutoTrade, getSelectedBalanceId } = useTradingStore();
+  const { getAutoTrade, getSelectedBalanceId, updateAutoTrade } =
+    useTradingStore();
   const { openPositions } = useOpenPositionsStore();
   const { assets } = useAssetStore();
   const { mutateAsync: createOrder } = useTradingActions({ onSuccess });
@@ -87,6 +88,12 @@ export const useAutoTrade = ({
         period: asset.candleSize,
         isSystemTrade: true,
       });
+
+      // Turn off auto trade after creating the order
+      updateAutoTrade(asset.id, {
+        enable: false,
+        amount: autoTrade.amount,
+      });
     };
     tradeEvent.addEventListener(handleSignalChanged);
     return () => {
@@ -100,5 +107,6 @@ export const useAutoTrade = ({
     getSelectedBalanceId,
     openPositions,
     sdk,
+    updateAutoTrade,
   ]);
 };
