@@ -6,7 +6,7 @@ import {
   IconTrendingDown,
   IconBell,
 } from "@tabler/icons-react";
-import { TradingSignal } from "@/types/signal/FireStoreSignal";
+import { SignalType, TradingSignal } from "@/types/signal/FireStoreSignal";
 import { formatDateTime } from "@/utils/dateTime";
 import { DigitalOptionsUnderlying } from "@quadcode-tech/client-sdk-js";
 
@@ -30,9 +30,13 @@ export default function SignalFirestoreTable({
             new Date().getTime() - signal.timestamp.getTime() <
             1000 * 60 * minutes;
 
-          const active = actives?.find(
-            (active) => active.name === signal.currencyPair
-          );
+          const active = actives?.find((active) => {
+            const currencyPair =
+              signal.signalType === SignalType.REVERSAL
+                ? `${signal.currencyPair}-op`
+                : signal.currencyPair;
+            return currencyPair === active.name;
+          });
 
           return (
             <Table.Tr key={signal.id}>

@@ -46,7 +46,7 @@ export function useTradingActions({
     direction,
     period,
     isSystemTrade,
-  }: TradingParams): Promise<void> => {
+  }: TradingParams): Promise<DigitalOptionsOrder | undefined> => {
     try {
       if (!asset) {
         throw new Error("No active asset selected");
@@ -86,6 +86,7 @@ export function useTradingActions({
       // Wait for 0.1 second to ensure the positions are updated
       await new Promise((resolve) => setTimeout(resolve, 100));
       refetchOpenPositions();
+      return order;
     } catch (error) {
       const errorMessage = t("Error executing order", {
         direction,

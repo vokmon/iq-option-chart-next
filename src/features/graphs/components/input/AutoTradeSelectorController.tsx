@@ -1,30 +1,43 @@
 "use client";
 
 import AutoTradeSelector from "@/components/input/AutoTradeSelector";
-import { useAssetStore } from "@/stores/assets/assetStore";
-import { useTradingStore } from "@/stores/assets/tradingStore";
-import { useSelectedBalance } from "../../hooks/positions/useSelectedBalance";
+import { useHandleAutoTrade } from "../../hooks/auto-trade-selector/useHandleAutoTrade";
+import { useHandleMartingale } from "../../hooks/auto-trade-selector/useHandleMartingale";
+import { useState } from "react";
+import MartingaleModal from "./martingale/MartingaleModal";
+import { DEFAULT_MARTINGALE } from "@/types/martingale";
 
 export default function AutoTradeSelectorController() {
-  const { activeAssetId } = useAssetStore();
-  const { getAutoTrade, updateAutoTrade } = useTradingStore();
-  const { selectedBalance } = useSelectedBalance();
-
-  const autoTrade = getAutoTrade(activeAssetId!);
-  const enable = autoTrade?.enable;
-  const amount = autoTrade?.amount;
+  const [opened, setOpened] = useState(false);
+  const { martingale, handleUpdateMartingale } = useHandleMartingale();
+  const {
+    activeAssetId,
+    enable,
+    amount,
+    selectedBalance,
+    handleAutoTradeChange,
+    updateAutoTrade,
+  } = useHandleAutoTrade();
 
   return (
-    <AutoTradeSelector
-      enabled={enable}
-      tradeAmount={amount}
-      balance={selectedBalance}
-      onAutoTradeChange={(enabled, amount) => {
-        updateAutoTrade(activeAssetId!, { enable: enabled, amount: amount });
-      }}
-      onTradeAmountChange={(amount) => {
-        updateAutoTrade(activeAssetId!, { enable: enable!, amount: amount });
-      }}
-    />
+    <>
+      <AutoTradeSelector
+        enabled={enable}
+        tradeAmount={amount}
+        balance={selectedBalance}
+        onAutoTradeChange={handleAutoTradeChange}
+        onTradeAmountChange={(amount) => {
+          updateAutoTrade(activeAssetId!, { enable: enable!, amount: amount });
+        }}
+        isMartingaleOn={martingale?.enabled}
+        onMartingaleClick={() => setOpened(true)}
+      />
+      <MartingaleModal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        martingale={martingale || DEFAULT_MARTINGALE}
+        updateMartingale={handleUpdateMartingale}
+      />
+    </>
   );
 }

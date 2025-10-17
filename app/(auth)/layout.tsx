@@ -5,6 +5,8 @@ import AppToolbar from "@/components/layout/navigation/AppToolbar";
 // import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { SdkProvider } from "@/provider/SdkProvider";
 import { Flex } from "@mantine/core";
+import TradeNotificationComponent from "@/features/background/TradeNotificationComponent";
+import BreakWarningNotificationComponent from "@/features/background/TakeABreakNotificationComponent";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <LoadDigitalOptionsComponent />
       <LoadPositionsDataComponent />
       <LoadDailyBalanceComponent />
+      <TradeNotificationComponent />
+      <BreakWarningNotificationComponent />
       <Flex w="100%" h="100%" direction="column">
         <AppToolbar />
         <Flex

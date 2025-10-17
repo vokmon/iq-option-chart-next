@@ -22,12 +22,6 @@ const DEFAULT_BREAK_WARNING = {
   pauseDuration: 15 as const, // minutes
 } as const;
 
-const DEFAULT_MARTINGALE = {
-  enabled: true,
-  numberOfMartingales: 4,
-  multipliers: [2.5, 2.5, 2.5, 2.5],
-};
-
 const DEFAULT_TRADING_LIMITS = {
   breakWarning: DEFAULT_BREAK_WARNING,
 } as const;
@@ -35,7 +29,6 @@ const DEFAULT_TRADING_LIMITS = {
 const DEFAULT_SETTINGS = {
   tradingGoals: DEFAULT_TRADING_GOALS,
   tradingLimits: DEFAULT_TRADING_LIMITS,
-  martingale: DEFAULT_MARTINGALE,
 } as const;
 
 // ============================================================================
@@ -60,17 +53,10 @@ export interface TradingLimitsSettings {
   breakWarning: BreakWarningSettings;
 }
 
-export interface MartingaleSettings {
-  enabled: boolean;
-  numberOfMartingales: number;
-  multipliers: number[];
-}
-
 export interface SettingsState {
   // Saved settings (persisted)
   tradingGoals: TradingGoalsSettings;
   tradingLimits: TradingLimitsSettings;
-  martingale: MartingaleSettings;
 }
 
 export interface SettingsActions {
@@ -78,14 +64,11 @@ export interface SettingsActions {
   updateTradingGoals: (settings: Partial<TradingGoalsSettings>) => void;
   updateTradingLimits: (settings: Partial<TradingLimitsSettings>) => void;
   updateBreakWarning: (settings: Partial<BreakWarningSettings>) => void;
-  updateMartingale: (settings: Partial<MartingaleSettings>) => void;
 
   // Getters
   getTradingGoals: () => TradingGoalsSettings;
   getTradingLimits: () => TradingLimitsSettings;
   getBreakWarning: () => BreakWarningSettings;
-  getMartingale: () => MartingaleSettings;
-  getMartingaleMultiplier: (level: number) => number;
 }
 
 export type SettingsStore = SettingsState & SettingsActions;
@@ -153,27 +136,6 @@ export const useSettingsStore = create<SettingsStore>()(
         }));
       },
 
-      updateMartingale: (settings: Partial<MartingaleSettings>) => {
-        set((state) => ({
-          martingale: {
-            ...state.martingale,
-            ...settings,
-            // Ensure valid values
-            numberOfMartingales: Math.min(
-              4,
-              Math.max(
-                1,
-                settings.numberOfMartingales ??
-                  state.martingale.numberOfMartingales
-              )
-            ),
-            multipliers: (
-              settings.multipliers ?? state.martingale.multipliers
-            ).map((multiplier) => Math.max(1, multiplier)),
-          },
-        }));
-      },
-
       // Getters
       getTradingGoals: () => {
         const state = get();
@@ -189,34 +151,12 @@ export const useSettingsStore = create<SettingsStore>()(
         const state = get();
         return state.tradingLimits.breakWarning;
       },
-
-      getMartingale: () => {
-        const state = get();
-        return state.martingale;
-      },
-
-      getMartingaleMultiplier: (level: number) => {
-        const state = get();
-        const martingale = state.martingale;
-
-        // Validate level (1-based indexing)
-        if (level < 1 || level > martingale.numberOfMartingales) {
-          console.warn(
-            `Martingale level ${level} is out of range. Available levels: 1-${martingale.numberOfMartingales}`
-          );
-          return martingale.multipliers[0] || 2.5; // Return first multiplier as fallback
-        }
-
-        // Return multiplier for the specified level (convert to 0-based index)
-        return martingale.multipliers[level - 1] || 2.5;
-      },
     }),
     {
       name: "settings-storage",
       partialize: (state) => ({
         tradingGoals: state.tradingGoals,
         tradingLimits: state.tradingLimits,
-        martingale: state.martingale,
       }),
     }
   )
@@ -230,6 +170,5 @@ export {
   DEFAULT_TRADING_GOALS,
   DEFAULT_BREAK_WARNING,
   DEFAULT_TRADING_LIMITS,
-  DEFAULT_MARTINGALE,
   DEFAULT_SETTINGS,
 };

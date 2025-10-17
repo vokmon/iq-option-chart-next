@@ -11,6 +11,7 @@ import {
   DigitalOptionsUnderlying,
 } from "@quadcode-tech/client-sdk-js";
 import { useDigitalOptions } from "@/hooks/assets/useDigitalOptions";
+import { useAutoTradeOrdersStore } from "@/stores/autoTrade/autoTradeOrdersStore";
 
 export const useAutoTrade = ({
   onSuccess,
@@ -24,11 +25,12 @@ export const useAutoTrade = ({
 }) => {
   const { sdk } = useSdk();
   const { actives } = useDigitalOptions();
-  const { getAutoTrade, getSelectedBalanceId, updateAutoTrade } =
+  const { getAutoTrade, getSelectedBalanceId, updateAutoTrade, getMartingale } =
     useTradingStore();
   const { openPositions } = useOpenPositionsStore();
   const { assets } = useAssetStore();
   const { mutateAsync: createOrder } = useTradingActions({ onSuccess });
+  const { addOrder } = useAutoTradeOrdersStore();
 
   useEffect(() => {
     const handleSignalChanged = async (event: Event) => {
@@ -51,6 +53,7 @@ export const useAutoTrade = ({
         return;
       }
 
+      const martingale = getMartingale(asset.id);
       // const openPosition = openPositions.find(
       //   (position) =>
       //     position.activeId === activeId &&
@@ -80,7 +83,7 @@ export const useAutoTrade = ({
         return;
       }
 
-      await createOrder({
+      const order: DigitalOptionsOrder | undefined = await createOrder({
         asset: activeAsset,
         balance: balance,
         amount: autoTrade.amount,
@@ -94,6 +97,23 @@ export const useAutoTrade = ({
         enable: false,
         amount: autoTrade.amount,
       });
+
+      // NEW: Track the order for martingale ONLY when martingale is enabled
+      if (martingale?.enabled && order) {
+        addOrder({
+          id: order.id,
+          externalId: order.id,
+          balanceId: balance.id,
+          balanceCurrency: balance.currency,
+          balanceType: balance.type!,
+          assetId: activeAsset.activeId,
+          amount: autoTrade.amount,
+          direction: signal,
+          period: asset.candleSize,
+          createdAt: Date.now(),
+          isSystemTrade: true,
+        });
+      }
     };
     tradeEvent.addEventListener(handleSignalChanged);
     return () => {
@@ -108,5 +128,7 @@ export const useAutoTrade = ({
     openPositions,
     sdk,
     updateAutoTrade,
+    addOrder,
+    getMartingale,
   ]);
 };

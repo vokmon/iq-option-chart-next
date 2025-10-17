@@ -6,19 +6,16 @@ import { IconSettings, IconCheck, IconX } from "@tabler/icons-react";
 import { useSettingsUI } from "./hooks/useSettingsUI";
 import TradingGoalsSection from "./components/TradingGoalsSection";
 import TradingLimitsSection from "./components/trade-limit/TradingLimitsSection";
-import MartingaleSection from "./components/MartingaleSection";
 
 export default function SettingsPage() {
   const t = useTranslations();
   const {
     draftTradingGoals,
     draftTradingLimits,
-    draftMartingale,
     hasUnsavedChanges,
 
     updateDraftTradingGoals,
     updateDraftTradingLimits,
-    updateDraftMartingale,
     handleSave,
     handleCancel,
     handleReset,
@@ -68,10 +65,6 @@ export default function SettingsPage() {
         <TradingLimitsSection
           draftTradingLimits={draftTradingLimits}
           updateDraftTradingLimits={updateDraftTradingLimits}
-        />
-        <MartingaleSection
-          draftMartingale={draftMartingale}
-          updateDraftMartingale={updateDraftMartingale}
         />
       </Stack>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_MARTINGALE, MartingaleSettings } from "@/types/martingale";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -9,10 +10,11 @@ export interface AutoTrade {
 }
 
 interface TradingStore {
-  // Three separate objects keyed by assetId
+  // Four separate objects keyed by assetId
   selectedBalanceIds: Record<string, number>;
   amounts: Record<string, number>;
   autoTrade: Record<string, AutoTrade>;
+  martingale: Record<string, MartingaleSettings>;
 
   // Actions
   updateSelectedBalance: (assetId: string, selectedBalanceId: number) => void;
@@ -25,6 +27,11 @@ interface TradingStore {
   updateAutoTrade: (assetId: string, autoTrade: AutoTrade) => void;
   getAutoTrade: (assetId: string) => AutoTrade | undefined;
 
+  // Martingale actions
+  updateMartingale: (assetId: string, martingale: MartingaleSettings) => void;
+  getMartingale: (assetId: string) => MartingaleSettings | undefined;
+  getMartingaleMultiplier: (assetId: string, level: number) => number;
+
   // Sync with asset store - when assets are added/removed
   syncWithAssets: (assetIds: string[]) => void;
 }
@@ -35,6 +42,7 @@ export const useTradingStore = create<TradingStore>()(
       selectedBalanceIds: {},
       amounts: {},
       autoTrade: {},
+      martingale: {},
 
       updateSelectedBalance: (assetId: string, selectedBalanceId: number) => {
         set((state) => ({
@@ -69,14 +77,17 @@ export const useTradingStore = create<TradingStore>()(
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
           const newAutoTrade = { ...state.autoTrade };
+          const newMartingale = { ...state.martingale };
           delete newSelectedBalanceIds[assetId];
           delete newAmounts[assetId];
           delete newAutoTrade[assetId];
+          delete newMartingale[assetId];
 
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
             autoTrade: newAutoTrade,
+            martingale: newMartingale,
           };
         });
       },
@@ -95,11 +106,52 @@ export const useTradingStore = create<TradingStore>()(
         return state.autoTrade[assetId];
       },
 
+      updateMartingale: (assetId: string, martingale: MartingaleSettings) => {
+        set((state) => ({
+          martingale: {
+            ...state.martingale,
+            [assetId]: {
+              ...martingale,
+              // Ensure valid values
+              numberOfMartingales: Math.min(
+                4,
+                Math.max(1, martingale.numberOfMartingales)
+              ),
+              multipliers: martingale.multipliers.map((multiplier) =>
+                Math.max(1, multiplier)
+              ),
+            },
+          },
+        }));
+      },
+
+      getMartingale: (assetId: string) => {
+        const state = get();
+        return state.martingale[assetId] || DEFAULT_MARTINGALE;
+      },
+
+      getMartingaleMultiplier: (assetId: string, level: number) => {
+        const state = get();
+        const martingale = state.martingale[assetId] || DEFAULT_MARTINGALE;
+
+        // Validate level (1-based indexing)
+        if (level < 1 || level > martingale.numberOfMartingales) {
+          console.warn(
+            `Martingale level ${level} is out of range. Available levels: 1-${martingale.numberOfMartingales}`
+          );
+          return martingale.multipliers[0] || 2.5; // Return first multiplier as fallback
+        }
+
+        // Return multiplier for the specified level (convert to 0-based index)
+        return martingale.multipliers[level - 1] || 2.5;
+      },
+
       syncWithAssets: (assetIds: string[]) => {
         set((state) => {
           const newSelectedBalanceIds = { ...state.selectedBalanceIds };
           const newAmounts = { ...state.amounts };
           const newAutoTrade = { ...state.autoTrade };
+          const newMartingale = { ...state.martingale };
 
           // Remove trading data for assets that no longer exist
           Object.keys(newSelectedBalanceIds).forEach((tradingAssetId) => {
@@ -120,10 +172,17 @@ export const useTradingStore = create<TradingStore>()(
             }
           });
 
+          Object.keys(newMartingale).forEach((tradingAssetId) => {
+            if (!assetIds.includes(tradingAssetId)) {
+              delete newMartingale[tradingAssetId];
+            }
+          });
+
           return {
             selectedBalanceIds: newSelectedBalanceIds,
             amounts: newAmounts,
             autoTrade: newAutoTrade,
+            martingale: newMartingale,
           };
         });
       },
@@ -134,6 +193,7 @@ export const useTradingStore = create<TradingStore>()(
         selectedBalanceIds: state.selectedBalanceIds,
         amounts: state.amounts,
         autoTrade: state.autoTrade,
+        martingale: state.martingale,
       }),
     }
   )

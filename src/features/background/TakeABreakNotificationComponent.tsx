@@ -1,3 +1,5 @@
+"use client";
+
 import useCalculateBreakWarning from "./hooks/notification/take-a-break/useCalculateBreakWarning";
 import { useTakeABreakWarningState } from "./hooks/notification/take-a-break/useTakeABreakWarningState";
 import { useBreakWarningStore } from "@/stores/notifications/breakWarningStore";

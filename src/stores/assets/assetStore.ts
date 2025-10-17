@@ -69,6 +69,7 @@ interface AssetStore {
   canAddAsset: () => boolean;
   canRemoveAsset: (assetId: string) => boolean;
   getActiveAsset: () => AssetState | undefined;
+  getAssetByActiveId: (activeId: number) => AssetState | undefined;
 }
 
 const defaultIndicators: AssetIndicatorSettings = {
@@ -334,6 +335,13 @@ export const useAssetStore = create<AssetStore>()(
         const state = get();
         return state.assets.find(
           (assetState) => assetState.id === state.activeAssetId
+        );
+      },
+
+      getAssetByActiveId: (activeId: number) => {
+        const state = get();
+        return state.assets.find(
+          (assetState) => assetState.asset?.activeId === activeId
         );
       },
     }),

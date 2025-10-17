@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IconClock } from "@tabler/icons-react";
 import { useAssetStore } from "@/stores/assets/assetStore";
 import { getFirstAvailableInstrument } from "@/utils/tradingUtil";
-import { formatTime } from "@/utils/dateTime";
+import { formatSecondsToMMSS, formatTime } from "@/utils/dateTime";
 import { useSdk } from "@/hooks/useSdk";
 
 interface PurchaseEndTimeData {
@@ -38,27 +38,19 @@ export function PurchaseEndTimeOverlay() {
         }
 
         const purchaseEndTimeDate = firstInstrument.purchaseEndTime();
-        const purchaseEndTime =
-          purchaseEndTimeDate instanceof Date
-            ? Math.floor(purchaseEndTimeDate.getTime() / 1000)
-            : purchaseEndTimeDate;
-        const durationRemaining = firstInstrument.durationRemainingForPurchase(
-          new Date()
-        );
 
+        const durationRemaining = firstInstrument.durationRemainingForPurchase(
+          sdk.currentTime()
+        );
         setDurationRemaining(durationRemaining);
 
         // Format duration as MM:SS
         const totalSeconds = Math.floor(durationRemaining / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = Math.max(0, totalSeconds % 60);
-        const formattedDuration = `${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
         // Format purchaseEndTime
-        const endTimeDate = new Date(purchaseEndTime * 1000);
-        const formattedEndTime = formatTime(endTimeDate);
+        const formattedDuration = formatSecondsToMMSS(
+          Math.max(0, totalSeconds)
+        );
+        const formattedEndTime = formatTime(purchaseEndTimeDate);
 
         setData({ formattedDuration, formattedEndTime });
       } catch (error) {

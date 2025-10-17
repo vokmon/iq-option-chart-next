@@ -1,8 +1,14 @@
 "use client";
 
-import { Switch, NumberInput, Text, Indicator } from "@mantine/core";
+import {
+  Switch,
+  NumberInput,
+  Text,
+  Indicator,
+  ActionIcon,
+} from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { IconRobot } from "@tabler/icons-react";
+import { IconCalculator, IconRobot } from "@tabler/icons-react";
 import { Balance } from "@quadcode-tech/client-sdk-js";
 import { getCurrencySymbol } from "@/utils/currency";
 
@@ -12,6 +18,8 @@ interface AutoTradeSelectorProps {
   tradeAmount?: number;
   onTradeAmountChange?: (amount: number) => void;
   balance?: Balance;
+  onMartingaleClick?: () => void;
+  isMartingaleOn?: boolean;
 }
 
 export default function AutoTradeSelector({
@@ -20,6 +28,8 @@ export default function AutoTradeSelector({
   tradeAmount = 0,
   onTradeAmountChange,
   balance,
+  onMartingaleClick,
+  isMartingaleOn,
 }: AutoTradeSelectorProps) {
   const t = useTranslations();
 
@@ -130,6 +140,21 @@ export default function AutoTradeSelector({
               leftSection={getCurrencySymbol(balance?.currency)}
             />
           </div>
+        </div>
+      )}
+      {!enabled && (
+        <div className="flex items-center w-full gap-2">
+          <ActionIcon
+            variant="filled"
+            color={isMartingaleOn ? "violet" : "gray"}
+            size="xs"
+            onClick={onMartingaleClick}
+          >
+            <IconCalculator size={16} />
+          </ActionIcon>
+          <Text size="xs" className="text-gray-600 dark:text-gray-400">
+            {t(isMartingaleOn ? "Martingale is on" : "Martingale is off")}
+          </Text>
         </div>
       )}
     </div>
