@@ -133,6 +133,8 @@ const initializeSdkWithReconnection = async (
           setUser,
           setShowSessionDialog
         );
+      } else if (state === "connected") {
+        setShowSessionDialog(false);
       }
     });
   } catch (error) {
